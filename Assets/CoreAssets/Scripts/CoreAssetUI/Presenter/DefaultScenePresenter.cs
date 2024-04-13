@@ -1,5 +1,5 @@
-using GameSystem.Common;
-using GameSystem.Common.Domain;
+using GameSystemSDK.Common;
+using GameSystemSDK.Common.Domain;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;

@@ -15,6 +15,9 @@ namespace CoreAssetUI.View
         private void Awake()
         {
             _versionInfo.SetValueWithoutNotify( $"ver : proto_0.0.1" ); // TODO マジックナンバーなのでどこかで直す @Choi 24.04.06
+            _onClickLogIn.OnClick
+                .Subscribe( _ => _onClickLogIn.Interactable = false )
+                .AddTo( this );
         }
 
         public void SetVersionInfo( string value )

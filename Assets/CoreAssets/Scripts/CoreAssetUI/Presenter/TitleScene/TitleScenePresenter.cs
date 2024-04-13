@@ -1,10 +1,10 @@
-using GameSystem.Common.Domain;
+using GameSystemSDK.Common.Domain;
 using UnityEngine;
 using Zenject;
-using GameSystem.Common;
+using GameSystemSDK.Common;
 using Cysharp.Threading.Tasks;
 using UniRx;
-using GameSystem.Sound;
+using GameSystemSDK.Sound;
 
 namespace CoreAssetUI.Presenter
 {

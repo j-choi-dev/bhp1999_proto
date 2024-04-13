@@ -15,7 +15,7 @@ namespace CoreAssetUI.View
         private void Start()
         {
             _enterToGameButton.OnClick
-                .Subscribe( arg => Debug.Log( "OnClickEnterToGame" ) )
+                .Subscribe( arg => _enterToGameButton.Interactable = false )
                 .AddTo( this );
         }
     }
