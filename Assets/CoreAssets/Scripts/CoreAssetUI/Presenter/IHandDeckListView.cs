@@ -1,4 +1,4 @@
-namespace CoreAssetUI.View
+namespace CoreAssetUI.Presenter
 {
     public interface IHandDeckListView : IListView
     {

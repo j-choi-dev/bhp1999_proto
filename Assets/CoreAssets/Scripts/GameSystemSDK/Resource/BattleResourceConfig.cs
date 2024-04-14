@@ -12,10 +12,12 @@ namespace GameSystemSDK.Resource.Infrastructure
     {
         [SerializeField] private List<Sprite> _cardIllustList = null;
         [SerializeField] private List<Sprite> _cardIconList = null;
+        [SerializeField] private List<TextAsset> _tableList = null;
 
         public IReadOnlyList<Sprite> CardIllustList => _cardIllustList;
 
         public IReadOnlyList<Sprite> CardIconList => _cardIconList;
+        public IReadOnlyList<TextAsset> TableList => _tableList;
 
         public IResult<Sprite> GetIllustSprite( string id )
         {
@@ -35,6 +37,18 @@ namespace GameSystemSDK.Resource.Infrastructure
                 return Result.Fail<Sprite>( $"BattleResourceConfig.GetIconSprite : {id} Not Exist" );
             }
             return Result.Success(sprite);
+        }
+
+        public IResult<string> GetTable( string id )
+        {
+            var data = _tableList.First(spr => spr.name.Equals(id));
+            if( data == null )
+            {
+                UnityEngine.Debug.LogError( $"BattleResourceConfig.GetTable : {id} Not Exist" );
+                return Result.Fail<string>( $"BattleResourceConfig.GetTable : {id} Not Exist" );
+            }
+            Debug.Log( data.text );
+            return Result.Success<string>( data.text );
         }
     }
 }

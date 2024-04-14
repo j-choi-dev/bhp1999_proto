@@ -1,3 +1,4 @@
+using CoreAssetUI.Presenter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,23 +7,7 @@ using UnityEngine;
 
 namespace CoreAssetUI.View
 {
-    public interface IListView
-    {
-        IReadOnlyList<CellBase> Cells { get; }
-        IReadOnlyList<string> SelectedCells { get; }
-        IReadOnlyList<int> SelectedIndices { get; }
-        IReadOnlyList<string> HoveredCells { get; }
-        IReadOnlyList<int> HoveredIndices { get; }
-        IObservable<CellStateArg> OnSelectionChanged { get; }
-        IObservable<CellStateArg> OnHoveredChanged { get; }
-        IObservable<CellStateArg> OnPressed { get; }
-        void Add( string id, string title, Sprite sprite, bool isInActive );
-        void Remove( string id );
-        void Clear();
-        void SetActive( string id, bool isActive );
-    }
-
-    public class ListView : MonoBehaviour/*, IListView*/
+    public class ListView : MonoBehaviour, IListView
     {
         [SerializeField] private CellBase _prefab;
         [SerializeField] private Transform _pivot;

@@ -627,7 +627,7 @@ GameObject:
   - component: {fileID: 577620579466603108}
   - component: {fileID: 6026040637776614559}
   - component: {fileID: 5252442456813331239}
-  - component: {fileID: 7953602747789720248}
+  - component: {fileID: 1410463439859254144}
   m_Layer: 5
   m_Name: SelectedCardView
   m_TagString: Untagged
@@ -694,7 +694,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &7953602747789720248
+--- !u!114 &1410463439859254144
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -703,11 +703,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4997620305805926236}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d3b9998dd0770841b38079691c5318c, type: 3}
+  m_Script: {fileID: 11500000, guid: ccddca6a9ed7629449ab0c1439cb1d2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _prefab: {fileID: 0}
-  _pivot: {fileID: 0}
+  _prefab: {fileID: 7301560308293638204, guid: a484fb34372fc9e48a49dd1b48fa4563, type: 3}
+  _pivot: {fileID: 387948450199055402}
 --- !u!1 &5387757919707938281
 GameObject:
   m_ObjectHideFlags: 0

@@ -62,11 +62,8 @@ namespace GameSystemSDK.BattleScene.Domain
                 retVal.Add( data );
                 _list.Find( arg => arg.ID.Equals( data.ID ) ).SetInHand( true );
             }
-            UnityEngine.Debug.Log( "SetHandCardList.Clear" );
             _currHandList.Clear();
-            UnityEngine.Debug.Log( "SetHandCardList.AddRange" );
             _currHandList.AddRange( retVal );
-            UnityEngine.Debug.Log( $"SetHandCardList._onCurrentHandCardListChanged ... {_currHandList.Count}" );
             _onCurrentHandCardListChanged.OnNext( _currHandList );
             return Result.Success();
         }

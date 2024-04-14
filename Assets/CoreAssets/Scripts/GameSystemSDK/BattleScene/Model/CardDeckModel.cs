@@ -23,7 +23,7 @@ namespace GameSystemSDK.BattleScene.Model
         public IReadOnlyList<IBattleCard> CurrentHandDeckList => throw new NotImplementedException();
 
         public CardDeckModel( ICardListContext cardListContext,
-            ICardDeckListImportContext deckListImportContext)
+            ICardDeckListImportContext deckListImportContext )
         {
             _deckListContext = cardListContext;
             _deckListImportContext = deckListImportContext;
@@ -31,9 +31,9 @@ namespace GameSystemSDK.BattleScene.Model
 
         public async UniTask Initialize()
         {
+            var mock = UnityEngine.Random.Range(0, 9);
             var generateShuffleOperation = await _deckListImportContext.GenerateShuffle();
-            var msg = generateShuffleOperation.Select(arg => $"({arg.ID} - {arg.Index})");
-            UnityEngine.Debug.Log( $"{string.Join( ", ", msg )}" );
+
             var operation = _deckListContext.SetCardList( generateShuffleOperation );
             _deckListContext.SetHandCardList();
         }
