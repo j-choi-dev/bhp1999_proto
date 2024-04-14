@@ -7,12 +7,14 @@ using UnityEngine;
 using CoreAssetUI.View;
 using GameSystemSDK.Resource.Domain;
 using GameSystemSDK.Resource.Infrastructure;
+using CoreAssetUI.Presenter;
 
 namespace GameSystemSDK.Battle.Installer
 {
     public class BattleSceneInstaller : MonoInstaller<BattleSceneInstaller>
     {
         [SerializeField] private HandDeckListView _handDeckListView;
+        [SerializeField] private BattleInfoView _battleInfoView;
 
         [SerializeField] private BattleResourceConfig _battleResourceConfig;
         public override void InstallBindings()
@@ -22,10 +24,20 @@ namespace GameSystemSDK.Battle.Installer
                 .Bind<IHandDeckListView>()
                 .FromInstance( _handDeckListView );
 
+            Container
+                .Bind<IBattleInfoView>()
+                .FromInstance( _battleInfoView );
+
+
             // Model
             Container
                 .Bind<ICardDeckModel>()
                 .To<CardDeckModel>()
+                .AsCached();
+
+            Container
+                .Bind<IGameRuleModel>()
+                .To<GameRuleModel>()
                 .AsCached();
 
 
@@ -34,9 +46,20 @@ namespace GameSystemSDK.Battle.Installer
                 .Bind<ICardListContext>()
                 .To<CardListContext>()
                 .AsCached();
+
             Container
                 .Bind<ICardDeckListImportContext>()
                 .To<CardDeckListImportContext>()
+                .AsCached();
+
+            Container
+                .Bind<IGameRuleValueCntext>()
+                .To<GameRuleValueCntext>()
+                .AsCached();
+
+            Container
+                .Bind<IBattleInfoImporterContext>()
+                .To<BattleInfoImporterContext>()
                 .AsCached();
 
 
@@ -54,6 +77,16 @@ namespace GameSystemSDK.Battle.Installer
             Container
                 .Bind<IBattleResourceConfig>()
                 .FromInstance( _battleResourceConfig );
+
+            Container
+                .Bind<IGameRuleValueDomain>()
+                .To<GameRuleValueDomain>()
+                .AsCached();
+
+            Container
+                .Bind<IBattleInfoImporterDomain>()
+                .To<BattleInfoImporterInfrastructure>()
+                .AsCached();
         }
     }
 }
