@@ -320,7 +320,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 4976565588218348677}
+  m_TargetGraphic: {fileID: 4228143593558799981}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -374,9 +374,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8dea7255adae2542aa7063f03abe4c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _button: {fileID: 2040659756838224806}
+  _selectionMark: {fileID: 880601877099181935}
   _label: {fileID: 7972152728789023268}
   _image: {fileID: 3708233432031063951}
-  _displayText: {fileID: 7646622396527871697}
 --- !u!1 &6457192169111798173
 GameObject:
   m_ObjectHideFlags: 0

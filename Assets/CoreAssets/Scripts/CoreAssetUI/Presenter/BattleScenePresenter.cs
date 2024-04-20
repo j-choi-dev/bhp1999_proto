@@ -8,11 +8,14 @@ using Zenject;
 using UniRx;
 using GameSystemSDK.Resource.Domain;
 using GameSystemSDK.Sound;
+using UnityEngine.UI;
 
 namespace CoreAssetUI.Presenter
 {
     public class BattleScenePresenter : MonoBehaviour
     {
+        [SerializeField] Image _image;
+        [SerializeField] TMPro.TMP_Text _text;
         private IHandDeckListView _handDeckListView;
         private IBattleInfoView _battleInfoView;
         private ICardDeckModel _cardDeckModel;
@@ -39,7 +42,40 @@ namespace CoreAssetUI.Presenter
 
         private void Awake()
         {
+            _image.gameObject.SetActive( false );
+            _text.text = string.Empty;
             _gameSoundController.PlayEffect( "eff003" );
+
+            _handDeckListView.OnSelectionChanged
+                .Subscribe( arg => Debug.Log( arg.id ) )
+                .AddTo( this );
+
+            _handDeckListView.OnDragStarted
+                .Subscribe( tupple =>
+                {
+                    Debug.Log( $"OnDragStart : {tupple.id}, {tupple.pos}" );
+                    if( _image.gameObject.activeSelf== false )
+                    {
+                        _image.gameObject.SetActive( true );
+                        _text.text = tupple.id;
+                    }
+                    _image.rectTransform.anchoredPosition = tupple.pos;
+                } )
+                .AddTo( this );
+
+            _handDeckListView.OnDragEnd
+                .Subscribe( tupple =>
+                {
+                    Debug.Log( $"OnDragEnd : {tupple.id}, {tupple.pos}" );
+                    if( _image.gameObject.activeSelf )
+                    {
+                        _text.text = string.Empty;
+                        _image.gameObject.SetActive( false );
+                    }
+                    _image.rectTransform.anchoredPosition = tupple.pos;
+                } )
+                .AddTo( this );
+
             _cardDeckModel.OnCurrentHandCardListChanged
                 .Subscribe( list =>
                 {
@@ -49,7 +85,7 @@ namespace CoreAssetUI.Presenter
             _cardDeckModel.OnCardListChanged
                 .Subscribe( list =>
                 {
-                    Debug.Log( $"_cardDeckModel.OnCardListChanged {list.Count}" );
+                    // Do Something @Choi
                 } )
                 .AddTo( this );
 

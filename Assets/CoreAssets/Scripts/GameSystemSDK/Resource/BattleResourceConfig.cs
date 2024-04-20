@@ -44,10 +44,8 @@ namespace GameSystemSDK.Resource.Infrastructure
             var data = _tableList.First(spr => spr.name.Equals(id));
             if( data == null )
             {
-                UnityEngine.Debug.LogError( $"BattleResourceConfig.GetTable : {id} Not Exist" );
                 return Result.Fail<string>( $"BattleResourceConfig.GetTable : {id} Not Exist" );
             }
-            Debug.Log( data.text );
             return Result.Success<string>( data.text );
         }
     }

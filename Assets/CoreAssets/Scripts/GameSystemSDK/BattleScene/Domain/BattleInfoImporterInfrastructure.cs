@@ -39,9 +39,7 @@ namespace GameSystemSDK.BattleScene.Infrastructure
             //    UnityEngine.Debug.LogError( $"BattleInfoImporterInfrastructure.LoadBattleInfo : {textAsset.ErrorMessage}" );
             //    return Result.Fail<IReadOnlyList<IBattleInfoData>>( $"BattleInfoImporterInfrastructure.LoadBattleInfo : {textAsset.ErrorMessage}" );
             //}
-            UnityEngine.Debug.Log( textAsset );
             var retVal = ConverToDataList(textAsset.Value);
-            UnityEngine.Debug.Log( retVal.Count );
             _list.AddRange( retVal );
             await UniTask.DelayFrame(1);
             return Result.Success( retVal );
@@ -53,7 +51,6 @@ namespace GameSystemSDK.BattleScene.Infrastructure
             var list = new List<IBattleInfoData>();
             for(int i = 1; i < rows.Length; i++ )
             {
-                UnityEngine.Debug.Log( rows[i] );
                 var cols = rows[i].Split(",");
                 var data = new BattleInfoData();
                 data.SetID( cols[0] );

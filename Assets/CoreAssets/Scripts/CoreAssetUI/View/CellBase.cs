@@ -7,99 +7,43 @@ using UnityEngine.UI;
 
 namespace CoreAssetUI.View
 {
-    public interface ICellBase
-    {
-        int Index { get; set; }
-        string ID { get; set; }
-        string DisplayText { get; set; }
-        void SetImage( Sprite sprite );
-
-        IObservable<CellStateArg> OnPressed { get; }
-        IObservable<CellStateArg> OnSelectionChanged { get; }
-        IObservable<CellStateArg> OnHoveredChanged { get; }
-
-        bool IsVisible { get; set; }
-        bool IsHovered { get; set; }
-        bool IsSelected { get; set; }
-
-        void SetHoveredWithoutNotify( bool isHovered );
-        void SetSelectWithoutNotify( bool isSelected );
-
-        bool IsInteractable { get; set; }
-    }
-
     public abstract class CellBase : MonoBehaviour, ICellBase
     {
+        [SerializeField] private ObservableButtonTMPro _button;
+        [SerializeField] private GameObject _selectionMark;
         [SerializeField] private ObservableLabel _label;
         [SerializeField] private Image _image = null;
 
+        public GameObject GameObject => gameObject;
         public string ID { get; set; }
         public string DisplayText { get => _label.Text; set => _label.Text = value; }
         public int Index { get; set; }
 
-        private Subject<CellStateArg> m_OnPressed = new Subject<CellStateArg>();
-        private Subject<CellStateArg> m_OnSelectionChanged = new Subject<CellStateArg>();
-        private Subject<CellStateArg> m_OnHoveredChanged = new Subject<CellStateArg>();
-
-        public IObservable<CellStateArg> OnPressed => m_OnPressed;
-        public IObservable<CellStateArg> OnSelectionChanged => m_OnSelectionChanged;
-        public IObservable<CellStateArg> OnHoveredChanged => m_OnHoveredChanged;
+        public IObservable<Unit> OnClick => _button.OnClick;
 
         public bool IsVisible { get => gameObject.activeSelf; set => gameObject.SetActive( value ); }
 
-        private bool m_IsHovered = false;
-        public bool IsHovered
-        {
-            get => m_IsHovered;
-            set
-            {
-                if( m_IsHovered == value )
-                {
-                    return;
-                }
-                m_IsHovered = value;
-                m_OnHoveredChanged.OnNext( new CellStateArg( Index, ID, value ) );
-            }
-        }
-
-        private bool m_IsSelected = false;
+        private bool _isSelected = false;
         public bool IsSelected
         {
-            get => m_IsSelected;
+            get => _isSelected;
             set
             {
-                if( m_IsSelected == value )
+                if( _isSelected == value )
                 {
                     return;
                 }
-                m_IsSelected = value;
-                m_OnSelectionChanged.OnNext( new CellStateArg( Index, ID, value ) );
+                _selectionMark.SetActive( value );
+                _isSelected = value;
+                Debug.Log( $"{DisplayText} : {IsSelected}" );
             }
         }
 
-        private bool m_IsPressed = false;
-        public bool IsPressed
-        {
-            get => m_IsPressed;
-            set
-            {
-                if( m_IsPressed != value )
-                {
-                    m_IsPressed = value;
-                    if( value == false )
-                    {
-                        return;
-                    }
-                    m_OnPressed.OnNext( new CellStateArg( Index, ID, true ) );
-                }
-            }
-        }
-
-        private bool m_IsInteractable;
+        private bool _isInteractable;
         public bool IsInteractable
         {
-            get { return m_IsInteractable; }
-            set { m_IsInteractable = value; }
+            get { return _isInteractable; }
+            set { _isInteractable = value; }
         }
 
         public void SetImage( Sprite sprite )
@@ -126,14 +70,10 @@ namespace CoreAssetUI.View
             Index = value;
         }
 
-        public void SetHoveredWithoutNotify( bool isHovered )
-        {
-            m_IsHovered = isHovered;
-        }
-
         public void SetSelectWithoutNotify( bool isSelected )
         {
-            m_IsSelected = isSelected;
+            _selectionMark.SetActive( isSelected );
+            _isSelected = isSelected;
         }
     }
 }
