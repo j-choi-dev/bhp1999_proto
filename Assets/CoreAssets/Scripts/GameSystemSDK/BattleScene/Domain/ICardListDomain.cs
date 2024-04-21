@@ -11,8 +11,8 @@ namespace GameSystemSDK.BattleScene.Domain
         IObservable<IReadOnlyList<IBattleCard>> OnCardListChanged { get; }
         IObservable<IReadOnlyList<IBattleCard>> OnCurrentHandCardListChanged { get; }
         IResult SetCardList( IReadOnlyList<IBattleCard> list );
-        IResult SetHandCardList();
         IResult AddCard( IBattleCard data );
         IResult RemoveCard( string id );
+        IBattleCard GetCard( string id );
     }
 }

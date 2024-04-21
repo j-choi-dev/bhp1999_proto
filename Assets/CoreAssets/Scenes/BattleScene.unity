@@ -1015,6 +1015,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _handDeckListView: {fileID: 6909119890958448895}
+  _selectedCardListView: {fileID: 1874476283237863576}
   _battleInfoView: {fileID: 5996188475390277080}
   _battleResourceConfig: {fileID: 11400000, guid: 3ed210ee112784a4183de7a8000c566a, type: 2}
 --- !u!224 &1900586610 stripped
@@ -1367,10 +1368,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7953602747789720248, guid: ef0178d2e46fe164ab6645f7e5020c8b, type: 3}
+    - {fileID: 1410463439859254144, guid: ef0178d2e46fe164ab6645f7e5020c8b, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ef0178d2e46fe164ab6645f7e5020c8b, type: 3}
+--- !u!114 &1874476283237863576 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8709130145852359695, guid: ef0178d2e46fe164ab6645f7e5020c8b, type: 3}
+  m_PrefabInstance: {fileID: 1874476283237863575}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6f0c4b07f4b8ac41b31826112edf653, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2444391757135944529
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -14,6 +14,7 @@ namespace GameSystemSDK.Battle.Installer
     public class BattleSceneInstaller : MonoInstaller<BattleSceneInstaller>
     {
         [SerializeField] private HandDeckListView _handDeckListView;
+        [SerializeField] private SelectedCardListView _selectedCardListView;
         [SerializeField] private BattleInfoView _battleInfoView;
 
         [SerializeField] private BattleResourceConfig _battleResourceConfig;
@@ -25,14 +26,18 @@ namespace GameSystemSDK.Battle.Installer
                 .FromInstance( _handDeckListView );
 
             Container
+                .Bind<ISelectedCardListView>()
+                .FromInstance( _selectedCardListView );
+
+            Container
                 .Bind<IBattleInfoView>()
                 .FromInstance( _battleInfoView );
 
 
             // Model
             Container
-                .Bind<ICardDeckModel>()
-                .To<CardDeckModel>()
+                .Bind<ICardListModel>()
+                .To<CardListModel>()
                 .AsCached();
 
             Container
@@ -45,6 +50,16 @@ namespace GameSystemSDK.Battle.Installer
             Container
                 .Bind<ICardListContext>()
                 .To<CardListContext>()
+                .AsCached();
+
+            Container
+                .Bind<ISelectedCardListContext>()
+                .To<SelectedCardListContext>()
+                .AsCached();
+
+            Container
+                .Bind<IHandCardListContext>()
+                .To<HandCardListContext>()
                 .AsCached();
 
             Container
@@ -67,6 +82,16 @@ namespace GameSystemSDK.Battle.Installer
             Container
                 .Bind<ICardListDomain>()
                 .To<CardListDomain>()
+                .AsCached();
+
+            Container
+                .Bind<IHandCardListDomain>()
+                .To<HandCardListDomain>()
+                .AsCached();
+
+            Container
+                .Bind<ISelectedCardListDomain>()
+                .To<SelectedCardListDomain>()
                 .AsCached();
 
             Container

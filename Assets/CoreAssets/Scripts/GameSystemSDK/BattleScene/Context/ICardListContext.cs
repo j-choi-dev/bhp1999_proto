@@ -7,13 +7,13 @@ namespace GameSystemSDK.BattleScene.Application
 {
     public interface ICardListContext
     {
-        IReadOnlyList<IBattleCard> AllDeckList { get; }
-        IReadOnlyList<IBattleCard> CurrentHandDeckList { get; }
+        IReadOnlyList<IBattleCard> AllList { get; }
         IObservable<IReadOnlyList<IBattleCard>> OnCardListChanged { get; }
         IObservable<IReadOnlyList<IBattleCard>> OnCurrentHandCardListChanged { get; }
-        IResult SetCardList( IReadOnlyList<IBattleCard> list );
+
+        void SetCardList( IReadOnlyList<IBattleCard> list );
         IResult AddCard( IBattleCard data );
         IResult RemoveCard( string id );
-        IResult SetHandCardList();
+        IBattleCard GetCard(string id);
     }
 }

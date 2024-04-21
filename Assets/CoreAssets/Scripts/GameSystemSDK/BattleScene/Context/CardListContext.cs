@@ -9,34 +9,34 @@ namespace GameSystemSDK.BattleScene.Application
 {
     public class CardListContext : ICardListContext
     {
-        private ICardListDomain _listDomain;
+        private ICardListDomain _domain;
 
-        public IReadOnlyList<IBattleCard> AllDeckList => _listDomain.AllDeckList;
+        public IReadOnlyList<IBattleCard> AllList => _domain.AllDeckList;
 
-        public IObservable<IReadOnlyList<IBattleCard>> OnCardListChanged => _listDomain.OnCardListChanged;
+        public IObservable<IReadOnlyList<IBattleCard>> OnCardListChanged => _domain.OnCardListChanged;
 
-        public IReadOnlyList<IBattleCard> CurrentHandDeckList => _listDomain.CurrentHandDeckList;
+        public IReadOnlyList<IBattleCard> CurrentHandDeckList => _domain.CurrentHandDeckList;
 
-        public IObservable<IReadOnlyList<IBattleCard>> OnCurrentHandCardListChanged => _listDomain.OnCurrentHandCardListChanged;
+        public IObservable<IReadOnlyList<IBattleCard>> OnCurrentHandCardListChanged => _domain.OnCurrentHandCardListChanged;
 
         public CardListContext(ICardListDomain listDomain)
         {
-            _listDomain = listDomain;
+            _domain = listDomain;
         }
 
+        public void SetCardList(IReadOnlyList<IBattleCard> list)
+            => _domain.SetCardList( list );
+
         public IResult AddCard( IBattleCard data )
-            => _listDomain.AddCard( data );
+            => _domain.AddCard( data );
 
         public IResult RemoveCard( string id )
-            => _listDomain.RemoveCard( id );
-
-        public IResult SetCardList( IReadOnlyList<IBattleCard> list )
-            => _listDomain.SetCardList( list );
+            => _domain.RemoveCard( id );
 
         public IResult GettHandCardList( IReadOnlyList<IBattleCard> list )
-            => _listDomain.SetCardList( list );
+            => _domain.SetCardList( list );
 
-        public IResult SetHandCardList()
-            => _listDomain.SetHandCardList();
+        public IBattleCard GetCard( string id )
+            => _domain.GetCard( id );
     }
 }

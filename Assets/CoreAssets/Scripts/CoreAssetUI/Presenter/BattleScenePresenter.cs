@@ -1,7 +1,5 @@
-using CoreAssetUI.View;
 using GameSystemSDK.BattleScene.Domain;
 using GameSystemSDK.BattleScene.Model;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
@@ -17,21 +15,24 @@ namespace CoreAssetUI.Presenter
         [SerializeField] Image _image;
         [SerializeField] TMPro.TMP_Text _text;
         private IHandDeckListView _handDeckListView;
+        private ISelectedCardListView _selectedCardListView;
         private IBattleInfoView _battleInfoView;
-        private ICardDeckModel _cardDeckModel;
+        private ICardListModel _cardDeckModel;
         private IGameSoundController _gameSoundController;
         private IGameRuleModel _gameRuleModel;
         private IBattleResourceConfig _config;
 
         [Inject]
         public void Initialize( IHandDeckListView handDeckListView,
+            ISelectedCardListView selectedCardListView,
             IBattleInfoView battleInfoView,
-            ICardDeckModel cardDeckModel,
+            ICardListModel cardDeckModel,
             IGameSoundController gameSoundController,
             IGameRuleModel gameRuleModel,
             IBattleResourceConfig config )// TODO к└кс@Choi
         {
             _handDeckListView = handDeckListView;
+            _selectedCardListView = selectedCardListView;
             _battleInfoView = battleInfoView;
 
             _cardDeckModel = cardDeckModel;
@@ -46,20 +47,33 @@ namespace CoreAssetUI.Presenter
             _text.text = string.Empty;
             _gameSoundController.PlayEffect( "eff003" );
 
+            SubscribeView();
+            SubscribeModel();
+        }
+
+        private async void Start()
+        {
+            await _cardDeckModel.Initialize();
+            await _gameRuleModel.Initialize();
+
+        }
+
+        private void SubscribeView()
+        {
             _handDeckListView.OnSelectionChanged
-                .Subscribe( arg => Debug.Log( arg.id ) )
+                .Subscribe( arg => _cardDeckModel.MoveToSelectedList( arg.id ) )
                 .AddTo( this );
 
             _handDeckListView.OnDragStarted
                 .Subscribe( tupple =>
                 {
                     Debug.Log( $"OnDragStart : {tupple.id}, {tupple.pos}" );
-                    if( _image.gameObject.activeSelf== false )
-                    {
-                        _image.gameObject.SetActive( true );
-                        _text.text = tupple.id;
-                    }
-                    _image.rectTransform.anchoredPosition = tupple.pos;
+                    //if( _image.gameObject.activeSelf== false )
+                    //{
+                    //    _image.gameObject.SetActive( true );
+                    //    _text.text = tupple.id;
+                    //}
+                    //_image.rectTransform.anchoredPosition = tupple.pos;
                 } )
                 .AddTo( this );
 
@@ -67,25 +81,38 @@ namespace CoreAssetUI.Presenter
                 .Subscribe( tupple =>
                 {
                     Debug.Log( $"OnDragEnd : {tupple.id}, {tupple.pos}" );
-                    if( _image.gameObject.activeSelf )
-                    {
-                        _text.text = string.Empty;
-                        _image.gameObject.SetActive( false );
-                    }
-                    _image.rectTransform.anchoredPosition = tupple.pos;
+                    //if( _image.gameObject.activeSelf )
+                    //{
+                    //    _text.text = string.Empty;
+                    //    _image.gameObject.SetActive( false );
+                    //}
+                    //_image.rectTransform.anchoredPosition = tupple.pos;
                 } )
                 .AddTo( this );
+        }
 
+        private void SubscribeModel()
+        {
             _cardDeckModel.OnCurrentHandCardListChanged
                 .Subscribe( list =>
                 {
                     UpdateView( list );
                 } )
                 .AddTo( this );
-            _cardDeckModel.OnCardListChanged
-                .Subscribe( list =>
+
+            _cardDeckModel.OnCurrentSelectedCardAdd
+                .Subscribe( item =>
                 {
-                    // Do Something @Choi
+                    var sprite = _config.GetIconSprite( item.IconResourceID );
+                    _selectedCardListView.Add( item.ID, item.Value.ToString(), sprite.Value, false );
+                } )
+                .AddTo( this );
+
+            _cardDeckModel.OnCurrentHandCardListAdd
+                .Subscribe( item =>
+                {
+                    var sprite = _config.GetIllustSprite( item.IllustResourceID );
+                    _handDeckListView.Add( item.ID, item.Value.ToString(), sprite.Value, false );
                 } )
                 .AddTo( this );
 
@@ -108,13 +135,6 @@ namespace CoreAssetUI.Presenter
             _gameRuleModel.OnManaValueChanged
                 .Subscribe( arg => _battleInfoView.SetManaWithoutNotify( arg ) )
                 .AddTo( this );
-        }
-
-        private async void Start()
-        {
-            await _cardDeckModel.Initialize();
-            await _gameRuleModel.Initialize();
-
         }
 
         private void UpdateView(IReadOnlyList<IBattleCard> list)
