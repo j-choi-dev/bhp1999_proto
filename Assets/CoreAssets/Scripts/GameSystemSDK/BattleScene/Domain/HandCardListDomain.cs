@@ -10,7 +10,7 @@ namespace GameSystemSDK.BattleScene.Domain
         private int _totalHandDeckCount = 0; // TODO Magic Number @Choi 24.04.13
 
         private List<IBattleCard> _list = new List<IBattleCard>();
-        public IReadOnlyList<IBattleCard> List => _list;
+        public IReadOnlyList<IBattleCard> List => _list.Where(arg => arg.IsSelected == false).ToList();
 
         private Subject<IReadOnlyList<IBattleCard>> _onCardListChanged = new Subject<IReadOnlyList<IBattleCard>>();
         public IObservable<IReadOnlyList<IBattleCard>> OnCardListChanged => _onCardListChanged;
@@ -30,7 +30,7 @@ namespace GameSystemSDK.BattleScene.Domain
         {
             _list.Add( data );
             _onAdd.OnNext( data );
-            _onCardListChanged.OnNext( _list );
+            _onCardListChanged.OnNext( List );
         }
 
         public void Clear()
@@ -39,12 +39,11 @@ namespace GameSystemSDK.BattleScene.Domain
             _onCardListChanged.OnNext( _list );
         }
 
-        public void RemoveCard( string id )
+        public void SetIsSelected( string id, bool isSelection )
         {
-            var card = _list.Find( arg => arg.ID.Equals( id ) );
-            _list.Remove( card );
-            _onRemove.OnNext( card );
-            _onCardListChanged.OnNext( _list );
+            var index = _list.FindIndex(arg => arg.ID.Equals( id ));
+            _list[index].SetIsSelected( isSelection );
+            _onCardListChanged.OnNext( List );
         }
 
         public void UpdateList( IReadOnlyList<IBattleCard> list )
@@ -60,7 +59,7 @@ namespace GameSystemSDK.BattleScene.Domain
             }
             _list.Clear();
             _list.AddRange( retVal );
-            _onCardListChanged.OnNext( _list );
+            _onCardListChanged.OnNext( List );
         }
 
         public IBattleCard GetCard( string id )

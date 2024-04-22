@@ -24,6 +24,8 @@ namespace GameSystemSDK.BattleScene.Domain
 
         public bool IsInHand { get; private set; } = false;
 
+        public bool IsSelected { get; private set; } = false;
+
         public void SetID( string value )
             => ID = value;
 
@@ -47,5 +49,8 @@ namespace GameSystemSDK.BattleScene.Domain
 
         public void SetInHand( bool isValue )
             => IsInHand = isValue;
+
+        public void SetIsSelected( bool isValue )
+            => IsSelected = isValue;
     }
 }

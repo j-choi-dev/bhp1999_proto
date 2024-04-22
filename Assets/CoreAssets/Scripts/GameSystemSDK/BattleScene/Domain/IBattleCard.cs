@@ -9,6 +9,7 @@ namespace GameSystemSDK.BattleScene.Domain
         public string IllustResourceID { get; }
         public string IconResourceID { get; }
         public bool IsInHand { get; }
+        public bool IsSelected { get; }
         public bool IsDrawn { get; }
 
         void SetID( string value );
@@ -18,6 +19,7 @@ namespace GameSystemSDK.BattleScene.Domain
         public void SetIllustResourceID( string sprite );
         public void SetIconResourceID( string sprite );
         public void SetInHand( bool isValue );
+        public void SetIsSelected( bool isValue );
         public void SetDrawn( bool isValue );
     }
 }

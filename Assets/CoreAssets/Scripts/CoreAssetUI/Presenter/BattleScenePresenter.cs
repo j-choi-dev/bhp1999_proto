@@ -61,32 +61,50 @@ namespace CoreAssetUI.Presenter
         private void SubscribeView()
         {
             _handDeckListView.OnSelectionChanged
-                .Subscribe( arg => _cardDeckModel.MoveToSelectedList( arg.id ) )
+                .Subscribe( arg =>
+                {
+                    if(arg.isSelected == false)
+                    {
+                        return;
+                    }
+                    _cardDeckModel.MoveToSelectedList( arg.id );
+                } )
+                .AddTo( this );
+
+            _selectedCardListView.OnSelectionChanged
+                .Subscribe( arg =>
+                {
+                    if( arg.isSelected == false )
+                    {
+                        return;
+                    }
+                    _cardDeckModel.ReturnToHandList( arg.id );
+                } )
                 .AddTo( this );
 
             _handDeckListView.OnDragStarted
                 .Subscribe( tupple =>
                 {
-                    Debug.Log( $"OnDragStart : {tupple.id}, {tupple.pos}" );
-                    //if( _image.gameObject.activeSelf== false )
-                    //{
-                    //    _image.gameObject.SetActive( true );
-                    //    _text.text = tupple.id;
-                    //}
-                    //_image.rectTransform.anchoredPosition = tupple.pos;
+                    //Debug.Log( $"OnDragStart : {tupple.id}, {tupple.pos}" );
+                    ////if( _image.gameObject.activeSelf== false )
+                    ////{
+                    ////    _image.gameObject.SetActive( true );
+                    ////    _text.text = tupple.id;
+                    ////}
+                    ////_image.rectTransform.anchoredPosition = tupple.pos;
                 } )
                 .AddTo( this );
 
             _handDeckListView.OnDragEnd
                 .Subscribe( tupple =>
                 {
-                    Debug.Log( $"OnDragEnd : {tupple.id}, {tupple.pos}" );
-                    //if( _image.gameObject.activeSelf )
-                    //{
-                    //    _text.text = string.Empty;
-                    //    _image.gameObject.SetActive( false );
-                    //}
-                    //_image.rectTransform.anchoredPosition = tupple.pos;
+                    //Debug.Log( $"OnDragEnd : {tupple.id}, {tupple.pos}" );
+                    ////if( _image.gameObject.activeSelf )
+                    ////{
+                    ////    _text.text = string.Empty;
+                    ////    _image.gameObject.SetActive( false );
+                    ////}
+                    ////_image.rectTransform.anchoredPosition = tupple.pos;
                 } )
                 .AddTo( this );
         }
@@ -113,6 +131,14 @@ namespace CoreAssetUI.Presenter
                 {
                     var sprite = _config.GetIllustSprite( item.IllustResourceID );
                     _handDeckListView.Add( item.ID, item.Value.ToString(), sprite.Value, false );
+                } )
+                .AddTo( this );
+
+            _cardDeckModel.OnCurrentSelectedCardRemoved
+                .Subscribe( item =>
+                {
+                    Debug.Log( $"<color=magenta>    _cardDeckModel.OnCurrentSelectedCardRemoved ... {item.ID}</color>" );
+                    _selectedCardListView.Remove( item.ID );
                 } )
                 .AddTo( this );
 

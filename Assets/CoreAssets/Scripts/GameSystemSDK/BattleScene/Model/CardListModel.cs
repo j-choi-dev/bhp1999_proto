@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using GameSystemSDK.BattleScene.Application;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 namespace GameSystemSDK.BattleScene.Model
 {
@@ -84,13 +85,14 @@ namespace GameSystemSDK.BattleScene.Model
             }
             var card = _cardListContext.GetCard( id );
             _selectedListContext.Add(card);
-            _handCardListContext.Remove( card.ID );
+            _handCardListContext.SetIsSelected( card.ID, true );
         }
 
         public void ReturnToHandList( string id )
         {
+            Debug.Log( $"<color=yellow>cardDeckModel.ReturnToHandList ... {id}</color>" );
             var card = _cardListContext.GetCard( id );
-            _handCardListContext.Add( card );
+            _handCardListContext.SetIsSelected( card.ID, false );
             _selectedListContext.Remove( card.ID );
         }
     }

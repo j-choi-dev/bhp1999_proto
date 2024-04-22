@@ -35,7 +35,6 @@ namespace CoreAssetUI.View
                 }
                 _selectionMark.SetActive( value );
                 _isSelected = value;
-                Debug.Log( $"{DisplayText} : {IsSelected}" );
             }
         }
 

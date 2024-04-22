@@ -63,7 +63,6 @@ namespace GameSystemSDK.BattleScene.Model
         public async UniTask Initialize()
         {
             var mock = UnityEngine.Random.Range(0, 9); // TODO @Choi 24.04.14
-            UnityEngine.Debug.Log( mock );
             var battleInfoImportOperation = await _battleInfoImporterContext.LoadBattleInfo();
             //if( battleInfoImportOperation.IsSuccess != false )
             //{

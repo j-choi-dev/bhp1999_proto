@@ -28,8 +28,8 @@ namespace GameSystemSDK.BattleScene.Application
         public void Clear()
             => _domain.Clear();
 
-        public void Remove( string id )
-        => _domain.RemoveCard( id );
+        public void SetIsSelected( string id, bool isSelection )
+        => _domain.SetIsSelected( id, isSelection );
 
 
         public IBattleCard GetCard( string id )
