@@ -7,6 +7,7 @@ using UniRx;
 using GameSystemSDK.Resource.Domain;
 using GameSystemSDK.Sound;
 using UnityEngine.UI;
+using System.Linq;
 
 namespace CoreAssetUI.Presenter
 {
@@ -17,27 +18,30 @@ namespace CoreAssetUI.Presenter
         private IHandDeckListView _handDeckListView;
         private ISelectedCardListView _selectedCardListView;
         private IBattleInfoView _battleInfoView;
+        private IRunControlView _runControlView;
         private ICardListModel _cardDeckModel;
         private IGameSoundController _gameSoundController;
-        private IGameRuleModel _gameRuleModel;
+        private IGameProcessModel _gameProcessModel;
         private IBattleResourceConfig _config;
 
         [Inject]
         public void Initialize( IHandDeckListView handDeckListView,
             ISelectedCardListView selectedCardListView,
             IBattleInfoView battleInfoView,
+            IRunControlView runControlView,
             ICardListModel cardDeckModel,
             IGameSoundController gameSoundController,
-            IGameRuleModel gameRuleModel,
+            IGameProcessModel gameProcessModel,
             IBattleResourceConfig config )// TODO к└кс@Choi
         {
             _handDeckListView = handDeckListView;
             _selectedCardListView = selectedCardListView;
             _battleInfoView = battleInfoView;
+            _runControlView = runControlView;
 
             _cardDeckModel = cardDeckModel;
             _gameSoundController = gameSoundController;
-            _gameRuleModel = gameRuleModel;
+            _gameProcessModel = gameProcessModel;
             _config = config;
         }
 
@@ -54,16 +58,16 @@ namespace CoreAssetUI.Presenter
         private async void Start()
         {
             await _cardDeckModel.Initialize();
-            await _gameRuleModel.Initialize();
+            await _gameProcessModel.Initialize();
 
         }
 
         private void SubscribeView()
         {
-            _handDeckListView.OnSelectionChanged
+            _handDeckListView.OnSelectionIDChanged
                 .Subscribe( arg =>
                 {
-                    if(arg.isSelected == false)
+                    if( arg.isSelected == false )
                     {
                         return;
                     }
@@ -71,7 +75,21 @@ namespace CoreAssetUI.Presenter
                 } )
                 .AddTo( this );
 
-            _selectedCardListView.OnSelectionChanged
+            _handDeckListView.OnCurrentSelectionIDChanged
+                .Subscribe( arg =>
+                {
+                    if( string.IsNullOrEmpty( arg.id ) == false &&
+                        arg.isSelected == false )
+                    {
+                        _runControlView.SetDiscardInteractable( false );
+                        return;
+                    }
+                    _runControlView.SetDiscardInteractable( arg.isSelected && 
+                        _gameProcessModel.CurrDiscardCount > 0 );
+                } )
+                .AddTo( this );
+
+            _selectedCardListView.OnSelectionIDChanged
                 .Subscribe( arg =>
                 {
                     if( arg.isSelected == false )
@@ -82,29 +100,19 @@ namespace CoreAssetUI.Presenter
                 } )
                 .AddTo( this );
 
-            _handDeckListView.OnDragStarted
-                .Subscribe( tupple =>
+            _runControlView.OnHandPlayButton
+                .Subscribe( async _ =>
                 {
-                    //Debug.Log( $"OnDragStart : {tupple.id}, {tupple.pos}" );
-                    ////if( _image.gameObject.activeSelf== false )
-                    ////{
-                    ////    _image.gameObject.SetActive( true );
-                    ////    _text.text = tupple.id;
-                    ////}
-                    ////_image.rectTransform.anchoredPosition = tupple.pos;
+                    Debug.Log( "OnHandPlayButton" );
+                    await _gameProcessModel.RunHand();
                 } )
                 .AddTo( this );
 
-            _handDeckListView.OnDragEnd
-                .Subscribe( tupple =>
+            _runControlView.OnDiscardButton
+                .Subscribe( _ =>
                 {
-                    //Debug.Log( $"OnDragEnd : {tupple.id}, {tupple.pos}" );
-                    ////if( _image.gameObject.activeSelf )
-                    ////{
-                    ////    _text.text = string.Empty;
-                    ////    _image.gameObject.SetActive( false );
-                    ////}
-                    ////_image.rectTransform.anchoredPosition = tupple.pos;
+                    Debug.Log( "OnDiscardButton" );
+                    _gameProcessModel.DiscardProcess( _handDeckListView.CurrentSelectedID );
                 } )
                 .AddTo( this );
         }
@@ -137,40 +145,56 @@ namespace CoreAssetUI.Presenter
             _cardDeckModel.OnCurrentSelectedCardRemoved
                 .Subscribe( item =>
                 {
-                    Debug.Log( $"<color=magenta>    _cardDeckModel.OnCurrentSelectedCardRemoved ... {item.ID}</color>" );
                     _selectedCardListView.Remove( item.ID );
                 } )
                 .AddTo( this );
 
-            _gameRuleModel.OnHandChanged
-                .Subscribe( arg => _battleInfoView.SetHandCountWithoutNotify( arg ) )
+            _cardDeckModel.OnCurrentSelectedCardListChanged
+                .Subscribe( list =>
+                {
+                    _runControlView.SetHandPlayInteractable( list.Count > 0 );
+                } )
                 .AddTo( this );
 
-            _gameRuleModel.OnDiscardChanged
-                .Subscribe( arg => _battleInfoView.SetDiscardCountWithoutNotify( arg ) )
+            _gameProcessModel.OnHandChanged
+                .Subscribe( count =>
+                {
+                    UpdateView( _cardDeckModel.CurrentHandDeckList );
+                    _battleInfoView.SetHandCountWithoutNotify( count );
+                } )
                 .AddTo( this );
 
-            _gameRuleModel.OnGoldChanged
+            _gameProcessModel.OnDiscardChanged
+                .Subscribe( count =>
+                {
+                    UpdateView( _cardDeckModel.CurrentHandDeckList );
+                } )
+                .AddTo( this );
+
+            _gameProcessModel.OnGoldChanged
                 .Subscribe( arg => _battleInfoView.SetGoldWithoutNotify( arg ) )
                 .AddTo( this );
 
-            _gameRuleModel.OnCircleValueChanged
+            _gameProcessModel.OnCircleValueChanged
                 .Subscribe( arg => _battleInfoView.SetCircleWithoutNotify( arg ) )
                 .AddTo( this );
 
-            _gameRuleModel.OnManaValueChanged
+            _gameProcessModel.OnManaValueChanged
                 .Subscribe( arg => _battleInfoView.SetManaWithoutNotify( arg ) )
                 .AddTo( this );
         }
 
-        private void UpdateView(IReadOnlyList<IBattleCard> list)
+        private void UpdateView( IReadOnlyList<IBattleCard> list )
         {
             _handDeckListView.Clear();
-            for(int i = 0; i< list.Count; i++ )
+            for( int i = 0; i< list.Count; i++ )
             {
                 var sprite = _config.GetIllustSprite( list[i].IllustResourceID );
                 _handDeckListView.Add( list[i].ID, list[i].Value.ToString(), sprite.Value, false );
             }
+            _runControlView.SetDiscardInteractable( false );
+            _battleInfoView.SetHandCountWithoutNotify( _gameProcessModel.CurrHandCount );
+            _battleInfoView.SetDiscardCountWithoutNotify( _gameProcessModel.CurrDiscardCount );
         }
     }
 }

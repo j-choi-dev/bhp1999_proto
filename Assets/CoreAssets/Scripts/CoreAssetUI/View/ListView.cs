@@ -16,18 +16,30 @@ namespace CoreAssetUI.View
         public IReadOnlyList<ICellBase> Cells => _cells;
 
         protected  string _currSelectedId = string.Empty;
+        public string CurrentSelectedID => _currSelectedId;
+
         protected  Subject<(string id, bool isSelected)> _onSelectionChanged = new Subject<(string id, bool isSelected)>();
-        public IObservable<(string id, bool isSelected)> OnSelectionChanged => _onSelectionChanged;
+        public IObservable<(string id, bool isSelected)> OnSelectionIDChanged => _onSelectionChanged;
 
         protected  int _currSelectedIndex = -1;
         protected  Subject<(int index, bool isSelected)> _onSelectionIndexChanged = new Subject<(int index, bool isSelected)>();
         public IObservable<(int index, bool isSelected)> OnSelectionIndexChanged => _onSelectionIndexChanged;
 
-        protected  Subject<List<string>> _onCurrentSelectChanged = new Subject<List<string>>();
-        public IObservable<List<string>> OnCurrentSelectChanged => _onCurrentSelectChanged;
+        protected  Subject<List<string>> _onCurrentSelectedIDListChanged = new Subject<List<string>>();
+        public IObservable<List<string>> OnCurrentSelectedIDListChanged => _onCurrentSelectedIDListChanged;
 
         protected  Subject<List<int>> _onCurrentSelectIndexChanged = new Subject<List<int>>();
-        public IObservable<List<int>> OnCurrentSelectIndexChanged => _onCurrentSelectIndexChanged;
+        public IObservable<List<int>> OnCurrentSelectedIndexListChanged => _onCurrentSelectIndexChanged;
+
+        protected Subject<int> _onListCountChanged = new Subject<int>();
+        public IObservable<int> OnListCountChanged => _onListCountChanged;
+
+
+        protected  Subject<(string id, bool isSelected)> _onCurrentSelectionIDChanged = new Subject<(string id, bool isSelected)>();
+        public IObservable<(string id, bool isSelected)> OnCurrentSelectionIDChanged => _onCurrentSelectionIDChanged;
+
+        protected  Subject<(int index, bool isSelected)> _onCurrentSelectionIndexChanged = new Subject<(int index, bool isSelected)>();
+        public IObservable<(int index, bool isSelected)> OnCurrentSelectionIndexChanged => _onCurrentSelectionIndexChanged;
 
         public abstract void Add( string id, string title, Sprite sprite, bool isInActive );
 
@@ -50,7 +62,8 @@ namespace CoreAssetUI.View
             _cells.Remove( targetCell );
             if( targetCell.IsSelected )
             {
-                _onCurrentSelectChanged.OnNext( CurrentSelected() );
+                targetCell.SetSelectWithoutNotify( false );
+                _onCurrentSelectedIDListChanged.OnNext( CurrentSelected() );
                 _onSelectionChanged.OnNext( (targetCell.ID, false) );
             }
 

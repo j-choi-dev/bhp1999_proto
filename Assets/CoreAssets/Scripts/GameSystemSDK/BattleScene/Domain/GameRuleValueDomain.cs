@@ -52,7 +52,7 @@ namespace GameSystemSDK.BattleScene.Domain
             CurrHandCount = result >= 0 ?
                 result :
                 0;
-            _onDiscardChanged.OnNext( CurrHandCount );
+            _onHandChanged.OnNext( CurrHandCount );
             if( CurrHandCount <= 0 )
             {
                 _onHandOver.OnNext( Unit.Default );

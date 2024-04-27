@@ -7,8 +7,11 @@ using UnityEngine.EventSystems;
 
 namespace CoreAssetUI.View
 {
-    public class BattleCard : CellBase, IDragHandler, IBeginDragHandler, IEndDragHandler
+    public class BattleCardCell : CellBase, IDoubleTapCell, IDragHandler, IBeginDragHandler, IEndDragHandler
     {
+        private Subject<Unit> _onDoubleSelected = new Subject<Unit>();
+        public IObservable<Unit> OnDoubleSelected => _onDoubleSelected;
+
         private Vector2 prevPos; //保存しておく初期position
         private RectTransform rectTransform; // 移動したいオブジェクトのRectTransform
         private RectTransform parentRectTransform; // 移動したいオブジェクトの親(Panel)のRectTransform
@@ -19,10 +22,46 @@ namespace CoreAssetUI.View
         private Subject<(string id, Vector2 pos)> _onDragEnd = new Subject<(string id, Vector2 pos)>();
         public IObservable<(string id, Vector2 pos)> OnDragEnd => _onDragEnd;
 
+        private bool _isSelected = false;
+        public override bool IsSelected
+        {
+            get => _isSelected;
+            set
+            {
+                if( _isSelected == value )
+                {
+                    return;
+                }
+                _selectionMark.SetActive( value );
+                _isSelected = value;
+            }
+        }
+
+        private bool _isDoubleSelected = false;
+        public bool IsDoubleSelected
+        {
+            get => _isDoubleSelected;
+            set
+            {
+                if( _isDoubleSelected == value )
+                {
+                    return;
+                }
+                _selectionMark.SetActive( false );
+                _isDoubleSelected = value;
+                _onDoubleSelected.OnNext( Unit.Default );
+            }
+        }
+
         private void Awake()
         {
             rectTransform = GetComponent<RectTransform>();
             parentRectTransform = rectTransform.parent as RectTransform;
+        }
+
+        public void SetDoubleSelectWithoutNotify( bool isSelected )
+        {
+            _isDoubleSelected = IsSelected;
         }
 
 

@@ -8,11 +8,15 @@ namespace CoreAssetUI.Presenter
     public interface IListView
     {
         IReadOnlyList<ICellBase> Cells { get; }
+        string CurrentSelectedID { get; }
 
-        IObservable<(string id, bool isSelected)> OnSelectionChanged { get; }
+        IObservable<int> OnListCountChanged { get; }
+        IObservable<(string id, bool isSelected)> OnSelectionIDChanged { get; }
         IObservable<(int index, bool isSelected)> OnSelectionIndexChanged { get; }
-        IObservable<List<string>> OnCurrentSelectChanged { get; }
-        IObservable<List<int>> OnCurrentSelectIndexChanged { get; }
+        IObservable<(string id, bool isSelected)> OnCurrentSelectionIDChanged { get; }
+        IObservable<(int index, bool isSelected)> OnCurrentSelectionIndexChanged { get; }
+        IObservable<List<string>> OnCurrentSelectedIDListChanged { get; }
+        IObservable<List<int>> OnCurrentSelectedIndexListChanged { get; }
 
         void Add( string id, string title, Sprite sprite, bool isInActive );
         void Remove( string id );

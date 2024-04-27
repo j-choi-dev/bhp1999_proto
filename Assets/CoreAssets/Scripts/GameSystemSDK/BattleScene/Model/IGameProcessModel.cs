@@ -7,7 +7,7 @@ using Cysharp.Threading.Tasks;
 
 namespace GameSystemSDK.BattleScene.Model
 {
-    public interface IGameRuleModel
+    public interface IGameProcessModel
     {
         IObservable<int> OnHandChanged { get; }
         IObservable<int> OnDiscardChanged { get; }
@@ -31,6 +31,8 @@ namespace GameSystemSDK.BattleScene.Model
         int ManaValue { get; }
 
         UniTask Initialize();
+        UniTask RunHand();
+        void DiscardProcess( string id );
 
         void DiscountHandCount( int val = 1 );
         void DiscountDiscardCount( int val );

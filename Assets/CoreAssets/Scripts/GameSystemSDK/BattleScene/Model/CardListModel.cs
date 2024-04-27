@@ -49,6 +49,7 @@ namespace GameSystemSDK.BattleScene.Model
             var mock = UnityEngine.Random.Range(0, 9);
             var generateShuffleOperation = await _deckListImportContext.GenerateShuffle();
             _cardListContext.SetCardList( generateShuffleOperation );
+            _selectedListContext.Clear();
             _handCardListContext.UpdateList( _cardListContext.AllList );
         }
 
@@ -90,7 +91,6 @@ namespace GameSystemSDK.BattleScene.Model
 
         public void ReturnToHandList( string id )
         {
-            Debug.Log( $"<color=yellow>cardDeckModel.ReturnToHandList ... {id}</color>" );
             var card = _cardListContext.GetCard( id );
             _handCardListContext.SetIsSelected( card.ID, false );
             _selectedListContext.Remove( card.ID );

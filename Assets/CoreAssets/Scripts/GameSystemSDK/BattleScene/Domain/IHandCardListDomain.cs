@@ -12,6 +12,7 @@ namespace GameSystemSDK.BattleScene.Domain
         IObservable<IBattleCard> OnRemove { get; }
 
         void AddCard( IBattleCard data );
+        void RemoveCard( IBattleCard data );
         void SetIsSelected( string id, bool isSelection);
         void Clear();
         void UpdateList( IReadOnlyList<IBattleCard> list );

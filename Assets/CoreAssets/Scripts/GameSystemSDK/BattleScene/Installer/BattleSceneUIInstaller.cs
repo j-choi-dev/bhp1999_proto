@@ -11,11 +11,12 @@ using CoreAssetUI.Presenter;
 
 namespace GameSystemSDK.Battle.Installer
 {
-    public class BattleSceneInstaller : MonoInstaller<BattleSceneInstaller>
+    public class BattleSceneUIInstaller : MonoInstaller<BattleSceneUIInstaller>
     {
         [SerializeField] private HandDeckListView _handDeckListView;
         [SerializeField] private SelectedCardListView _selectedCardListView;
         [SerializeField] private BattleInfoView _battleInfoView;
+        [SerializeField] private RunControlView _runControlView;
 
         [SerializeField] private BattleResourceConfig _battleResourceConfig;
         public override void InstallBindings()
@@ -33,6 +34,10 @@ namespace GameSystemSDK.Battle.Installer
                 .Bind<IBattleInfoView>()
                 .FromInstance( _battleInfoView );
 
+            Container
+                .Bind<IRunControlView>()
+                .FromInstance( _runControlView );
+
 
             // Model
             Container
@@ -41,8 +46,8 @@ namespace GameSystemSDK.Battle.Installer
                 .AsCached();
 
             Container
-                .Bind<IGameRuleModel>()
-                .To<GameRuleModel>()
+                .Bind<IGameProcessModel>()
+                .To<GameProcessModel>()
                 .AsCached();
 
 

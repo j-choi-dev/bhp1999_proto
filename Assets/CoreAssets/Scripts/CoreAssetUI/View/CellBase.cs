@@ -9,10 +9,10 @@ namespace CoreAssetUI.View
 {
     public abstract class CellBase : MonoBehaviour, ICellBase
     {
-        [SerializeField] private ObservableButtonTMPro _button;
-        [SerializeField] private GameObject _selectionMark;
-        [SerializeField] private ObservableLabel _label;
-        [SerializeField] private Image _image = null;
+        [SerializeField] protected ObservableButtonTMPro _button;
+        [SerializeField] protected GameObject _selectionMark;
+        [SerializeField] protected ObservableLabel _label;
+        [SerializeField] protected Image _image = null;
 
         public GameObject GameObject => gameObject;
         public string ID { get; set; }
@@ -23,22 +23,9 @@ namespace CoreAssetUI.View
 
         public bool IsVisible { get => gameObject.activeSelf; set => gameObject.SetActive( value ); }
 
-        private bool _isSelected = false;
-        public bool IsSelected
-        {
-            get => _isSelected;
-            set
-            {
-                if( _isSelected == value )
-                {
-                    return;
-                }
-                _selectionMark.SetActive( value );
-                _isSelected = value;
-            }
-        }
+        public abstract bool IsSelected { get; set; }
 
-        private bool _isInteractable;
+        protected bool _isInteractable;
         public bool IsInteractable
         {
             get { return _isInteractable; }
@@ -47,7 +34,7 @@ namespace CoreAssetUI.View
 
         public void SetImage( Sprite sprite )
         {
-            if( _image == false)
+            if( _image == false )
             {
                 return;
             }
@@ -72,7 +59,7 @@ namespace CoreAssetUI.View
         public void SetSelectWithoutNotify( bool isSelected )
         {
             _selectionMark.SetActive( isSelected );
-            _isSelected = isSelected;
+            IsSelected = isSelected;
         }
     }
 }

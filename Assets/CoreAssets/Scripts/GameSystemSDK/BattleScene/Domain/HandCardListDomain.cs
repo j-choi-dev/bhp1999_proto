@@ -67,5 +67,12 @@ namespace GameSystemSDK.BattleScene.Domain
             var card = _list.First( arg => arg.ID.Equals( id ) );
             return card;
         }
+
+        public void RemoveCard( IBattleCard data )
+        {
+            _list.Remove( data );
+            _onCardListChanged.OnNext( List );
+
+        }
     }
 }

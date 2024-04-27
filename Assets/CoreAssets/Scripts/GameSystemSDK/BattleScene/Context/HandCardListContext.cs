@@ -24,6 +24,8 @@ namespace GameSystemSDK.BattleScene.Application
 
         public void Add( IBattleCard data )
             => _domain.AddCard( data );
+        public void Remove( IBattleCard data )
+            => _domain.RemoveCard( data );
 
         public void Clear()
             => _domain.Clear();

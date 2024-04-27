@@ -1,20 +1,28 @@
 using Cysharp.Threading.Tasks;
 using GameSystemSDK.BattleScene.Application;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UniRx;
-
+using UnityEngine;
 
 namespace GameSystemSDK.BattleScene.Model
 {
-    public class GameRuleModel : IGameRuleModel
+    public class GameProcessModel : IGameProcessModel
     {
         private IGameRuleValueCntext _gameRuleValueCntext;
+        private ICardListContext _cardListContext;
+        private IHandCardListContext _handCardListContext;
         private IBattleInfoImporterContext _battleInfoImporterContext;
 
-        public GameRuleModel( IGameRuleValueCntext gameRuleValueCntext,
-            IBattleInfoImporterContext battleInfoImporterContext)
+        public GameProcessModel( IGameRuleValueCntext gameRuleValueCntext,
+            ICardListContext cardListContext,
+            IHandCardListContext handCardListContext,
+            IBattleInfoImporterContext battleInfoImporterContext )
         {
             _gameRuleValueCntext = gameRuleValueCntext;
+            _cardListContext = cardListContext;
+            _handCardListContext = handCardListContext;
             _battleInfoImporterContext = battleInfoImporterContext;
         }
 
@@ -50,7 +58,7 @@ namespace GameSystemSDK.BattleScene.Model
 
         public int ManaValue => _gameRuleValueCntext.ManaValue;
 
-        public void DiscountDiscardCount( int val ) => _gameRuleValueCntext.DiscountDiscardCount( val );
+        public void DiscountDiscardCount( int val = 1 ) => _gameRuleValueCntext.DiscountDiscardCount( val );
 
         public void DiscountHandCount( int val = 1 ) => _gameRuleValueCntext.DiscountHandCount( val );
 
@@ -80,6 +88,33 @@ namespace GameSystemSDK.BattleScene.Model
             _onStageBuff1Change.OnNext( info.StageBuff1 );
             _onStageBuff2Change.OnNext( info.StageBuff2 );
             _onStageBuff3Change.OnNext( info.StageBuff3 );
+        }
+
+        public async UniTask RunHand()
+        {
+            DiscountHandCount();
+            await UniTask.Delay( 500 );
+            Debug.Log( "족보연산" );
+            await UniTask.Delay( 500 );
+            Debug.Log( "이펙트 연출" );
+            await UniTask.Delay( 250 );
+            Debug.Log( "데미지 차감" );
+            await UniTask.Delay( 250 );
+            Debug.Log( "종료" );
+        }
+
+        public void DiscardProcess( string id )
+        {
+            if( string.IsNullOrEmpty( id ) )
+            {
+                return;
+            }
+            _cardListContext.AllList.ToList().Find( arg => arg.ID.Equals( id ) ).SetDrawn( true );
+            var card = _cardListContext.GetCard(id);
+            Debug.Log( $"card : {card.ID}, {card.IsDrawn}" );
+            _handCardListContext.Remove( card );
+            DiscountDiscardCount();
+            _handCardListContext.UpdateList( _cardListContext.AllList );
         }
     }
 }
