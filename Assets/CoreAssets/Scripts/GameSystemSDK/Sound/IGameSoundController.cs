@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace GameSystemSDK.Sound
 {
     public interface IGameSoundController
@@ -5,6 +7,7 @@ namespace GameSystemSDK.Sound
         bool IsPlayingEffect { get; }
         bool IsPlayingBGM { get; }
         void PlayEffect( string fileName );
+        void PlayEffect( AudioClip clip );
         void PlayBGM( string fileName );
         void StopBGM();
     }

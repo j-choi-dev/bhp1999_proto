@@ -25,6 +25,11 @@ namespace GameSystemSDK.Sound
             _effectSource.PlayOneShot( clip );
         }
 
+        public void PlayEffect( AudioClip clip )
+        {
+            _effectSource.PlayOneShot( clip );
+        }
+
         public void PlayBGM( string fileName )
         {
             if( _bgmSource.isPlaying == true )

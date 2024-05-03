@@ -1,23 +1,21 @@
 using Cysharp.Threading.Tasks;
 using GameSystemSDK.BattleScene.Domain;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace GameSystemSDK.BattleScene.Application
 {
     public class CardDeckListImportContext : ICardDeckListImportContext
     {
-        ICardDeckListImportDomain _importDomain;
+        ICardDeckListGenerateDomain _importDomain;
 
-        public CardDeckListImportContext( ICardDeckListImportDomain importDomain )
+        public CardDeckListImportContext( ICardDeckListGenerateDomain importDomain )
         {
             _importDomain = importDomain;
         }
 
-        public UniTask<IReadOnlyList<IBattleCard>> GenerateShuffle()
+        public UniTask<IReadOnlyList<IBattleCard>> LoadShuffledList()
         {
-            return _importDomain.GenerateShuffle();
+            return _importDomain.GenerateShuffledList();
         }
     }
 }

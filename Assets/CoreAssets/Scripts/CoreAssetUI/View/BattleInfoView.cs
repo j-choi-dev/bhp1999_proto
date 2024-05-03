@@ -13,6 +13,9 @@ namespace CoreAssetUI.View
 
         [SerializeField] private ObservableLabelTMPro _circle;
         [SerializeField] private ObservableLabelTMPro _mana;
+        [SerializeField] private ObservableLabelTMPro _scorePlate;
+
+        public bool IsScorePlateOn => _scorePlate.gameObject.activeSelf;
 
         public void SetCircleWithoutNotify( int value ) 
             => _circle.SetValueWithoutNotify( value.ToString() );
@@ -28,5 +31,13 @@ namespace CoreAssetUI.View
 
         public void SetManaWithoutNotify( int value ) 
             => _mana.SetValueWithoutNotify( value.ToString() );
+
+        public void SetScorePlateOn( bool isOn )
+        {
+            _scorePlate.gameObject.SetActive( isOn );
+        }
+
+        public void SetScorePlateWithoutNotify( string value )
+            => _scorePlate.SetValueWithoutNotify( value.ToString() );
     }
 }

@@ -22,7 +22,8 @@ namespace CoreAssetUI.Presenter
         private ICardListModel _cardDeckModel;
         private IGameSoundController _gameSoundController;
         private IGameProcessModel _gameProcessModel;
-        private IBattleResourceConfig _config;
+        private IBattleResourceModel _battleResourceModel;
+        private IBattleEffectModel _battleEffectModel; 
 
         [Inject]
         public void Initialize( IHandDeckListView handDeckListView,
@@ -32,7 +33,8 @@ namespace CoreAssetUI.Presenter
             ICardListModel cardDeckModel,
             IGameSoundController gameSoundController,
             IGameProcessModel gameProcessModel,
-            IBattleResourceConfig config )// TODO к└кс@Choi
+            IBattleResourceModel battleResourceModel,
+            IBattleEffectModel battleEffectModel )
         {
             _handDeckListView = handDeckListView;
             _selectedCardListView = selectedCardListView;
@@ -42,7 +44,8 @@ namespace CoreAssetUI.Presenter
             _cardDeckModel = cardDeckModel;
             _gameSoundController = gameSoundController;
             _gameProcessModel = gameProcessModel;
-            _config = config;
+            _battleResourceModel = battleResourceModel;
+            _battleEffectModel = battleEffectModel;
         }
 
         private void Awake()
@@ -57,6 +60,7 @@ namespace CoreAssetUI.Presenter
 
         private async void Start()
         {
+            _battleInfoView.SetScorePlateOn( false );
             await _cardDeckModel.Initialize();
             await _gameProcessModel.Initialize();
 
@@ -129,16 +133,16 @@ namespace CoreAssetUI.Presenter
             _cardDeckModel.OnCurrentSelectedCardAdd
                 .Subscribe( item =>
                 {
-                    var sprite = _config.GetIconSprite( item.IconResourceID );
-                    _selectedCardListView.Add( item.ID, item.Value.ToString(), sprite.Value, false );
+                    var sprite = _battleResourceModel.GetIconSprite( item.IconResourceID );
+                    _selectedCardListView.Add( item.ID, item.Value.ToString(), sprite, false );
                 } )
                 .AddTo( this );
 
             _cardDeckModel.OnCurrentHandCardListAdd
                 .Subscribe( item =>
                 {
-                    var sprite = _config.GetIllustSprite( item.IllustResourceID );
-                    _handDeckListView.Add( item.ID, item.Value.ToString(), sprite.Value, false );
+                    var sprite = _battleResourceModel.GetIllustSprite( item.IllustResourceID );
+                    _handDeckListView.Add( item.ID, item.Value.ToString(), sprite, false );
                 } )
                 .AddTo( this );
 
@@ -182,6 +186,19 @@ namespace CoreAssetUI.Presenter
             _gameProcessModel.OnManaValueChanged
                 .Subscribe( arg => _battleInfoView.SetManaWithoutNotify( arg ) )
                 .AddTo( this );
+
+            _battleEffectModel.OnIsEffectProccess
+                .Subscribe( isOn => _battleInfoView.SetScorePlateOn( isOn ) )
+                .AddTo( this );
+
+            _battleEffectModel.OnScoreInfoChanged
+                .Subscribe( msg => _battleInfoView.SetScorePlateWithoutNotify( msg ) )
+                .AddTo( this );
+
+            _battleEffectModel.OnSkillNameChanged
+                .Subscribe( msg => _battleInfoView.SetScorePlateWithoutNotify( msg ) )
+                .AddTo( this );
+
         }
 
         private void UpdateView( IReadOnlyList<IBattleCard> list )
@@ -189,8 +206,8 @@ namespace CoreAssetUI.Presenter
             _handDeckListView.Clear();
             for( int i = 0; i< list.Count; i++ )
             {
-                var sprite = _config.GetIllustSprite( list[i].IllustResourceID );
-                _handDeckListView.Add( list[i].ID, list[i].Value.ToString(), sprite.Value, false );
+                var sprite = _battleResourceModel.GetIllustSprite( list[i].IllustResourceID );
+                _handDeckListView.Add( list[i].ID, list[i].Value.ToString(), sprite, false );
             }
             _runControlView.SetDiscardInteractable( false );
             _battleInfoView.SetHandCountWithoutNotify( _gameProcessModel.CurrHandCount );

@@ -1,10 +1,9 @@
 using Cysharp.Threading.Tasks;
 using GameSystemSDK.BattleScene.Application;
+using GameSystemSDK.BattleScene.Domain;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using UniRx;
-using UnityEngine;
 
 namespace GameSystemSDK.BattleScene.Model
 {
@@ -13,17 +12,29 @@ namespace GameSystemSDK.BattleScene.Model
         private IGameRuleValueCntext _gameRuleValueCntext;
         private ICardListContext _cardListContext;
         private IHandCardListContext _handCardListContext;
-        private IBattleInfoImporterContext _battleInfoImporterContext;
+        private ISelectedCardListContext _selectedListContext;
+        private IBattleInfoContext _battleInfoContext;
+        private IBattleResourceContext _battleResourceContext;
+        private IHandScoreCalcurateContext _handScoreCalcurateContext;
+        private IBattleEffectContext _battleEffectContext;
 
         public GameProcessModel( IGameRuleValueCntext gameRuleValueCntext,
             ICardListContext cardListContext,
             IHandCardListContext handCardListContext,
-            IBattleInfoImporterContext battleInfoImporterContext )
+            ISelectedCardListContext selectedListContext,
+            IBattleInfoContext battleInfoImporterContext,
+            IBattleResourceContext battleResourceContext,
+            IHandScoreCalcurateContext handScoreCalcurateContext,
+            IBattleEffectContext battleEffectContext)
         {
             _gameRuleValueCntext = gameRuleValueCntext;
             _cardListContext = cardListContext;
             _handCardListContext = handCardListContext;
-            _battleInfoImporterContext = battleInfoImporterContext;
+            _selectedListContext = selectedListContext;
+            _battleInfoContext = battleInfoImporterContext;
+            _battleResourceContext = battleResourceContext;
+            _handScoreCalcurateContext = handScoreCalcurateContext;
+            _battleEffectContext = battleEffectContext;
         }
 
         public IObservable<int> OnHandChanged => _gameRuleValueCntext.OnHandChanged;
@@ -71,12 +82,15 @@ namespace GameSystemSDK.BattleScene.Model
         public async UniTask Initialize()
         {
             var mock = UnityEngine.Random.Range(0, 9); // TODO @Choi 24.04.14
-            var battleInfoImportOperation = await _battleInfoImporterContext.LoadBattleInfo();
+
+            var path = new HandTablePath();
+            var rawData = _battleResourceContext.GetTableRawData( path.StageDataMock );
+            var battleInfoImportOperation = await _battleInfoContext.LoadStageInfo(rawData.Value);
             //if( battleInfoImportOperation.IsSuccess != false )
             //{
             //    UnityEngine.Debug.LogError( battleInfoImportOperation.ErrorMessage );
             //}
-            var info = _battleInfoImporterContext.GetBattleInfo(mock);
+            var info = _battleInfoContext.GetStageInfo(mock);
 
             SetMaxHandCount( info.MaxHandCount );
             SetMaxDiscardCount( info.MaxDiscardCount );
@@ -88,19 +102,32 @@ namespace GameSystemSDK.BattleScene.Model
             _onStageBuff1Change.OnNext( info.StageBuff1 );
             _onStageBuff2Change.OnNext( info.StageBuff2 );
             _onStageBuff3Change.OnNext( info.StageBuff3 );
+
+            InitializeHandData();
         }
 
         public async UniTask RunHand()
         {
             DiscountHandCount();
             await UniTask.Delay( 500 );
-            Debug.Log( "족보연산" );
+            UnityEngine.Debug.Log( "족보연산" );
+            var list = _selectedListContext.List;
+            var handList = _battleInfoContext.HandInfoDataList;
+            var scoreTupple = _handScoreCalcurateContext.GetMaxPokerScore( handList, _selectedListContext.List );
+            var conditionInfo = _handScoreCalcurateContext.GetPokerHandsInfoByID( handList, scoreTupple.id );
+            UnityEngine.Debug.Log( $"{conditionInfo.Name}, {conditionInfo.AddPoint}, {conditionInfo.MultiplePoint}" );
+            var scoreInfo = _handScoreCalcurateContext.GetScoreData( _selectedListContext.List, conditionInfo );
+
             await UniTask.Delay( 500 );
-            Debug.Log( "이펙트 연출" );
+            UnityEngine.Debug.Log( "이펙트 연출" );
+            var soundEffectId = $"battle00{UnityEngine.Random.Range(1, 5)}";
+            var clip = _battleResourceContext.GetSoundEffectData( soundEffectId );
+            await _battleEffectContext.RunScoreEffectProcess( scoreInfo, clip.Value );
+
             await UniTask.Delay( 250 );
-            Debug.Log( "데미지 차감" );
+            UnityEngine.Debug.Log( "데미지 차감" );
             await UniTask.Delay( 250 );
-            Debug.Log( "종료" );
+            UnityEngine.Debug.Log( "종료" );
         }
 
         public void DiscardProcess( string id )
@@ -111,10 +138,21 @@ namespace GameSystemSDK.BattleScene.Model
             }
             _cardListContext.AllList.ToList().Find( arg => arg.ID.Equals( id ) ).SetDrawn( true );
             var card = _cardListContext.GetCard(id);
-            Debug.Log( $"card : {card.ID}, {card.IsDrawn}" );
+            UnityEngine.Debug.Log( $"card : {card.ID}, {card.IsDrawn}" );
+
             _handCardListContext.Remove( card );
             DiscountDiscardCount();
             _handCardListContext.UpdateList( _cardListContext.AllList );
+        }
+
+        private async void InitializeHandData()
+        {
+            var path = new HandTablePath();
+            var handConditionRawData = _battleResourceContext.GetTableRawData( path.PokerHandsConditionCsvName );
+            await _battleInfoContext.InitHandConditionDataList( handConditionRawData.Value );
+
+            var handRawData = _battleResourceContext.GetTableRawData( path.PokerHandsCsvName );
+            await _battleInfoContext.InitHandDataList( handRawData.Value );
         }
     }
 }

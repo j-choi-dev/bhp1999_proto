@@ -25,7 +25,6 @@ namespace CoreAssetUI.View
 
         public void SetDiscardInteractable( bool isValue )
         {
-            Debug.Log( $"SetDiscardInteractable = {isValue}" );
             _discard.Interactable = isValue;
         }
 
