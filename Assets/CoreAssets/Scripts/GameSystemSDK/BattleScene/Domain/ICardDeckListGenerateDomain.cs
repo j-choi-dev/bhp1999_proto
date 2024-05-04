@@ -5,8 +5,8 @@ using UnityEngine;
 
 namespace GameSystemSDK.BattleScene.Domain
 {
-    public interface ICardDeckListImportDomain
+    public interface ICardDeckListGenerateDomain
     {
-        UniTask<IReadOnlyList<IBattleCard>> GenerateShuffle();
+        UniTask<IReadOnlyList<IBattleCard>> GenerateShuffledList();
     }
 }

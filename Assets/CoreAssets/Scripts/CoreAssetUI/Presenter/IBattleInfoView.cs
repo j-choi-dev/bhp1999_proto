@@ -5,12 +5,19 @@ using UnityEngine;
 
 namespace CoreAssetUI.Presenter
 {
+    /// <summary>
+    /// @Auth Choi
+    /// 게임 진행 정보에 관련된 View
+    /// </summary>
     public interface IBattleInfoView
     {
+        bool IsScorePlateOn { get; }
         void SetHandCountWithoutNotify( int value );
         void SetDiscardCountWithoutNotify( int value );
         void SetGoldWithoutNotify( int value );
         void SetCircleWithoutNotify( int value );
         void SetManaWithoutNotify( int value );
+        void SetScorePlateWithoutNotify( string value );
+        void SetScorePlateOn( bool isOn );
     }
 }

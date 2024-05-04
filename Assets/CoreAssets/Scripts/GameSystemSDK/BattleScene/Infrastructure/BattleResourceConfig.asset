@@ -24,3 +24,11 @@ MonoBehaviour:
   - {fileID: 21300000, guid: bd656cb6560f3e043ab8ca6e94a4736c, type: 3}
   _tableList:
   - {fileID: 4900000, guid: d47e82633d3ec7c449bfb472e6c62b74, type: 3}
+  - {fileID: 4900000, guid: a308a13eb10349f46a59a0ce8c319027, type: 3}
+  - {fileID: 4900000, guid: d26438c007a9b1b4e8921337ad1c4b5f, type: 3}
+  _soundEffect:
+  - {fileID: 8300000, guid: 723f78d7ef43eca4fb94188357f2c6b4, type: 3}
+  - {fileID: 8300000, guid: c67a586d3138b3f4bb34a4f708318bc4, type: 3}
+  - {fileID: 8300000, guid: 187fb15d4c24d7a4182f0c6e826a2d45, type: 3}
+  - {fileID: 8300000, guid: e8e78489e60d4dd47a560ac8be9da305, type: 3}
+  - {fileID: 8300000, guid: 023b6a5ddf241cc479685e248a474ff2, type: 3}

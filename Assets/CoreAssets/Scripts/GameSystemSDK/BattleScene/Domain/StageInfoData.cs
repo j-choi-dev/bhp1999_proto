@@ -1,6 +1,6 @@
 namespace GameSystemSDK.BattleScene.Domain
 {
-    public class BattleInfoData : IBattleInfoData
+    public class StageInfoData : IStageInfoData
     {
         public string ID { get; private set; } = string.Empty;
         public int MaxHandCount { get; private set; } = 0;

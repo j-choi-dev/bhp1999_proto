@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using GameSystemSDK.BattleScene.Application;
 using Cysharp.Threading.Tasks;
-using UnityEngine;
 
 namespace GameSystemSDK.BattleScene.Model
 {
@@ -18,6 +17,9 @@ namespace GameSystemSDK.BattleScene.Model
             => _cardListContext.AllList;
         public IObservable<IReadOnlyList<IBattleCard>> OnCardListChanged 
             => _cardListContext.OnCardListChanged;
+
+        public IReadOnlyList<IBattleCard> CurrentSelectedCardList
+            => _selectedListContext.List;
 
         public IReadOnlyList<IBattleCard> CurrentHandDeckList 
             => _handCardListContext.List;
@@ -47,7 +49,7 @@ namespace GameSystemSDK.BattleScene.Model
         public async UniTask Initialize()
         {
             var mock = UnityEngine.Random.Range(0, 9);
-            var generateShuffleOperation = await _deckListImportContext.GenerateShuffle();
+            var generateShuffleOperation = await _deckListImportContext.LoadShuffledList();
             _cardListContext.SetCardList( generateShuffleOperation );
             _selectedListContext.Clear();
             _handCardListContext.UpdateList( _cardListContext.AllList );

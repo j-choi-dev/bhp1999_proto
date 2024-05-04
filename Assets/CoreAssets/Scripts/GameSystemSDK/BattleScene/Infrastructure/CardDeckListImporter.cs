@@ -1,15 +1,13 @@
 using Cysharp.Threading.Tasks;
 using GameSystemSDK.BattleScene.Domain;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 namespace GameSystemSDK.BattleScene.Infrastructure
 {
-    public class CardDeckListImporter : ICardDeckListImportDomain
+    public class CardDeckListGenerator : ICardDeckListGenerateDomain
     {
-        public async UniTask<IReadOnlyList<IBattleCard>> GenerateShuffle()
+        public async UniTask<IReadOnlyList<IBattleCard>> GenerateShuffledList()
         {
             return GetShuffledCardList();
         }
@@ -27,8 +25,8 @@ namespace GameSystemSDK.BattleScene.Infrastructure
                 for( int j = 1; j<=normalCaount; j++ )
                 {
                     var card = new BattleCard();
-                    card.SetID( $"{i}_{j}" );
-                    card.SetType( i );
+                    card.SetID( $"{i+1}_{j}" );
+                    card.SetType( i+1 );
                     card.SetValue( j );
                     card.SetIllustResourceID( $"card-type-{i}" );
                     card.SetIconResourceID( $"icon-type-{i}" );
