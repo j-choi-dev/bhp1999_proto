@@ -62,9 +62,9 @@ namespace GameSystemSDK.BattleScene.Model
 
         bool IsDiscardOver { get; }
 
-        int CurrHandCount { get; }
+        int CurrentHandCount { get; }
         int MaxHandCount { get; }
-        int CurrDiscardCount { get; }
+        int CurrentDiscardCount { get; }
         int CurrGold { get; }
 
         int CircleValue { get; }
@@ -124,5 +124,11 @@ namespace GameSystemSDK.BattleScene.Model
         /// </summary>
         /// <param name="val">Mana°ª</param>
         void SetManaValue( int value );
+
+        /// <summary>
+        /// Game Finish Process
+        /// </summary>
+        /// <returns>UniTask Async Process</returns>
+        UniTask GameFinishProcess();
     } 
 }

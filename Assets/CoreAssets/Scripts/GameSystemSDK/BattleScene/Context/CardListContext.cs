@@ -15,10 +15,6 @@ namespace GameSystemSDK.BattleScene.Application
 
         public IObservable<IReadOnlyList<IBattleCard>> OnCardListChanged => _domain.OnCardListChanged;
 
-        public IReadOnlyList<IBattleCard> CurrentHandDeckList => _domain.CurrentHandDeckList;
-
-        public IObservable<IReadOnlyList<IBattleCard>> OnCurrentHandCardListChanged => _domain.OnCurrentHandCardListChanged;
-
         public CardListContext(ICardListDomain listDomain)
         {
             _domain = listDomain;
@@ -29,6 +25,9 @@ namespace GameSystemSDK.BattleScene.Application
 
         public IResult AddCard( IBattleCard data )
             => _domain.AddCard( data );
+
+        public void SetIsDrawn( IReadOnlyList<string> idList )
+            => _domain.SetIsDrawn( idList );
 
         public IResult RemoveCard( string id )
             => _domain.RemoveCard( id );

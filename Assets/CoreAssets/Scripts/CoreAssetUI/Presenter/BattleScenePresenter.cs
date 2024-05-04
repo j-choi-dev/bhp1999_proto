@@ -1,13 +1,12 @@
 using GameSystemSDK.BattleScene.Domain;
 using GameSystemSDK.BattleScene.Model;
-using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 using UniRx;
-using GameSystemSDK.Resource.Domain;
 using GameSystemSDK.Sound;
 using UnityEngine.UI;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 
 namespace CoreAssetUI.Presenter
 {
@@ -19,17 +18,19 @@ namespace CoreAssetUI.Presenter
         private ISelectedCardListView _selectedCardListView;
         private IBattleInfoView _battleInfoView;
         private IRunControlView _runControlView;
+        private INoticeConfirmModal _noticeConfirmModal;
         private ICardListModel _cardDeckModel;
         private IGameSoundController _gameSoundController;
         private IGameProcessModel _gameProcessModel;
         private IBattleResourceModel _battleResourceModel;
-        private IBattleEffectModel _battleEffectModel; 
+        private IBattleEffectModel _battleEffectModel;
 
         [Inject]
         public void Initialize( IHandDeckListView handDeckListView,
             ISelectedCardListView selectedCardListView,
             IBattleInfoView battleInfoView,
             IRunControlView runControlView,
+            INoticeConfirmModal noticeConfirmModal,
             ICardListModel cardDeckModel,
             IGameSoundController gameSoundController,
             IGameProcessModel gameProcessModel,
@@ -40,6 +41,7 @@ namespace CoreAssetUI.Presenter
             _selectedCardListView = selectedCardListView;
             _battleInfoView = battleInfoView;
             _runControlView = runControlView;
+            _noticeConfirmModal = noticeConfirmModal;
 
             _cardDeckModel = cardDeckModel;
             _gameSoundController = gameSoundController;
@@ -51,6 +53,7 @@ namespace CoreAssetUI.Presenter
         private void Awake()
         {
             _image.gameObject.SetActive( false );
+            _noticeConfirmModal.Show( false );
             _text.text = string.Empty;
             _gameSoundController.PlayEffect( "eff003" );
 
@@ -88,8 +91,8 @@ namespace CoreAssetUI.Presenter
                         _runControlView.SetDiscardInteractable( false );
                         return;
                     }
-                    _runControlView.SetDiscardInteractable( arg.isSelected && 
-                        _gameProcessModel.CurrDiscardCount > 0 );
+                    _runControlView.SetDiscardInteractable( arg.isSelected &&
+                        _gameProcessModel.CurrentDiscardCount > 0 );
                 } )
                 .AddTo( this );
 
@@ -105,29 +108,29 @@ namespace CoreAssetUI.Presenter
                 .AddTo( this );
 
             _runControlView.OnHandPlayButton
-                .Subscribe( async _ =>
-                {
-                    Debug.Log( "OnHandPlayButton" );
-                    await _gameProcessModel.RunHand();
-                } )
+                .Subscribe( async _ => await _gameProcessModel.RunHand() )
                 .AddTo( this );
 
             _runControlView.OnDiscardButton
+                .Subscribe( _ => _gameProcessModel.DiscardProcess( _handDeckListView.CurrentSelectedID ) )
+                .AddTo( this );
+
+            _noticeConfirmModal.OnConfirmClick
                 .Subscribe( _ =>
                 {
-                    Debug.Log( "OnDiscardButton" );
-                    _gameProcessModel.DiscardProcess( _handDeckListView.CurrentSelectedID );
+                    _gameProcessModel.GameFinishProcess().Forget();
                 } )
                 .AddTo( this );
         }
 
         private void SubscribeModel()
         {
+            _cardDeckModel.OnCardListChanged
+                .Subscribe( _ => UpdateView() )
+                .AddTo( this );
+
             _cardDeckModel.OnCurrentHandCardListChanged
-                .Subscribe( list =>
-                {
-                    UpdateView( list );
-                } )
+                .Subscribe( _ => UpdateView() )
                 .AddTo( this );
 
             _cardDeckModel.OnCurrentSelectedCardAdd
@@ -147,32 +150,23 @@ namespace CoreAssetUI.Presenter
                 .AddTo( this );
 
             _cardDeckModel.OnCurrentSelectedCardRemoved
-                .Subscribe( item =>
-                {
-                    _selectedCardListView.Remove( item.ID );
-                } )
+                .Subscribe( item => _selectedCardListView.Remove( item.ID ) )
+                .AddTo( this );
+
+            _cardDeckModel.OnSelectedCardClear
+                .Subscribe( item => _selectedCardListView.Clear() )
                 .AddTo( this );
 
             _cardDeckModel.OnCurrentSelectedCardListChanged
-                .Subscribe( list =>
-                {
-                    _runControlView.SetHandPlayInteractable( list.Count > 0 );
-                } )
+                .Subscribe( list => _runControlView.SetHandPlayInteractable( list.Count > 0 ) )
                 .AddTo( this );
 
             _gameProcessModel.OnHandChanged
-                .Subscribe( count =>
-                {
-                    UpdateView( _cardDeckModel.CurrentHandDeckList );
-                    _battleInfoView.SetHandCountWithoutNotify( count );
-                } )
+                .Subscribe( count => UpdateView() )
                 .AddTo( this );
 
             _gameProcessModel.OnDiscardChanged
-                .Subscribe( count =>
-                {
-                    UpdateView( _cardDeckModel.CurrentHandDeckList );
-                } )
+                .Subscribe( _ => UpdateView() )
                 .AddTo( this );
 
             _gameProcessModel.OnGoldChanged
@@ -185,6 +179,17 @@ namespace CoreAssetUI.Presenter
 
             _gameProcessModel.OnManaValueChanged
                 .Subscribe( arg => _battleInfoView.SetManaWithoutNotify( arg ) )
+                .AddTo( this );
+
+            _gameProcessModel.OnHandOver
+                .Subscribe( _ =>
+                {
+                    var message = new UIMessageData();
+                    _noticeConfirmModal.SetHeaderTitleWithoutNotify( message.GameOverHader );
+                    _noticeConfirmModal.SetMessageWithoutNotify( message.GameOverMessage );
+                    _noticeConfirmModal.SetConfirmButtonWithoutNotify( message.Confirm );
+                    _noticeConfirmModal.Show( true );
+                } )
                 .AddTo( this );
 
             _battleEffectModel.OnIsEffectProccess
@@ -201,17 +206,22 @@ namespace CoreAssetUI.Presenter
 
         }
 
-        private void UpdateView( IReadOnlyList<IBattleCard> list )
+        private void UpdateView()
         {
+            var list = _cardDeckModel.CurrentHandDeckList;
             _handDeckListView.Clear();
-            for( int i = 0; i< list.Count; i++ )
+            for( int i = 0; i< _cardDeckModel.CurrentHandDeckList.Count; i++ )
             {
                 var sprite = _battleResourceModel.GetIllustSprite( list[i].IllustResourceID );
                 _handDeckListView.Add( list[i].ID, list[i].Value.ToString(), sprite, false );
             }
             _runControlView.SetDiscardInteractable( false );
-            _battleInfoView.SetHandCountWithoutNotify( _gameProcessModel.CurrHandCount );
-            _battleInfoView.SetDiscardCountWithoutNotify( _gameProcessModel.CurrDiscardCount );
+            _battleInfoView.SetHandCountWithoutNotify( _gameProcessModel.CurrentHandCount );
+            _battleInfoView.SetDiscardCountWithoutNotify( _gameProcessModel.CurrentDiscardCount );
+            _battleInfoView.SetDeckCountWithoutNotify( _cardDeckModel.CurrentUsableList.Count(), _cardDeckModel.AllDeckList.Count() );
+
+            _runControlView.SetHandPlayInteractable( _gameProcessModel.CurrentHandCount > 0 );
+            _runControlView.SetHandPlayInteractable( _gameProcessModel.CurrentDiscardCount > 0 );
         }
     }
 }

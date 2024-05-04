@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UniRx;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace CoreAssetUI.View
 {
@@ -11,6 +12,7 @@ namespace CoreAssetUI.View
     {
         [SerializeField] protected CellBase _prefab;
         [SerializeField] protected Transform _pivot;
+        [SerializeField] protected LayoutGroup _layoutGroup;
 
         protected List<IDoubleTapCell> _cells = new List<IDoubleTapCell>();
         public IReadOnlyList<ICellBase> Cells => _cells.Select( arg => arg ).ToList();
@@ -42,7 +44,7 @@ namespace CoreAssetUI.View
 
         private void Awake()
         {
-            _onListCountChanged.OnNext( Cells.Count );
+            _onListCountChanged.OnNext( Cells.Count ); 
         }
 
         public void Add( string id, string title, Sprite sprite, bool isInActive )
@@ -155,6 +157,7 @@ namespace CoreAssetUI.View
             }
             _onSelectionIDChanged.OnNext( (_currSelectedId, false) );
             Destroy( targetCell.GameObject );
+            _layoutGroup.SetLayoutHorizontal();
         }
 
         public void SetActive( string id, bool isValue )

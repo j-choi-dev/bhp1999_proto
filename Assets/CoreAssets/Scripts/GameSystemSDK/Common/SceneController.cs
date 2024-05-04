@@ -35,6 +35,7 @@ namespace GameSystemSDK.Common
                 await SceneManager.UnloadSceneAsync( _prevSceneName );
             }
             await SceneManager.UnloadSceneAsync( _sceneDomain.EmptySceneName );
+            System.GC.Collect();
         }
 
         public void LoadScene( string sceneName, bool isAddittive )
@@ -48,6 +49,7 @@ namespace GameSystemSDK.Common
         public async UniTask UnloadSceneAsync( string sceneName )
         {
             await SceneManager.UnloadSceneAsync( sceneName );
+            System.GC.Collect();
         }
     }
 }

@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using GameSystemSDK.BattleScene.Application;
 using Cysharp.Threading.Tasks;
+using System.Linq;
+using UniRx;
 
 namespace GameSystemSDK.BattleScene.Model
 {
@@ -21,6 +23,9 @@ namespace GameSystemSDK.BattleScene.Model
         public IReadOnlyList<IBattleCard> CurrentSelectedCardList
             => _selectedListContext.List;
 
+        public IReadOnlyList<IBattleCard> CurrentUsableList
+            => _cardListContext.AllList.Where(arg => arg.IsDrawn == false).ToList();
+
         public IReadOnlyList<IBattleCard> CurrentHandDeckList 
             => _handCardListContext.List;
         public IObservable<IReadOnlyList<IBattleCard>> OnCurrentHandCardListChanged
@@ -34,6 +39,8 @@ namespace GameSystemSDK.BattleScene.Model
             => _selectedListContext.OnAdd;
         public IObservable<IBattleCard> OnCurrentSelectedCardRemoved 
             => _selectedListContext.OnRemove;
+        public IObservable<Unit> OnSelectedCardClear
+            => _selectedListContext.OnClear;
 
         public CardListModel( ICardListContext cardListContext,
             ISelectedCardListContext selectedListContext,

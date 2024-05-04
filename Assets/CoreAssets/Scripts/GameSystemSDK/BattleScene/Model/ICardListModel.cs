@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using GameSystemSDK.Common.Domain;
+using UniRx;
 
 namespace GameSystemSDK.BattleScene.Model
 {
@@ -12,6 +13,7 @@ namespace GameSystemSDK.BattleScene.Model
 
         IReadOnlyList<IBattleCard> AllDeckList { get; }
         IReadOnlyList<IBattleCard> CurrentHandDeckList { get; }
+        IReadOnlyList<IBattleCard> CurrentUsableList { get; }
         IObservable<IReadOnlyList<IBattleCard>> OnCardListChanged { get; }
 
         IObservable<IBattleCard> OnCurrentHandCardListAdd { get; }
@@ -20,6 +22,7 @@ namespace GameSystemSDK.BattleScene.Model
         IObservable<IReadOnlyList<IBattleCard>> OnCurrentSelectedCardListChanged { get; }
         IObservable<IBattleCard> OnCurrentSelectedCardAdd { get; }
         IObservable<IBattleCard> OnCurrentSelectedCardRemoved { get; }
+        IObservable<Unit> OnSelectedCardClear { get; }
 
         void AddCard( IBattleCard data );
         void RemoveCard( string id );

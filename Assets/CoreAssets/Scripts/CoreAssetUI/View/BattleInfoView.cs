@@ -13,12 +13,19 @@ namespace CoreAssetUI.View
 
         [SerializeField] private ObservableLabelTMPro _circle;
         [SerializeField] private ObservableLabelTMPro _mana;
+        [SerializeField] private ObservablePercentageLabelTMPro _deckCount;
         [SerializeField] private ObservableLabelTMPro _scorePlate;
 
         public bool IsScorePlateOn => _scorePlate.gameObject.activeSelf;
 
         public void SetCircleWithoutNotify( int value ) 
             => _circle.SetValueWithoutNotify( value.ToString() );
+
+        public void SetDeckCountWithoutNotify( int numerator, int denominator )
+        {
+            _deckCount.SetNumeratorWithoutNotify( numerator );
+            _deckCount.SetDenominatorWithoutNotify( denominator );
+        }
 
         public void SetDiscardCountWithoutNotify( int value ) 
             => _discard.SetValueWithoutNotify( value.ToString() );

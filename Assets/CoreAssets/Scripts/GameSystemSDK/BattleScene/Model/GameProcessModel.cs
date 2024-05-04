@@ -1,6 +1,8 @@
 using Cysharp.Threading.Tasks;
 using GameSystemSDK.BattleScene.Application;
 using GameSystemSDK.BattleScene.Domain;
+using GameSystemSDK.Common;
+using GameSystemSDK.Common.Domain;
 using System;
 using System.Linq;
 using UniRx;
@@ -17,6 +19,9 @@ namespace GameSystemSDK.BattleScene.Model
         private IBattleResourceContext _battleResourceContext;
         private IHandScoreCalcurateContext _handScoreCalcurateContext;
         private IBattleEffectContext _battleEffectContext;
+        private ISceneController _sceneController;
+
+        private SceneValueDomain _sceneValueDomain;
 
         public GameProcessModel( IGameRuleValueCntext gameRuleValueCntext,
             ICardListContext cardListContext,
@@ -25,7 +30,8 @@ namespace GameSystemSDK.BattleScene.Model
             IBattleInfoContext battleInfoImporterContext,
             IBattleResourceContext battleResourceContext,
             IHandScoreCalcurateContext handScoreCalcurateContext,
-            IBattleEffectContext battleEffectContext)
+            IBattleEffectContext battleEffectContext,
+            ISceneController sceneController)
         {
             _gameRuleValueCntext = gameRuleValueCntext;
             _cardListContext = cardListContext;
@@ -35,6 +41,9 @@ namespace GameSystemSDK.BattleScene.Model
             _battleResourceContext = battleResourceContext;
             _handScoreCalcurateContext = handScoreCalcurateContext;
             _battleEffectContext = battleEffectContext;
+            _sceneController = sceneController;
+
+            _sceneValueDomain = new SceneValueDomain();
         }
 
         public IObservable<int> OnHandChanged => _gameRuleValueCntext.OnHandChanged;
@@ -58,10 +67,10 @@ namespace GameSystemSDK.BattleScene.Model
 
         public bool IsDiscardOver => _gameRuleValueCntext.IsDiscardOver;
 
-        public int CurrHandCount => _gameRuleValueCntext.CurrHandCount;
+        public int CurrentHandCount => _gameRuleValueCntext.CurrentHandCount;
 
         public int MaxHandCount => _gameRuleValueCntext.MaxHandCount;
-        public int CurrDiscardCount => _gameRuleValueCntext.CurrDiscardCount;
+        public int CurrentDiscardCount => _gameRuleValueCntext.CurrentDiscardCount;
 
         public int CurrGold => _gameRuleValueCntext.CurrGold;
 
@@ -108,26 +117,25 @@ namespace GameSystemSDK.BattleScene.Model
 
         public async UniTask RunHand()
         {
-            DiscountHandCount();
-            await UniTask.Delay( 500 );
-            UnityEngine.Debug.Log( "Á·º¸¿¬»ê" );
             var list = _selectedListContext.List;
             var handList = _battleInfoContext.HandInfoDataList;
             var scoreTupple = _handScoreCalcurateContext.GetMaxPokerScore( handList, _selectedListContext.List );
             var conditionInfo = _handScoreCalcurateContext.GetPokerHandsInfoByID( handList, scoreTupple.id );
-            UnityEngine.Debug.Log( $"{conditionInfo.Name}, {conditionInfo.AddPoint}, {conditionInfo.MultiplePoint}" );
             var scoreInfo = _handScoreCalcurateContext.GetScoreData( _selectedListContext.List, conditionInfo );
 
             await UniTask.Delay( 500 );
-            UnityEngine.Debug.Log( "ÀÌÆåÆ® ¿¬Ãâ" );
             var soundEffectId = $"battle00{UnityEngine.Random.Range(1, 5)}";
             var clip = _battleResourceContext.GetSoundEffectData( soundEffectId );
             await _battleEffectContext.RunScoreEffectProcess( scoreInfo, clip.Value );
 
             await UniTask.Delay( 250 );
-            UnityEngine.Debug.Log( "µ¥¹ÌÁö Â÷°¨" );
+            UnityEngine.Debug.Log( "ë°ë¯¸ì§€ ì°¨ê°? - // TODO ë¯¸êµ¬í˜„ @Choi" );
+
             await UniTask.Delay( 250 );
-            UnityEngine.Debug.Log( "Á¾·á" );
+            _cardListContext.SetIsDrawn( _selectedListContext.List.Select( arg => arg.ID ).ToList() );
+            _selectedListContext.Clear();
+            _handCardListContext.UpdateList( _cardListContext.AllList );
+            DiscountHandCount();
         }
 
         public void DiscardProcess( string id )
@@ -145,14 +153,20 @@ namespace GameSystemSDK.BattleScene.Model
             _handCardListContext.UpdateList( _cardListContext.AllList );
         }
 
+        public async UniTask GameFinishProcess()
+        {
+            await _sceneController.LoadSceneAsync( _sceneValueDomain.MainSceneName );
+        }
+
         private async void InitializeHandData()
         {
             var path = new HandTablePath();
             var handConditionRawData = _battleResourceContext.GetTableRawData( path.PokerHandsConditionCsvName );
-            await _battleInfoContext.InitHandConditionDataList( handConditionRawData.Value );
+            _battleInfoContext.InitHandConditionDataList( handConditionRawData.Value );
 
             var handRawData = _battleResourceContext.GetTableRawData( path.PokerHandsCsvName );
-            await _battleInfoContext.InitHandDataList( handRawData.Value );
+            _battleInfoContext.InitHandDataList( handRawData.Value );
+            await UniTask.Delay( 1 );
         }
     }
 }

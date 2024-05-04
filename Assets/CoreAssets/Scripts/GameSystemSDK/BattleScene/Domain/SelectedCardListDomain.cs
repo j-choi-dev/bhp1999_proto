@@ -20,6 +20,9 @@ namespace GameSystemSDK.BattleScene.Domain
         private Subject<IBattleCard> _onRemove = new Subject<IBattleCard>();
         public IObservable<IBattleCard> OnRemove => _onRemove;
 
+        private Subject<Unit> _onClear = new Subject<Unit>();
+        public IObservable<Unit> OnClear => _onClear;
+
         public bool IsAddAble => _list.Count < _count;
 
         public SelectedCardListDomain()
@@ -37,6 +40,7 @@ namespace GameSystemSDK.BattleScene.Domain
         public void Clear()
         {
             _list.Clear();
+            _onClear.OnNext( Unit.Default );
             _onCardListChanged.OnNext( _list );
         }
 
@@ -52,6 +56,17 @@ namespace GameSystemSDK.BattleScene.Domain
         {
             var card = _list.First( arg => arg.ID.Equals( id ) );
             return card;
+        }
+
+        public void Remove( IReadOnlyList<string> idList )
+        {
+            for(int i = 0; i< idList.Count; i++ )
+            {
+                var card = _list.Find( arg => arg.ID.Equals( idList[i] ) );
+                _list.Remove( card );
+            }
+            _onClear.OnNext( Unit.Default );
+            _onCardListChanged.OnNext( _list );
         }
     }
 }

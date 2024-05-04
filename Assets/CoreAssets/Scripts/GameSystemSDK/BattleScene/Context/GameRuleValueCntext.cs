@@ -22,10 +22,10 @@ namespace GameSystemSDK.BattleScene.Application
 
         public bool IsDiscardOver => _gameRuleValueDomain.IsDiscardOver;
 
-        public int CurrHandCount => _gameRuleValueDomain.CurrHandCount;
+        public int CurrentHandCount => _gameRuleValueDomain.CurrentHandCount;
 
         public int MaxHandCount => _gameRuleValueDomain.MaxHandCount;
-        public int CurrDiscardCount => _gameRuleValueDomain.CurrDiscardCount;
+        public int CurrentDiscardCount => _gameRuleValueDomain.CurrentDiscardCount;
 
         public int CurrGold => _gameRuleValueDomain.CurrGold;
         public int CircleValue => _gameRuleValueDomain.CircleValue;

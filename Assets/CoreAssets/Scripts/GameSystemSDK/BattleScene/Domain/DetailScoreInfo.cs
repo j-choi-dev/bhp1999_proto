@@ -41,7 +41,7 @@ namespace GameSystemSDK.BattleScene.Domain
             }
             this.Score = realAddPoint * conditionInfo.MultiplePoint;
             var strMsg = $"ÆÇÁ¤: { conditionInfo.Name} -> ({string.Join(" + ", this.PointList)}) X {conditionInfo.MultiplePoint} = {this.Score }";
-            UnityEngine.Debug.Log( $"{strMsg}" );
+            //UnityEngine.Debug.Log( $"{strMsg}" );
 
         }
     }

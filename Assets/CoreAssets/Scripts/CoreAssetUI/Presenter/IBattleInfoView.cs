@@ -17,6 +17,7 @@ namespace CoreAssetUI.Presenter
         void SetGoldWithoutNotify( int value );
         void SetCircleWithoutNotify( int value );
         void SetManaWithoutNotify( int value );
+        void SetDeckCountWithoutNotify( int numerator, int denominator );
         void SetScorePlateWithoutNotify( string value );
         void SetScorePlateOn( bool isOn );
     }
