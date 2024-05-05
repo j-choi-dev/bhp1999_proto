@@ -59,8 +59,14 @@ namespace GameSystemSDK.BattleScene.Model
         /// View에 표시할 스테이지 버프효과 3 변경 이벤트
         /// </summary>
         IObservable<string> OnStageBuff3Change { get; }
-
+        /// <summary>
+        /// Hand 점수 및 연출 관련 진행 플래그에 대한 이벤트
+        /// </summary>
         IObservable<bool> OnHandProcessRun { get; }
+        /// <summary>
+        /// 점수계산이 끝났음을 알리는 이벤트
+        /// </summary>
+        IObservable<int> OnScoreChanged { get; }
 
         bool IsDiscardOver { get; }
 

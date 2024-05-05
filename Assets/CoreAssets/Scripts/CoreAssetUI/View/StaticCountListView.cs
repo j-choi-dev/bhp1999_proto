@@ -1,24 +1,20 @@
-﻿using CoreAssetUI.Presenter;
+using CoreAssetUI.Presenter;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UniRx;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace CoreAssetUI.View
 {
-    /// <summary>
-    /// @Auth Choi
-    /// </summary>
-    /// <remarks>// TODO ダブルタップ専用は別度のIF作って分離し、そっちを同時継承させるのが良いかも @Choi 24.05.05</remarks>
-    public abstract class DoubleSelectListView : MonoBehaviour, IListView
+    public class StaticCountListView : MonoBehaviour, IStaticCountListView
     {
+        [SerializeField] private List<ICellRootMarker> _rootMarkerList = null;
         [SerializeField] protected CellBase _prefab;
-        [SerializeField] protected Transform _pivot;
 
         protected List<IDoubleTapCell> _cells = new List<IDoubleTapCell>();
-        public IReadOnlyList<ICellBase> Cells => _cells.Select( arg => arg ).ToList();
+        public IReadOnlyList<ICellBase> Cells => _rootMarkerList.Select( arg => arg.Item ).ToList();
 
         protected  string _currSelectedId = string.Empty;
         public string CurrentSelectedID => _currSelectedId;
@@ -47,34 +43,57 @@ namespace CoreAssetUI.View
 
         private void Awake()
         {
-            _onListCountChanged.OnNext( Cells.Count ); 
+            _rootMarkerList = GetComponentsInChildren<ICellRootMarker>().ToList();
+            _onListCountChanged.OnNext( Cells.Count );
         }
 
         public void Add( string id, string title, Sprite sprite, bool isInActive )
         {
-            var cell = Instantiate(_prefab, _pivot).GetComponent<IDoubleTapCell>();
-            cell.SetID( id );
-            cell.SetDisplayText( title );
-            cell.SetImage( sprite );
-            cell.SetSelectWithoutNotify( false );
-            _cells.Add( cell );
-
-            cell.OnClick
-                .Subscribe( _ =>
+            for(int i = 0; i< _rootMarkerList.Count; i++ )
+            {
+                if(_rootMarkerList[i].IsAtatched)
                 {
-                    OnCellClicked( cell );
-                } )
-                .AddTo( this );
+                    continue;
+                }
+                var cell = Instantiate(_prefab, _rootMarkerList[i].Transform).GetComponent<IDoubleTapCell>();
 
-            _onListCountChanged.OnNext( Cells.Count );
+                cell.GameObject.transform.localPosition = Vector3.zero;
+                cell.GameObject.transform.localRotation = Quaternion.identity;
+                cell.GameObject.transform.localScale = Vector3.one;
+
+                cell.SetID( id );
+                cell.SetDisplayText( title );
+                cell.SetImage( sprite );
+                cell.SetSelectWithoutNotify( false );
+
+                cell.OnClick
+                    .Subscribe( _ =>
+                    {
+                        OnCellClicked( cell );
+                    } )
+                    .AddTo( this );
+
+                _cells.Add( cell );
+                _rootMarkerList[i].SetItem( cell );
+                _onListCountChanged.OnNext( Cells.Count );
+                break;
+            }
         }
 
         public void Clear()
         {
             DeselectAll();
 
+            for( int i = 0; i < _rootMarkerList.Count; ++i )
+            {
+                _rootMarkerList[i].RemoveItem();
+            }
             for( int i = 0; i < _cells.Count; ++i )
             {
+                if(_cells[i].GameObject == null)
+                {
+                    continue;
+                }
                 Destroy( _cells[i].GameObject );
             }
             _cells.Clear();
@@ -137,6 +156,9 @@ namespace CoreAssetUI.View
             {
                 return;
             }
+            var rootMarker = _rootMarkerList.Where(arg => arg.IsAtatched)
+                .First(arg => arg.Item.ID.Equals(id));
+            rootMarker.RemoveItem();
             _cells.Remove( targetCell );
             if( targetCell.IsSelected )
             {
@@ -167,7 +189,6 @@ namespace CoreAssetUI.View
             var instance = _cells.First( cell => cell.ID == id );
             instance.IsInteractable = isValue;
         }
-
 
         public List<string> GetCurrentSelectedIDList()
         {
@@ -210,7 +231,7 @@ namespace CoreAssetUI.View
 
         public void SetItemsInteractable( bool isInteractable )
         {
-            for(int i = 0; i < _cells.Count; i++)
+            for( int i = 0; i < _cells.Count; i++ )
             {
                 _cells[i].SetInteractable( isInteractable );
             }

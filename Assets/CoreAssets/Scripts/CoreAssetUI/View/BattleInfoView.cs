@@ -15,6 +15,7 @@ namespace CoreAssetUI.View
         [SerializeField] private ObservableLabelTMPro _mana;
         [SerializeField] private ObservablePercentageLabelTMPro _deckCount;
         [SerializeField] private ObservableLabelTMPro _scorePlate;
+        [SerializeField] private ObservableGuageValue _scoreGuage;
 
         public bool IsScorePlateOn => _scorePlate.gameObject.activeSelf;
 
@@ -46,5 +47,8 @@ namespace CoreAssetUI.View
 
         public void SetScorePlateWithoutNotify( string value )
             => _scorePlate.SetValueWithoutNotify( value.ToString() );
+
+        public void SetScorePercentageWithoutNotify( int value )
+            => _scoreGuage.SetNumeratorWithoutNotify( value );
     }
 }

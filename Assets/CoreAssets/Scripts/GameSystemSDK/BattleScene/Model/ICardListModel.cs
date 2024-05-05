@@ -13,6 +13,7 @@ namespace GameSystemSDK.BattleScene.Model
 
         IReadOnlyList<IBattleCard> AllDeckList { get; }
         IReadOnlyList<IBattleCard> CurrentHandDeckList { get; }
+        IReadOnlyList<IBattleCard> CurrentSelectedCardList { get; }
         IReadOnlyList<IBattleCard> CurrentUsableList { get; }
         IObservable<IReadOnlyList<IBattleCard>> OnCardListChanged { get; }
 

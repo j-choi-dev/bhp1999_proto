@@ -68,6 +68,9 @@ namespace GameSystemSDK.BattleScene.Model
         private Subject<bool> _onHandProcessRun = new Subject<bool>();
         public IObservable<bool> OnHandProcessRun => _onHandProcessRun;
 
+        private Subject<int> _onScoreChanged = new Subject<int>();
+        public IObservable<int> OnScoreChanged => _onScoreChanged;
+
         public bool IsDiscardOver => _gameRuleValueCntext.IsDiscardOver;
 
         public int CurrentHandCount => _gameRuleValueCntext.CurrentHandCount;
@@ -133,7 +136,9 @@ namespace GameSystemSDK.BattleScene.Model
             await _battleEffectContext.RunScoreEffectProcess( scoreInfo, clip.Value );
 
             await UniTask.Delay( 250 );
-            UnityEngine.Debug.Log( "데미지 차감? - // TODO 미구현 @Choi" );
+            //UnityEngine.Debug.Log( "데미지 차감? - // TODO 미구현 @Choi" );
+            _onScoreChanged.OnNext( scoreInfo.Score );
+
 
             await UniTask.Delay( 250 );
             _cardListContext.SetIsDrawn( _selectedListContext.List.Select( arg => arg.ID ).ToList() );

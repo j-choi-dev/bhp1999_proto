@@ -20,5 +20,6 @@ namespace CoreAssetUI.Presenter
         void SetDeckCountWithoutNotify( int numerator, int denominator );
         void SetScorePlateWithoutNotify( string value );
         void SetScorePlateOn( bool isOn );
+        void SetScorePercentageWithoutNotify( int value );
     }
 }

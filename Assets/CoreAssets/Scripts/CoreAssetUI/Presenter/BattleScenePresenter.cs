@@ -15,7 +15,7 @@ namespace CoreAssetUI.Presenter
         [SerializeField] Image _image;
         [SerializeField] TMPro.TMP_Text _text;
         private IHandDeckListView _handDeckListView;
-        private ISelectedCardListView _selectedCardListView;
+        private IStaticCountListView _selectedCardListView;
         private IBattleInfoView _battleInfoView;
         private IRunControlView _runControlView;
         private INoticeConfirmModal _noticeConfirmModal;
@@ -27,7 +27,7 @@ namespace CoreAssetUI.Presenter
 
         [Inject]
         public void Initialize( IHandDeckListView handDeckListView,
-            ISelectedCardListView selectedCardListView,
+            IStaticCountListView selectedCardListView,
             IBattleInfoView battleInfoView,
             IRunControlView runControlView,
             INoticeConfirmModal noticeConfirmModal,
@@ -66,6 +66,7 @@ namespace CoreAssetUI.Presenter
             _battleInfoView.SetScorePlateOn( false );
             await _cardDeckModel.Initialize();
             await _gameProcessModel.Initialize();
+            UpdateView();
 
         }
 
@@ -136,7 +137,7 @@ namespace CoreAssetUI.Presenter
             _cardDeckModel.OnCurrentSelectedCardAdd
                 .Subscribe( item =>
                 {
-                    var sprite = _battleResourceModel.GetIconSprite( item.IconResourceID );
+                    var sprite = _battleResourceModel.GetIllustSprite( item.IllustResourceID );
                     _selectedCardListView.Add( item.ID, item.Value.ToString(), sprite, false );
                 } )
                 .AddTo( this );
@@ -195,9 +196,15 @@ namespace CoreAssetUI.Presenter
             _gameProcessModel.OnHandProcessRun
                 .Subscribe( isLock =>
                 {
+                    _runControlView.SetHandPlayInteractable( isLock == false );
+                    _runControlView.SetDiscardInteractable( isLock == false );
                     _selectedCardListView.SetItemsInteractable( isLock == false );
                     _handDeckListView.SetItemsInteractable( isLock == false );
                 } )
+                .AddTo( this );
+
+            _gameProcessModel.OnScoreChanged
+                .Subscribe( score => _battleInfoView.SetScorePercentageWithoutNotify( score ) )
                 .AddTo( this );
 
             _battleEffectModel.OnIsEffectProccess
@@ -228,8 +235,10 @@ namespace CoreAssetUI.Presenter
             _battleInfoView.SetDiscardCountWithoutNotify( _gameProcessModel.CurrentDiscardCount );
             _battleInfoView.SetDeckCountWithoutNotify( _cardDeckModel.CurrentUsableList.Count(), _cardDeckModel.AllDeckList.Count() );
 
-            _runControlView.SetHandPlayInteractable( _gameProcessModel.CurrentHandCount > 0 );
-            _runControlView.SetHandPlayInteractable( _gameProcessModel.CurrentDiscardCount > 0 );
+            _runControlView.SetHandPlayInteractable( _gameProcessModel.CurrentHandCount > 0 && 
+                _cardDeckModel.CurrentSelectedCardList.Count > 0 );
+            _runControlView.SetDiscardInteractable( _gameProcessModel.CurrentDiscardCount > 0 
+                && string.IsNullOrEmpty(_handDeckListView.CurrentSelectedID ) == false );
         }
     }
 }
