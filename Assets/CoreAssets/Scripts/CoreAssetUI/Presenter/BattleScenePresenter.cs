@@ -192,6 +192,14 @@ namespace CoreAssetUI.Presenter
                 } )
                 .AddTo( this );
 
+            _gameProcessModel.OnHandProcessRun
+                .Subscribe( isLock =>
+                {
+                    _selectedCardListView.SetItemsInteractable( isLock == false );
+                    _handDeckListView.SetItemsInteractable( isLock == false );
+                } )
+                .AddTo( this );
+
             _battleEffectModel.OnIsEffectProccess
                 .Subscribe( isOn => _battleInfoView.SetScorePlateOn( isOn ) )
                 .AddTo( this );

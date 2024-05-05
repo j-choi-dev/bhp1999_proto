@@ -12,7 +12,6 @@ namespace CoreAssetUI.View
     {
         [SerializeField] protected CellBase _prefab;
         [SerializeField] protected Transform _pivot;
-        [SerializeField] protected LayoutGroup _layoutGroup;
 
         protected List<IDoubleTapCell> _cells = new List<IDoubleTapCell>();
         public IReadOnlyList<ICellBase> Cells => _cells.Select( arg => arg ).ToList();
@@ -157,7 +156,6 @@ namespace CoreAssetUI.View
             }
             _onSelectionIDChanged.OnNext( (_currSelectedId, false) );
             Destroy( targetCell.GameObject );
-            _layoutGroup.SetLayoutHorizontal();
         }
 
         public void SetActive( string id, bool isValue )
@@ -204,6 +202,14 @@ namespace CoreAssetUI.View
 
             _onCurrentSelectedIDListChanged.OnNext( GetCurrentSelectedIDList() );
             _onCurrentSelectedIndexListChanged.OnNext( GetCurrentSelectedIndexList() );
+        }
+
+        public void SetItemsInteractable( bool isInteractable )
+        {
+            for(int i = 0; i < _cells.Count; i++)
+            {
+                _cells[i].SetInteractable( isInteractable );
+            }
         }
     }
 }

@@ -65,6 +65,9 @@ namespace GameSystemSDK.BattleScene.Model
         private Subject<string> _onStageBuff3Change = new Subject<string>();
         public IObservable<string> OnStageBuff3Change => _onStageBuff3Change;
 
+        private Subject<bool> _onHandProcessRun = new Subject<bool>();
+        public IObservable<bool> OnHandProcessRun => _onHandProcessRun;
+
         public bool IsDiscardOver => _gameRuleValueCntext.IsDiscardOver;
 
         public int CurrentHandCount => _gameRuleValueCntext.CurrentHandCount;
@@ -117,6 +120,7 @@ namespace GameSystemSDK.BattleScene.Model
 
         public async UniTask RunHand()
         {
+            _onHandProcessRun.OnNext( true );
             var list = _selectedListContext.List;
             var handList = _battleInfoContext.HandInfoDataList;
             var scoreTupple = _handScoreCalcurateContext.GetMaxPokerScore( handList, _selectedListContext.List );
@@ -136,6 +140,7 @@ namespace GameSystemSDK.BattleScene.Model
             _selectedListContext.Clear();
             _handCardListContext.UpdateList( _cardListContext.AllList );
             DiscountHandCount();
+            _onHandProcessRun.OnNext( false );
         }
 
         public void DiscardProcess( string id )

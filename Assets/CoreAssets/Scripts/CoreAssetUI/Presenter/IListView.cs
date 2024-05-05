@@ -17,6 +17,7 @@ namespace CoreAssetUI.Presenter
         IObservable<(int index, bool isSelected)> OnCurrentSelectionIndexChanged { get; }
         IObservable<List<string>> OnCurrentSelectedIDListChanged { get; }
         IObservable<List<int>> OnCurrentSelectedIndexListChanged { get; }
+        void SetItemsInteractable(bool isInteractable);
 
         void Add( string id, string title, Sprite sprite, bool isInActive );
         void Remove( string id );

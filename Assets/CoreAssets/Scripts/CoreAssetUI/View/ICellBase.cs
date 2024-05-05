@@ -22,5 +22,6 @@ namespace CoreAssetUI.View
         void SetIndex( int value );
         void SetImage( Sprite sprite );
         void SetSelectWithoutNotify( bool isSelected );
+        void SetInteractable( bool isInteractable );
     }
 }

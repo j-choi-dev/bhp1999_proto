@@ -61,5 +61,10 @@ namespace CoreAssetUI.View
             _selectionMark.SetActive( isSelected );
             IsSelected = isSelected;
         }
+
+        public void SetInteractable( bool isInteractable )
+        {
+            _button.Interactable = isInteractable;
+        }
     }
 }

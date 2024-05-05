@@ -93,5 +93,13 @@ namespace CoreAssetUI.View
                 .Select( tuple => tuple.index )
                 .ToList();
         }
+
+        public void SetItemsInteractable( bool isInteractable )
+        {
+            for(int i = 0; i< _cells.Count; i++)
+            {
+                _cells[i].SetInteractable( isInteractable );
+            }
+        }
     }
 }

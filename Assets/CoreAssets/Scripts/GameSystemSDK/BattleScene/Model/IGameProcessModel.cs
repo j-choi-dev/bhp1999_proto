@@ -60,6 +60,8 @@ namespace GameSystemSDK.BattleScene.Model
         /// </summary>
         IObservable<string> OnStageBuff3Change { get; }
 
+        IObservable<bool> OnHandProcessRun { get; }
+
         bool IsDiscardOver { get; }
 
         int CurrentHandCount { get; }
