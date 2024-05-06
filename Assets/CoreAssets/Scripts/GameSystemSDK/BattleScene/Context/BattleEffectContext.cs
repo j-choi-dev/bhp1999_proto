@@ -10,7 +10,7 @@ namespace GameSystemSDK.BattleScene.Application
         private IBattleEffectLaunchDomain _battleEffectLaunchDomain;
         public IObservable<string> OnSkillNameChanged => _battleEffectLaunchDomain.OnSkillNameChanged;
 
-        public IObservable<string> OnScoreInfoChanged => _battleEffectLaunchDomain.OnScoreInfoChanged;
+        public IObservable<(int index, int score)> OnScoreInfoChanged => _battleEffectLaunchDomain.OnScoreInfoChanged;
 
         public IObservable<bool> OnIsEffectProccess => _battleEffectLaunchDomain.OnIsEffectProccess;
 

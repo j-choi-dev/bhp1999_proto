@@ -12,7 +12,7 @@ namespace GameSystemSDK.BattleScene.Application
     public interface IBattleEffectContext
     {
         IObservable<string> OnSkillNameChanged { get; }
-        IObservable<string> OnScoreInfoChanged { get; }
+        IObservable<(int index, int score)> OnScoreInfoChanged { get; }
         IObservable<bool> OnIsEffectProccess { get; }
         UniTask RunScoreEffectProcess( IDetailScoreInfo detail, AudioClip effect );
     }

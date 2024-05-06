@@ -8,8 +8,7 @@ namespace GameSystemSDK.Battle.Installer
     public class BattleSceneUIInstaller : MonoInstaller<BattleSceneUIInstaller>
     {
         [SerializeField] private HandDeckListView _handDeckListView;
-        //[SerializeField] private SelectedCardListView _selectedCardListView;
-        [SerializeField] private StaticCountListView _selectedCardListView;
+        [SerializeField] private SelectedCardListView _selectedCardListView;
         [SerializeField] private BattleInfoView _battleInfoView;
         [SerializeField] private RunControlView _runControlView;
         [SerializeField] private NoticeConfirmModal _noticeConfirmModal;
@@ -21,11 +20,8 @@ namespace GameSystemSDK.Battle.Installer
                 .Bind<IHandDeckListView>()
                 .FromInstance( _handDeckListView );
 
-            //Container
-            //    .Bind<ISelectedCardListView>()
-            //    .FromInstance( _selectedCardListView );
             Container
-                .Bind<IStaticCountListView>()
+                .Bind<ISelectedCardListView>()
                 .FromInstance( _selectedCardListView );
 
             Container

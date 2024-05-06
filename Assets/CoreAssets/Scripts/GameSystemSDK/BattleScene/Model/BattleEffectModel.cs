@@ -18,7 +18,7 @@ namespace GameSystemSDK.BattleScene.Model
 
         public IObservable<string> OnSkillNameChanged => _battleEffectContext.OnSkillNameChanged;
 
-        public IObservable<string> OnScoreInfoChanged => _battleEffectContext.OnScoreInfoChanged;
+        public IObservable<(int index, int score)> OnScoreInfoChanged => _battleEffectContext.OnScoreInfoChanged;
 
         public IObservable<bool> OnIsEffectProccess => _battleEffectContext.OnIsEffectProccess;
 

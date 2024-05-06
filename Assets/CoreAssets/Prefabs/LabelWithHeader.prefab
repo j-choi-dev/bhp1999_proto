@@ -281,7 +281,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7c21276a2ab74a428ec90d628744c0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Text: {fileID: 866754610856280824}
+  _label: {fileID: 866754610856280824}
 --- !u!1 &4092425321079204347
 GameObject:
   m_ObjectHideFlags: 0
@@ -629,7 +629,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7c21276a2ab74a428ec90d628744c0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Text: {fileID: 8726723397316047745}
+  _label: {fileID: 8726723397316047745}
 --- !u!1001 &757618928021509821
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -833,6 +833,14 @@ PrefabInstance:
     - target: {fileID: 6950593228604933750, guid: abdb9066b03f94e4f916dd3a8259cec6, type: 3}
       propertyPath: m_Name
       value: Fraction
+      objectReference: {fileID: 0}
+    - target: {fileID: 6950593228604933750, guid: abdb9066b03f94e4f916dd3a8259cec6, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9010981263320993654, guid: abdb9066b03f94e4f916dd3a8259cec6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -15,7 +15,7 @@ namespace CoreAssetUI.Presenter
         [SerializeField] Image _image;
         [SerializeField] TMPro.TMP_Text _text;
         private IHandDeckListView _handDeckListView;
-        private IStaticCountListView _selectedCardListView;
+        private ISelectedCardListView _selectedCardListView;
         private IBattleInfoView _battleInfoView;
         private IRunControlView _runControlView;
         private INoticeConfirmModal _noticeConfirmModal;
@@ -27,7 +27,7 @@ namespace CoreAssetUI.Presenter
 
         [Inject]
         public void Initialize( IHandDeckListView handDeckListView,
-            IStaticCountListView selectedCardListView,
+            ISelectedCardListView selectedCardListView,
             IBattleInfoView battleInfoView,
             IRunControlView runControlView,
             INoticeConfirmModal noticeConfirmModal,
@@ -212,7 +212,10 @@ namespace CoreAssetUI.Presenter
                 .AddTo( this );
 
             _battleEffectModel.OnScoreInfoChanged
-                .Subscribe( msg => _battleInfoView.SetScorePlateWithoutNotify( msg ) )
+                .Subscribe( tupple =>
+                {
+                    _selectedCardListView.SetScoreEffect( tupple.index, tupple.score ).Forget();
+                } )
                 .AddTo( this );
 
             _battleEffectModel.OnSkillNameChanged
