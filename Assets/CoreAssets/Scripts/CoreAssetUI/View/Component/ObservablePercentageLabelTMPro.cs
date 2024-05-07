@@ -32,6 +32,10 @@ namespace CoreAssetUI.View
 
         protected override void UpdatePercentageWithoutNotify()
         {
+            if( _precentage == null)
+            {
+                return;
+            }
             _percentageValue = GetPercentage();
             _precentage.text = _percentageValue.ToString( "0.00" );
             _onPercentageChange.OnNext( _percentageValue );

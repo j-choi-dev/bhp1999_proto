@@ -1,12 +1,17 @@
-using CoreAssetUI.Presenter;
+﻿using CoreAssetUI.Presenter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UniRx;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace CoreAssetUI.View
 {
+    /// <summary>
+    /// @Auth Choi
+    /// </summary>
+    /// <remarks>// TODO ダブルタップ専用は別度のIF作って分離し、そっちを同時継承させるのが良いかも @Choi 24.05.05</remarks>
     public abstract class DoubleSelectListView : MonoBehaviour, IListView
     {
         [SerializeField] protected CellBase _prefab;
@@ -42,7 +47,7 @@ namespace CoreAssetUI.View
 
         private void Awake()
         {
-            _onListCountChanged.OnNext( Cells.Count );
+            _onListCountChanged.OnNext( Cells.Count ); 
         }
 
         public void Add( string id, string title, Sprite sprite, bool isInActive )
@@ -201,6 +206,14 @@ namespace CoreAssetUI.View
 
             _onCurrentSelectedIDListChanged.OnNext( GetCurrentSelectedIDList() );
             _onCurrentSelectedIndexListChanged.OnNext( GetCurrentSelectedIndexList() );
+        }
+
+        public void SetItemsInteractable( bool isInteractable )
+        {
+            for(int i = 0; i < _cells.Count; i++)
+            {
+                _cells[i].SetInteractable( isInteractable );
+            }
         }
     }
 }

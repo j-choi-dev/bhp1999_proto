@@ -26,10 +26,10 @@ namespace GameSystemSDK.BattleScene.Domain
         public bool IsDiscardOver { get; private set; } = false;
 
         public int MaxHandCount { get; private set; } = 0;
-        public int CurrHandCount { get; private set; } = 0;
+        public int CurrentHandCount { get; private set; } = 0;
 
         public int MaxDiscardCount { get; private set; } = 0;
-        public int CurrDiscardCount { get; private set; } = 0;
+        public int CurrentDiscardCount { get; private set; } = 0;
 
         public int CurrGold { get; private set; } = 0;
 
@@ -39,21 +39,21 @@ namespace GameSystemSDK.BattleScene.Domain
 
         public void DiscountDiscardCount( int val )
         {
-            var result = CurrDiscardCount - val ;
-            CurrDiscardCount = result >= 0 ?
+            var result = CurrentDiscardCount - val ;
+            CurrentDiscardCount = result >= 0 ?
                 result :
                 0;
-            _onDiscardChanged.OnNext( CurrDiscardCount );
+            _onDiscardChanged.OnNext( CurrentDiscardCount );
         }
 
         public void DiscountHandCount( int val = 1 )
         {
-            var result = CurrHandCount - val ;
-            CurrHandCount = result >= 0 ?
+            var result = CurrentHandCount - val ;
+            CurrentHandCount = result >= 0 ?
                 result :
                 0;
-            _onHandChanged.OnNext( CurrHandCount );
-            if( CurrHandCount <= 0 )
+            _onHandChanged.OnNext( CurrentHandCount );
+            if( CurrentHandCount <= 0 )
             {
                 _onHandOver.OnNext( Unit.Default );
             }
@@ -80,13 +80,13 @@ namespace GameSystemSDK.BattleScene.Domain
         public void SetMaxHandCount( int val )
         {
             MaxHandCount = val;
-            CurrHandCount = val;
+            CurrentHandCount = val;
             _onHandChanged.OnNext( MaxHandCount );
         }
         public void SetMaxDiscardCount( int val )
         {
             MaxDiscardCount = val;
-            CurrDiscardCount = val;
+            CurrentDiscardCount = val;
             _onDiscardChanged.OnNext( MaxDiscardCount );
         }
     }

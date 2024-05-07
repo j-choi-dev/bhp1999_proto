@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7491711229764917523}
   - component: {fileID: 7401509655050445977}
   - component: {fileID: 2807306421781623389}
+  - component: {fileID: 4431845276176353018}
   m_Layer: 5
   m_Name: Guage
   m_TagString: Untagged
@@ -77,6 +78,22 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4431845276176353018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1038993763307233742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a9b71f51c379624986fb62ea7a145b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _slider: {fileID: 8097279118404934380}
+  _numeratorLabel: {fileID: 4242357834982636386}
+  _denominatorLabel: {fileID: 792557262236161654}
+  _percentageLabel: {fileID: 0}
 --- !u!1 &1639150101856890663
 GameObject:
   m_ObjectHideFlags: 0
@@ -561,6 +578,28 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: abdb9066b03f94e4f916dd3a8259cec6, type: 3}
+--- !u!114 &792557262236161654 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 723705631619687892, guid: abdb9066b03f94e4f916dd3a8259cec6, type: 3}
+  m_PrefabInstance: {fileID: 68861113904280482}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4242357834982636386 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4191519917056854208, guid: abdb9066b03f94e4f916dd3a8259cec6, type: 3}
+  m_PrefabInstance: {fileID: 68861113904280482}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &6260979412950098463 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6203659334693851581, guid: abdb9066b03f94e4f916dd3a8259cec6, type: 3}

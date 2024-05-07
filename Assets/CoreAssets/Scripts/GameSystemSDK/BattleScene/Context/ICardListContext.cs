@@ -9,9 +9,9 @@ namespace GameSystemSDK.BattleScene.Application
     {
         IReadOnlyList<IBattleCard> AllList { get; }
         IObservable<IReadOnlyList<IBattleCard>> OnCardListChanged { get; }
-        IObservable<IReadOnlyList<IBattleCard>> OnCurrentHandCardListChanged { get; }
 
         void SetCardList( IReadOnlyList<IBattleCard> list );
+        void SetIsDrawn( IReadOnlyList<string> idList );
         IResult AddCard( IBattleCard data );
         IResult RemoveCard( string id );
         IBattleCard GetCard(string id);

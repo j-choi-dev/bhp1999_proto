@@ -63,9 +63,9 @@ namespace GameSystemSDK.BattleScene.Domain
                     {
                         List<IBattleCard> curCardList = currCardList.ToList();
                         List<IBattleCard> currOutCardList = new List<IBattleCard>();
-                        foreach( var condition in data.ConditionList )
+                        for( int i = 0; i < data.ConditionList.Count; i++ )
                         {
-                            if( CheckCondition( condition, curCardList, currOutCardList ) == false )
+                            if( CheckCondition( data.ConditionList[i], curCardList, currOutCardList ) == false )
                             {
                                 isAccept = false;
                                 currOutCardList = new List<IBattleCard>();
@@ -82,10 +82,10 @@ namespace GameSystemSDK.BattleScene.Domain
 
                     break;
                 case OperationType.OperationOR:
-                    foreach( var condition in data.ConditionList )
+                    for( int i = 0; i < data.ConditionList.Count; i++ )
                     {
                         List<IBattleCard> curOutCardList = new List<IBattleCard>();
-                        if( CheckCondition( condition, currCardList, curOutCardList ) )
+                        if( CheckCondition( data.ConditionList[i], currCardList, curOutCardList ) )
                         {
                             isAccept = true;
                             outCardList.ToList().AddRange( curOutCardList );
@@ -163,8 +163,6 @@ namespace GameSystemSDK.BattleScene.Domain
                     }
                 }
             }
-            outCardList = new List<IBattleCard>();
-
             return false;
         }
 
@@ -204,8 +202,6 @@ namespace GameSystemSDK.BattleScene.Domain
                     }
                 }
             }
-            outCardList = new List<IBattleCard>();
-
             return false;
         }
 
@@ -229,8 +225,6 @@ namespace GameSystemSDK.BattleScene.Domain
                     return true;
                 }
             }
-
-            outCardList = new List<IBattleCard>();
 
             return false;
         }

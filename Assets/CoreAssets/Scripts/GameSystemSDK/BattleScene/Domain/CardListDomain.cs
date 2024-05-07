@@ -12,14 +12,8 @@ namespace GameSystemSDK.BattleScene.Domain
         private List<IBattleCard> _list = new List<IBattleCard>();
         public IReadOnlyList<IBattleCard> AllDeckList => _list;
 
-        private List<IBattleCard> _currHandList = new List<IBattleCard>();
-        public IReadOnlyList<IBattleCard> CurrentHandDeckList => _currHandList;
-
         private Subject<IReadOnlyList<IBattleCard>> _onCardListChanged = new Subject<IReadOnlyList<IBattleCard>>();
         public IObservable<IReadOnlyList<IBattleCard>> OnCardListChanged => _onCardListChanged;
-
-        private Subject<IReadOnlyList<IBattleCard>> _onCurrentHandCardListChanged = new Subject<IReadOnlyList<IBattleCard>>();
-        public IObservable<IReadOnlyList<IBattleCard>> OnCurrentHandCardListChanged => _onCurrentHandCardListChanged;
 
         public IResult SetCardList( IReadOnlyList<IBattleCard> list )
         {
@@ -51,6 +45,15 @@ namespace GameSystemSDK.BattleScene.Domain
         {
             var card = _list.First( arg => arg.ID.Equals( id ) );
             return card;
+        }
+
+        public void SetIsDrawn( IReadOnlyList<string> idList )
+        {
+            for(int i = 0; i < idList.Count; i++ )
+            {
+                _list.Where( arg => arg.ID.Equals(idList[i]) ).ToList().ForEach( arg => arg.SetDrawn(true) );
+            }
+            _onCardListChanged.OnNext( _list );
         }
     }
 }

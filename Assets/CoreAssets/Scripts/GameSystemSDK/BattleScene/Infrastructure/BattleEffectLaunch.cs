@@ -16,12 +16,16 @@ namespace GameSystemSDK.BattleScene.Infrastructure
         private Subject<string> _onSkillNameChanged = new Subject<string>();
         public IObservable<string> OnSkillNameChanged => _onSkillNameChanged;
 
-        private Subject<string> _onScoreInfoChanged = new Subject<string>();
-        public IObservable<string> OnScoreInfoChanged => _onScoreInfoChanged;
+        private Subject<(int index, int score)> _onScoreInfoChanged = new Subject<(int index, int score)>();
+        public IObservable<(int index, int score)> OnScoreInfoChanged => _onScoreInfoChanged;
 
 
         private Subject<bool> _onIsEffectProccess = new Subject<bool>();
         public IObservable<bool> OnIsEffectProccess => _onIsEffectProccess;
+
+        private int _totalScore = 0;
+        private Subject<int> _onTotalScoreChanged = new Subject<int>();
+        public IObservable<int> OnTotalScoreChanged => _onTotalScoreChanged;
 
         public BattleEffectLaunch( IGameSoundController gameSoundController ) // Refactoringª¹ªëª«ªâ @Choi
         {
@@ -41,12 +45,11 @@ namespace GameSystemSDK.BattleScene.Infrastructure
                 scoreMsg += string.IsNullOrEmpty( scoreMsg ) ?
                     detail.HandCardList[i].Value :
                     $" + {detail.HandCardList[i].Value}";
-                _onScoreInfoChanged.OnNext( scoreMsg );
-                await UniTask.Delay( Interval );
+                _onScoreInfoChanged.OnNext( (i,detail.HandCardList[i].Value) );
+                await UniTask.Delay( 1500 );
             }
-            _onScoreInfoChanged.OnNext( $"({scoreMsg}) x {detail.MultiplePoint}" );
             await UniTask.Delay( Interval * 2 );
-            _onScoreInfoChanged.OnNext( $"({scoreMsg}) x {detail.MultiplePoint} = {detail.Score}" );
+            _onTotalScoreChanged.OnNext( _totalScore );
             await UniTask.Delay( Interval * 2 );
             _onIsEffectProccess.OnNext( false );
         }

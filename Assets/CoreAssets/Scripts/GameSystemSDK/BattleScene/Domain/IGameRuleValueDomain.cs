@@ -14,9 +14,9 @@ namespace GameSystemSDK.BattleScene.Domain
 
         bool IsDiscardOver { get; }
 
-        int CurrHandCount { get; }
+        int CurrentHandCount { get; }
         int MaxHandCount { get; }
-        int CurrDiscardCount { get; }
+        int CurrentDiscardCount { get; }
         int CurrGold { get; }
 
         int CircleValue { get; }

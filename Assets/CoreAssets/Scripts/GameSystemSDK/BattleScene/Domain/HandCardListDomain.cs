@@ -49,12 +49,14 @@ namespace GameSystemSDK.BattleScene.Domain
         public void UpdateList( IReadOnlyList<IBattleCard> list )
         {
             var retVal = new List<IBattleCard>();
-            retVal.AddRange( _list );
-            for( int i = 0; i < _totalHandDeckCount - _list.Count; i++ )
+            var notDrawnList = _list.Where( arg => arg.IsInHand == true && arg.IsDrawn == false ).ToList();
+            retVal.AddRange( notDrawnList );
+            for( int i = 0; i < _totalHandDeckCount - notDrawnList.Count; i++ )
             {
-                var data = list.Where(arg => arg.IsInHand == false && arg.IsDrawn == false).ToList().First();
+                var valiableList = list.Where(arg => arg.IsInHand == false && arg.IsDrawn == false).ToList();
+                var data = valiableList.First();
                 retVal.Add( data );
-                list.ToList().Find( arg => arg.ID.Equals( data.ID ) ).SetInHand( true );
+                list.Where( arg => arg.ID.Equals( data.ID ) ).ToList().ForEach( arg => arg.SetInHand( true ) );
                 _onAdd.OnNext( data );
             }
             _list.Clear();

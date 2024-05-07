@@ -33,13 +33,13 @@ namespace GameSystemSDK.BattleScene.Application
         public UniTask<IResult<IReadOnlyList<IStageInfoData>>> LoadStageInfo(string rawData)
             => _battleInfoImporterDomain.LoadBattleInfo( rawData );
 
-        public async UniTask InitHandDataList( string rawData )
+        public void InitHandDataList( string rawData )
         {
             var csvData = CSVDataConverter.ConvertProcess(rawData);
             _handDataListStorageDomain.InitHandDataList( csvData );
         }
 
-        public async UniTask InitHandConditionDataList( string rawData )
+        public void InitHandConditionDataList( string rawData )
         {
             var csvData = CSVDataConverter.ConvertProcess(rawData);
             _handDataListStorageDomain.InitHandConditionDataList( csvData );

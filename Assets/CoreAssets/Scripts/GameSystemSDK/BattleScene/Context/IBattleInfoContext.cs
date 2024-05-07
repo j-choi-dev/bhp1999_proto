@@ -43,14 +43,12 @@ namespace GameSystemSDK.BattleScene.Application
         /// 족보 데이터 리스트 처리와 관련하여 초기화를 진행
         /// </summary>
         /// <param name="rawData">족보 테이블 ID</param>
-        /// <returns>None</returns>
-        UniTask InitHandDataList( string rawData );
+        void InitHandDataList( string rawData );
 
         /// <summary>
         /// 족보 조건 리스트 처리와 관련하여 초기화를 진행
         /// </summary>
         /// <param name="rawData">족보 조건 테이블 Raw Data</param>
-        /// <returns>None</returns>
-        UniTask InitHandConditionDataList( string rawData );
+        void InitHandConditionDataList( string rawData );
     }
 }
