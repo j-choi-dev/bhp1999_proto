@@ -13,6 +13,7 @@ namespace CoreAssetUI.View
     {
         [SerializeField] private List<CellRootMarker> _rootMarkerList = null;
         [SerializeField] private List<AnimationLabelObject> _animateLabelObjectList = null;
+        [SerializeField] private List<CardEffect> _cardEffectList = null;
         [SerializeField] protected BattleCardCell _prefab;
 
         protected List<IBattleCardCell> _cells = new List<IBattleCardCell>();
@@ -250,8 +251,8 @@ namespace CoreAssetUI.View
         {
             _animateLabelObjectList[index].SetLabel( $"+{val}" );
             _cells[index].PlayCardAnimation().Forget();
-            _animateLabelObjectList[index].ShowUpside().Forget();
-            //_animateLabelObjectList[index].Play().Forget();
+            _animateLabelObjectList[index].Play().Forget();
+            _cardEffectList[index].Play().Forget();
         }
     }
 }
