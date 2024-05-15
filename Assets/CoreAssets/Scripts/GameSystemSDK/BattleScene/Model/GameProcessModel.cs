@@ -3,6 +3,7 @@ using GameSystemSDK.BattleScene.Application;
 using GameSystemSDK.BattleScene.Domain;
 using GameSystemSDK.Common;
 using GameSystemSDK.Common.Domain;
+using GameSystemSDK.Server.Application;
 using System;
 using System.Linq;
 using UniRx;
@@ -20,8 +21,11 @@ namespace GameSystemSDK.BattleScene.Model
         private IHandScoreCalcurateContext _handScoreCalcurateContext;
         private IBattleEffectContext _battleEffectContext;
         private ISceneController _sceneController;
+        private IExternalConnectContext _externalConnectContext;
 
+        private IStageInfoData _stageInfoData;
         private SceneValueDomain _sceneValueDomain;
+        private int _currTotalScore = 0;
 
         public GameProcessModel( IGameRuleValueCntext gameRuleValueCntext,
             ICardListContext cardListContext,
@@ -31,7 +35,8 @@ namespace GameSystemSDK.BattleScene.Model
             IBattleResourceContext battleResourceContext,
             IHandScoreCalcurateContext handScoreCalcurateContext,
             IBattleEffectContext battleEffectContext,
-            ISceneController sceneController)
+            ISceneController sceneController,
+            IExternalConnectContext externalConnectContext )
         {
             _gameRuleValueCntext = gameRuleValueCntext;
             _cardListContext = cardListContext;
@@ -42,12 +47,14 @@ namespace GameSystemSDK.BattleScene.Model
             _handScoreCalcurateContext = handScoreCalcurateContext;
             _battleEffectContext = battleEffectContext;
             _sceneController = sceneController;
+            _externalConnectContext = externalConnectContext;
 
             _sceneValueDomain = new SceneValueDomain();
         }
 
         public IObservable<int> OnHandChanged => _gameRuleValueCntext.OnHandChanged;
         public IObservable<int> OnDiscardChanged => _gameRuleValueCntext.OnDiscardChanged;
+        public IObservable<int> OnGoalScoreChanged => _gameRuleValueCntext.OnGoalScoreChanged;
         public IObservable<int> OnGoldChanged => _gameRuleValueCntext.OnGoldChanged;
         public IObservable<int> OnCircleValueChanged => _gameRuleValueCntext.OnCircleValueChanged;
         public IObservable<int> OnManaValueChanged => _gameRuleValueCntext.OnManaValueChanged;
@@ -71,6 +78,9 @@ namespace GameSystemSDK.BattleScene.Model
         private Subject<int> _onScoreChanged = new Subject<int>();
         public IObservable<int> OnScoreChanged => _onScoreChanged;
 
+        private Subject<Unit> _onCleareStage = new Subject<Unit>();
+        public IObservable<Unit> OnCleareStage => _onCleareStage;
+
         public bool IsDiscardOver => _gameRuleValueCntext.IsDiscardOver;
 
         public int CurrentHandCount => _gameRuleValueCntext.CurrentHandCount;
@@ -79,6 +89,7 @@ namespace GameSystemSDK.BattleScene.Model
         public int CurrentDiscardCount => _gameRuleValueCntext.CurrentDiscardCount;
 
         public int CurrGold => _gameRuleValueCntext.CurrGold;
+        public int GoalScore => _gameRuleValueCntext.GoalScore;
 
         public int CircleValue => _gameRuleValueCntext.CircleValue;
 
@@ -90,13 +101,14 @@ namespace GameSystemSDK.BattleScene.Model
 
         public void SetCircleValue( int value ) => _gameRuleValueCntext.SetCircleValue( value );
         public void SetGold( int val ) => _gameRuleValueCntext.SetGold( val );
+        public void SetGoalScore( int val ) => _gameRuleValueCntext.SetGoalScore( val );
         public void SetManaValue( int value ) => _gameRuleValueCntext.SetManaValue( value );
         public void SetMaxHandCount( int val ) => _gameRuleValueCntext.SetMaxHandCount( val );
         public void SetMaxDiscardCount( int val ) => _gameRuleValueCntext.SetMaxDiscardCount( val );
 
         public async UniTask Initialize()
         {
-            var mock = UnityEngine.Random.Range(0, 9); // TODO @Choi 24.04.14
+            var id = await _externalConnectContext.GetStageID();
 
             var path = new HandTablePath();
             var rawData = _battleResourceContext.GetTableRawData( path.StageDataMock );
@@ -105,18 +117,16 @@ namespace GameSystemSDK.BattleScene.Model
             //{
             //    UnityEngine.Debug.LogError( battleInfoImportOperation.ErrorMessage );
             //}
-            var info = _battleInfoContext.GetStageInfo(mock);
+            _stageInfoData = _battleInfoContext.GetStageInfo(id);
 
-            SetMaxHandCount( info.MaxHandCount );
-            SetMaxDiscardCount( info.MaxDiscardCount );
-            SetGold( info.GoldValue );
+            SetMaxHandCount( _stageInfoData.MaxHandCount );
+            SetMaxDiscardCount( _stageInfoData.MaxDiscardCount );
+            SetGold( _stageInfoData.GoldValue );
+            SetGoalScore( _stageInfoData.GoalScore );
             SetCircleValue( 0 );
             SetManaValue( 0 );
 
-            _onStageNameChanged.OnNext( info.StageName );
-            _onStageBuff1Change.OnNext( info.StageBuff1 );
-            _onStageBuff2Change.OnNext( info.StageBuff2 );
-            _onStageBuff3Change.OnNext( info.StageBuff3 );
+            _onStageNameChanged.OnNext( _stageInfoData.StageName );
 
             InitializeHandData();
         }
@@ -136,7 +146,13 @@ namespace GameSystemSDK.BattleScene.Model
             await _battleEffectContext.RunScoreEffectProcess( scoreInfo, clip.Value );
 
             await UniTask.Delay( 250 );
-            //UnityEngine.Debug.Log( "데미지 차감? - // TODO 미구현 @Choi" );
+            _currTotalScore += scoreInfo.Score;
+            if( _currTotalScore >= _stageInfoData.GoalScore )
+            {
+                UnityEngine.Debug.Log( "Stage Clear" );
+                await _externalConnectContext.SetClearedStageInfo( _stageInfoData.ID );
+                await GameFinishProcess();
+            }
             _onScoreChanged.OnNext( scoreInfo.Score );
 
 
@@ -164,6 +180,11 @@ namespace GameSystemSDK.BattleScene.Model
         }
 
         public async UniTask GameFinishProcess()
+        {
+            await _sceneController.LoadSceneAsync( _sceneValueDomain.MainSceneName );
+        }
+
+        public async UniTask GameClearProcess()
         {
             await _sceneController.LoadSceneAsync( _sceneValueDomain.MainSceneName );
         }

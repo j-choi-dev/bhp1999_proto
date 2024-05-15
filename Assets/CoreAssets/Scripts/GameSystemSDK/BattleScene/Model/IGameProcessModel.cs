@@ -29,6 +29,8 @@ namespace GameSystemSDK.BattleScene.Model
         /// </summary>
         IObservable<int> OnGoldChanged { get; }
 
+        IObservable<int> OnGoalScoreChanged { get; }
+
         /// <summary>
         /// 스테이지별 Circle값 변동 이벤트
         /// </summary>
@@ -68,12 +70,15 @@ namespace GameSystemSDK.BattleScene.Model
         /// </summary>
         IObservable<int> OnScoreChanged { get; }
 
+        IObservable<Unit> OnCleareStage { get; }
+
         bool IsDiscardOver { get; }
 
         int CurrentHandCount { get; }
         int MaxHandCount { get; }
         int CurrentDiscardCount { get; }
         int CurrGold { get; }
+        int GoalScore { get; }
 
         int CircleValue { get; }
         int ManaValue { get; }
@@ -89,6 +94,7 @@ namespace GameSystemSDK.BattleScene.Model
         /// </summary>
         /// <returns>비동기 처리 UniTask</returns>
         UniTask RunHand();
+
         void DiscardProcess( string id );
 
         /// <summary>
@@ -121,6 +127,8 @@ namespace GameSystemSDK.BattleScene.Model
         /// <param name="val">Gold값</param>
         void SetGold( int val );
 
+        void SetGoalScore( int val );
+
         /// <summary>
         /// Circle값 설정
         /// </summary>
@@ -138,5 +146,7 @@ namespace GameSystemSDK.BattleScene.Model
         /// </summary>
         /// <returns>UniTask Async Process</returns>
         UniTask GameFinishProcess();
+
+        UniTask GameClearProcess();
     } 
 }

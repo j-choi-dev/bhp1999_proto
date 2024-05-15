@@ -19,13 +19,13 @@ namespace GameSystemSDK.BattleScene.Infrastructure
         {
             for( int i = 0; i < rawData.Count; i++ )
             {
-                        // 이 변수들은 안 들어가면 게임 뻗는게 맞음
+                // 이 변수들은 안 들어가면 게임 뻗는게 맞음
                 var id = int.Parse( CSVUtil.GetData( rawData, i, "PokerHandsID" ) );
                 var pairName = CSVUtil.GetData( rawData, i, "HandsName" );
                 var addPoint = int.Parse( CSVUtil.GetData( rawData, i, "AddPoint" ) );
                 var multiplePoint = int.Parse( CSVUtil.GetData( rawData, i, "MultiplePoint" ) );
 
-                        // 여기서부터는 비어 있을 수 있음
+                // 여기서부터는 비어 있을 수 있음
                 string strOper = CSVUtil.GetData(rawData, i, "OperatorType");
                 var oper = strOper.Equals( string.Empty ) ?
                         OperationType.None :

@@ -11,6 +11,7 @@ namespace CoreAssetUI.View
 
 		public override IObservable<Unit> OnClick => m_Button.OnClickAsObservable();
 		public override bool Interactable { get => m_Button.interactable; set => m_Button.interactable = value; }
+		public override bool Enable { get => m_Button.enabled; set => m_Button.enabled = value; }
 
 		private void Awake()
 		{

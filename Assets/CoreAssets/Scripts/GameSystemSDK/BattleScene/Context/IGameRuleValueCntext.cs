@@ -7,6 +7,7 @@ namespace GameSystemSDK.BattleScene.Application
     {
         IObservable<int> OnHandChanged { get; }
         IObservable<int> OnDiscardChanged { get; }
+        IObservable<int> OnGoalScoreChanged { get; }
         IObservable<int> OnGoldChanged { get; }
         IObservable<int> OnCircleValueChanged { get; }
         IObservable<int> OnManaValueChanged { get; }
@@ -18,6 +19,7 @@ namespace GameSystemSDK.BattleScene.Application
         int MaxHandCount { get; }
         int CurrentDiscardCount { get; }
         int CurrGold { get; }
+        int GoalScore { get; }
 
         int CircleValue { get; }
         int ManaValue { get; }
@@ -27,6 +29,7 @@ namespace GameSystemSDK.BattleScene.Application
         void SetMaxHandCount( int val );
         void SetMaxDiscardCount( int val );
         void SetGold( int val );
+        void SetGoalScore( int val );
 
         void SetCircleValue( int value );
         void SetManaValue( int value );

@@ -174,6 +174,10 @@ namespace CoreAssetUI.Presenter
                 .Subscribe( arg => _battleInfoView.SetGoldWithoutNotify( arg ) )
                 .AddTo( this );
 
+            _gameProcessModel.OnGoalScoreChanged
+                .Subscribe( arg => _battleInfoView.SetGoalScoreWithoutNotify( arg ) )
+                .AddTo( this );
+
             _gameProcessModel.OnCircleValueChanged
                 .Subscribe( arg => _battleInfoView.SetCircleWithoutNotify( arg ) )
                 .AddTo( this );
