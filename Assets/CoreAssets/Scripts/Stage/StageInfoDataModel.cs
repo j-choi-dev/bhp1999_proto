@@ -60,7 +60,6 @@ namespace GameSystemSDK.Stage.Model
         public async UniTask LoadNewPlayableStageInfoData()
         {
             var id = await _externalConnectContext.GetClaeredStageID();
-            UnityEngine.Debug.Log( $"LoadStageInfoData ... {id}" );
             _stageInfoDataContext.CurrentUserStageInfoCheck( id );
         }
 

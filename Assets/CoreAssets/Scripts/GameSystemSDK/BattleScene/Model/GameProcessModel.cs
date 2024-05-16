@@ -81,6 +81,9 @@ namespace GameSystemSDK.BattleScene.Model
         private Subject<Unit> _onCleareStage = new Subject<Unit>();
         public IObservable<Unit> OnCleareStage => _onCleareStage;
 
+        private Subject<Unit> _onShopDataChanged = new Subject<Unit>();
+        public IObservable<Unit> OnShopDataChanged => _onShopDataChanged;
+
         public bool IsDiscardOver => _gameRuleValueCntext.IsDiscardOver;
 
         public int CurrentHandCount => _gameRuleValueCntext.CurrentHandCount;
@@ -151,7 +154,7 @@ namespace GameSystemSDK.BattleScene.Model
             {
                 UnityEngine.Debug.Log( "Stage Clear" );
                 await _externalConnectContext.SetClearedStageInfo( _stageInfoData.ID );
-                await GameFinishProcess();
+                _onCleareStage.OnNext( Unit.Default );
             }
             _onScoreChanged.OnNext( scoreInfo.Score );
 
@@ -198,6 +201,13 @@ namespace GameSystemSDK.BattleScene.Model
             var handRawData = _battleResourceContext.GetTableRawData( path.PokerHandsCsvName );
             _battleInfoContext.InitHandDataList( handRawData.Value );
             await UniTask.Delay( 1 );
+        }
+
+        public async UniTask GetShopDataProcess()
+        {
+            UnityEngine.Debug.Log( "상점에 표시할 데이터 취득 @Choi" );
+            await UniTask.Delay( 500 );
+            _onShopDataChanged.OnNext(Unit.Default);
         }
     }
 }

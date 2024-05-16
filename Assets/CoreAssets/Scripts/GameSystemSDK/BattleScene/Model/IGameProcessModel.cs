@@ -70,6 +70,8 @@ namespace GameSystemSDK.BattleScene.Model
         /// </summary>
         IObservable<int> OnScoreChanged { get; }
 
+
+        IObservable<Unit> OnShopDataChanged { get; }
         IObservable<Unit> OnCleareStage { get; }
 
         bool IsDiscardOver { get; }
@@ -148,5 +150,7 @@ namespace GameSystemSDK.BattleScene.Model
         UniTask GameFinishProcess();
 
         UniTask GameClearProcess();
+
+        UniTask GetShopDataProcess();
     } 
 }

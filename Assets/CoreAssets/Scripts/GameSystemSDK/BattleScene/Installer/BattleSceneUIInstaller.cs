@@ -11,7 +11,10 @@ namespace GameSystemSDK.Battle.Installer
         [SerializeField] private SelectedCardListView _selectedCardListView;
         [SerializeField] private BattleInfoView _battleInfoView;
         [SerializeField] private RunControlView _runControlView;
+        [SerializeField] private ResultModal _resultModal;
+        [SerializeField] private ShopModal _shopModal;
         [SerializeField] private NoticeConfirmModal _noticeConfirmModal;
+        [SerializeField] private BattleSceneActivationView _activationView;
 
         public override void InstallBindings()
         {
@@ -35,6 +38,18 @@ namespace GameSystemSDK.Battle.Installer
             Container
                 .Bind<INoticeConfirmModal>()
                 .FromInstance( _noticeConfirmModal );
+
+            Container
+                .Bind<IResultModal>()
+                .FromInstance( _resultModal );
+
+            Container
+                .Bind<IShopModal>()
+                .FromInstance( _shopModal );
+
+            Container
+                .Bind<IBattleSceneActivationView>()
+                .FromInstance( _activationView );
         }
     }
 }

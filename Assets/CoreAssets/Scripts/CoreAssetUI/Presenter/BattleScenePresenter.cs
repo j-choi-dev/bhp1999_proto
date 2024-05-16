@@ -7,6 +7,7 @@ using GameSystemSDK.Sound;
 using UnityEngine.UI;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace CoreAssetUI.Presenter
 {
@@ -19,18 +20,24 @@ namespace CoreAssetUI.Presenter
         private IBattleInfoView _battleInfoView;
         private IRunControlView _runControlView;
         private INoticeConfirmModal _noticeConfirmModal;
+        private IResultModal _resultModal;
+        private IShopModal _shopModal;
         private ICardListModel _cardDeckModel;
         private IGameSoundController _gameSoundController;
         private IGameProcessModel _gameProcessModel;
         private IBattleResourceModel _battleResourceModel;
         private IBattleEffectModel _battleEffectModel;
+        private IBattleSceneActivationView _activationView;
 
         [Inject]
         public void Initialize( IHandDeckListView handDeckListView,
             ISelectedCardListView selectedCardListView,
             IBattleInfoView battleInfoView,
             IRunControlView runControlView,
+            IBattleSceneActivationView activationView,
             INoticeConfirmModal noticeConfirmModal,
+            IResultModal resultModal,
+            IShopModal shopModal,
             ICardListModel cardDeckModel,
             IGameSoundController gameSoundController,
             IGameProcessModel gameProcessModel,
@@ -41,7 +48,10 @@ namespace CoreAssetUI.Presenter
             _selectedCardListView = selectedCardListView;
             _battleInfoView = battleInfoView;
             _runControlView = runControlView;
+            _activationView = activationView;
             _noticeConfirmModal = noticeConfirmModal;
+            _resultModal = resultModal;
+            _shopModal = shopModal;
 
             _cardDeckModel = cardDeckModel;
             _gameSoundController = gameSoundController;
@@ -53,7 +63,6 @@ namespace CoreAssetUI.Presenter
         private void Awake()
         {
             _image.gameObject.SetActive( false );
-            _noticeConfirmModal.Show( false );
             _text.text = string.Empty;
             _gameSoundController.PlayEffect( "eff003" );
 
@@ -63,7 +72,10 @@ namespace CoreAssetUI.Presenter
 
         private async void Start()
         {
+            _noticeConfirmModal.Show( false );
             _battleInfoView.SetScorePlateOn( false );
+            _resultModal.SetActive( false );
+            _shopModal.SetActive( false );
             await _cardDeckModel.Initialize();
             await _gameProcessModel.Initialize();
             UpdateView();
@@ -121,6 +133,18 @@ namespace CoreAssetUI.Presenter
                 {
                     _gameProcessModel.GameFinishProcess().Forget();
                 } )
+                .AddTo( this );
+
+            _resultModal.OnConfirm
+                .Subscribe( _ =>
+                {
+                    _shopModal.SetActive( true );
+                    _resultModal.SetActive(false);
+                } )
+                .AddTo( this );
+
+            _shopModal.OnGoToNextStage
+                .Subscribe( _ => _gameProcessModel.GameClearProcess().Forget() )
                 .AddTo( this );
         }
 
@@ -211,6 +235,18 @@ namespace CoreAssetUI.Presenter
                 .Subscribe( score => _battleInfoView.SetScorePercentageWithoutNotify( score ) )
                 .AddTo( this );
 
+            _gameProcessModel.OnCleareStage
+                .Subscribe( _ => SetGameClearViewState() )
+                .AddTo( this );
+
+            _gameProcessModel.OnShopDataChanged
+                .Subscribe( _ =>
+                {
+                    _resultModal.SetActive( false );
+                    _shopModal.SetActive( true );
+                } )
+                .AddTo( this );
+
             _battleEffectModel.OnIsEffectProccess
                 .Subscribe( isOn => _battleInfoView.SetScorePlateOn( isOn ) )
                 .AddTo( this );
@@ -225,7 +261,6 @@ namespace CoreAssetUI.Presenter
             _battleEffectModel.OnSkillNameChanged
                 .Subscribe( msg => _battleInfoView.SetScorePlateWithoutNotify( msg ) )
                 .AddTo( this );
-
         }
 
         private void UpdateView()
@@ -246,6 +281,12 @@ namespace CoreAssetUI.Presenter
                 _cardDeckModel.CurrentSelectedCardList.Count > 0 );
             _runControlView.SetDiscardInteractable( _gameProcessModel.CurrentDiscardCount > 0 
                 && string.IsNullOrEmpty(_handDeckListView.CurrentSelectedID ) == false );
+        }
+
+        private void SetGameClearViewState()
+        {
+            _activationView.SetActive( false );
+            _resultModal.SetActive( true );
         }
     }
 }

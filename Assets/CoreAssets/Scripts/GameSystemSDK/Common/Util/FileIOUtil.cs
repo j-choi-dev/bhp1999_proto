@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Cysharp.Threading.Tasks;
 
-namespace GameSystemSDK.IO.Util
+namespace GameSystemSDK.Util
 {
     public static class FileIOUtil
     {

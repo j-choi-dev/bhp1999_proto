@@ -1,6 +1,5 @@
 using Cysharp.Threading.Tasks;
-using GameSystemSDK.IO.Util;
-using GameSystemSDK.Serialization.Util;
+using GameSystemSDK.Util;
 using GameSystemSDK.Server.Domain;
 using System;
 using System.Collections.Generic;
@@ -129,7 +128,6 @@ namespace GameSystemSDK.Server.Infrastructure
             tempValue.Value = id;
 
             var text = SerializeUtil.ToJson(tempValue);
-            Debug.Log( $"파일->JSON 변환2\n{text}" );
 
             await FileIOUtil.SaveText( _tempPath, text );
             Debug.Log( "(가라)Server 송신 -> 배틀신 이동(배틀신 초기화 시, (가라)Server로부터 수신)" );
@@ -150,7 +148,6 @@ namespace GameSystemSDK.Server.Infrastructure
         public async UniTask<string> GetStageID()
         {
             var text = await FileIOUtil.LoadText( _tempPath );
-            Debug.Log( $"JSON->파일 변환\n{text}" );
             var retVal = SerializeUtil.FromJson<TempValue>( text );
             Debug.Log( $"(가라)Server 수신 -> {retVal.Key}, {retVal.Value}" );
             return retVal.Value;

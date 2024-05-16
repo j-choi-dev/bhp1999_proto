@@ -1,4 +1,4 @@
-using CoreAssetUI.Presenter;
+ï»¿using CoreAssetUI.Presenter;
 using GameSystemSDK.BattleScene.Domain;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +26,7 @@ namespace CoreAssetUI.View
             var msg = string.Empty;
             for( int i = 0; i< _buttonList.Count; i++ )
             {
-                int index = i;  // Áö¿ª º¯¼ö·Î ÇöÀç ÀÎµ¦½º¸¦ Ä¸Ã³
+                int index = i;  // ì§€ì—­ ë³€ìˆ˜ë¡œ í˜„ì¬ ì¸ë±ìŠ¤ë¥¼ ìº¡ì²˜
                 _buttonList[index].OnClick
                     .Subscribe( _ =>
                     {
@@ -56,8 +56,6 @@ namespace CoreAssetUI.View
             var latestClearIndex = list.ToList().FindLastIndex(arg => arg.IsClear) >= 0 ?
                 list.ToList().FindLastIndex( arg => arg.IsClear ) :
                 int.MinValue;
-            Debug.Log( latestClearIndex );
-            Debug.Log( list.ToList().Count( arg => arg.IsClear ) );
 
             for(int i = 0; i< _buttonList.Count; i++ )
             {
@@ -65,7 +63,7 @@ namespace CoreAssetUI.View
                 _buttonList[i].SetAvaliableState( isNewArea && i == 0 ? true : i == latestClearIndex);
                 _buttonList[i].SetCursorActive( isNewArea && i == 0 ? true : i == latestClearIndex );
                 //_buttonList[i].SetButtonEnabled( i >= latestClearIndex ||
-                //    latestClearIndex == list.Count-1 );
+                //    latestClearIndex == list.Count-1 ); //TODO íŒì •ì˜¤ë¥˜ ìˆìŒ(å ±å‘Šæ¸ˆã¿) @Choi 
                 _buttonList[i].SetButtonEnabled( isNewArea && i == 0 ? true : i <= latestClearIndex );
 
                 _buttonList[i].SetFlameMarkActive( isNewArea && i == 0 ? true : list[i].IsBossStage );
