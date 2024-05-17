@@ -8,9 +8,9 @@ namespace GameSystemSDK.Stage.Model
     public interface IStageInfoDataModel
     {
         IObservable<IReadOnlyList<IStageInfoData>> OnCurrentAvaliableStageList { get; }
-        IObservable<IStageInfoData> OnCurrentStageChanged { get; }
+        IObservable<IStageInfoData> OnLatestStageChanged { get; }
         IStageInfoData CurrentSelectedStage { get; }
-        IStageInfoData CurrentStage { get; }
+        IStageInfoData CurrentLatestStage { get; }
         IObservable<IReadOnlyList<IStageInfoData>> OnStageInfoDataListChanged { get; }
         UniTask Initialize();
         UniTask LoadNewPlayableStageInfoData();

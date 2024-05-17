@@ -22,13 +22,13 @@ namespace GameSystemSDK.Stage.Model
         public IObservable<IReadOnlyList<IStageInfoData>> OnStageInfoDataListChanged 
             => _stageInfoDataContext.OnListChanged;
 
-        public IObservable<IStageInfoData> OnCurrentStageChanged 
-            => _stageInfoDataContext.OnCurrentStageChanged;
+        public IObservable<IStageInfoData> OnLatestStageChanged
+            => _stageInfoDataContext.OnLatestStageChanged;
 
         public IStageInfoData CurrentSelectedStage { get; private set; }
 
-        public IStageInfoData CurrentStage 
-            => _stageInfoDataContext.CurrentStage;
+        public IStageInfoData CurrentLatestStage 
+            => _stageInfoDataContext.CurrentLatestStage;
 
         private Subject<IReadOnlyList<IStageInfoData>> _onCurrentAvaliableStageList = new Subject<IReadOnlyList<IStageInfoData>>();
         public IObservable<IReadOnlyList<IStageInfoData>> OnCurrentAvaliableStageList => _onCurrentAvaliableStageList;
@@ -41,7 +41,7 @@ namespace GameSystemSDK.Stage.Model
             _localResourceFileLoadContext = localResourceFileLoadContext;
             _externalConnectContext = externalConnectContext;
 
-            _stageInfoDataContext.OnCurrentStageChanged
+            _stageInfoDataContext.OnLatestStageChanged
                 .Subscribe( arg => FilterStageInfoList( arg ) )
                 .AddTo( _subscriptions );
         }
@@ -60,7 +60,7 @@ namespace GameSystemSDK.Stage.Model
         public async UniTask LoadNewPlayableStageInfoData()
         {
             var id = await _externalConnectContext.GetClaeredStageID();
-            _stageInfoDataContext.CurrentUserStageInfoCheck( id );
+            _stageInfoDataContext.CheckCurrentStageInfo( id );
         }
 
         private void FilterStageInfoList(IStageInfoData data)

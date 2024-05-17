@@ -9,8 +9,8 @@ namespace GameSystemSDK.Stage.Domain
 {
     public interface IStageInfoListDomain
     {
-        IObservable<IStageInfoData> OnCurrentStageChanged { get; }
-        IStageInfoData CurrentStage { get; }
+        IObservable<IStageInfoData> OnLatestStageChanged { get; }
+        IStageInfoData CurrentLatestStage { get; }
         IReadOnlyList<IStageInfoData> List { get; }
         IObservable<IReadOnlyList<IStageInfoData>> OnListChanged { get; }
 
@@ -27,10 +27,10 @@ namespace GameSystemSDK.Stage.Domain
         private Subject<IReadOnlyList<IStageInfoData>> _onListChanged = new Subject<IReadOnlyList<IStageInfoData>>();
         public IObservable<IReadOnlyList<IStageInfoData>> OnListChanged => _onListChanged;
 
-        private Subject<IStageInfoData> _onCurrentStageChanged = new Subject<IStageInfoData>();
-        public IObservable<IStageInfoData> OnCurrentStageChanged => _onCurrentStageChanged;
+        private Subject<IStageInfoData> _onLatestStageChanged = new Subject<IStageInfoData>();
+        public IObservable<IStageInfoData> OnLatestStageChanged => _onLatestStageChanged;
 
-        public IStageInfoData CurrentStage { get; private set; }
+        public IStageInfoData CurrentLatestStage { get; private set; }
 
         public void SetList( IReadOnlyList<IStageInfoData> list )
         {
@@ -41,6 +41,10 @@ namespace GameSystemSDK.Stage.Domain
 
         public void UpdateClearedStage( string id )
         {
+            if(_list.Exists( arg => arg.ID.Equals( id ) ) == false )
+            {
+                return;
+            }
             _list.Find( arg => arg.ID.Equals( id ) ).SetIsClear( true );
             _onListChanged.OnNext( _list );
             UpdateCurrentStage();
@@ -49,10 +53,10 @@ namespace GameSystemSDK.Stage.Domain
         private void UpdateCurrentStage()
         {
             var index = _list.FindLastIndex( arg => arg.IsClear ) >= 0 ?
-                _list.FindLastIndex( arg => arg.IsClear ) :
+                _list.FindLastIndex( arg => arg.IsClear ) + 1 :
                 0;
-            CurrentStage = _list[index];
-            _onCurrentStageChanged.OnNext( CurrentStage );
+            CurrentLatestStage = _list[index];
+            _onLatestStageChanged.OnNext( CurrentLatestStage );
         }
     }
 }
