@@ -1,9 +1,9 @@
 @echo off
 setlocal
 
-set BRANCH=%1
+set JOB=%1
 set MODE=%2
-set JOB=%3
+set BRANCH=%3
 
 echo JOB = %JOB%
 
@@ -30,10 +30,10 @@ echo after parent_path = %PARENT_PATH%
 
 
 if "%MODE%" == "release" (
-    set TARGET_METHOD=IOSReleaseBuildProcessByExternal
+    set TARGET_METHOD=AndroidReleaseBuildProcessByExternal
     echo Release :: "%TARGET_METHOD%"
 ) else (
-    set TARGET_METHOD=IOSBuildProcessByExternal
+    set TARGET_METHOD=AndroidBuildProcessByExternal
     echo Not Release :: "%TARGET_METHOD%"
 )
 echo TARGET_METHOD :: "%TARGET_METHOD%"

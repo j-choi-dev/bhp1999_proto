@@ -9,7 +9,6 @@ namespace GameSystemSDK.Editor.Build.View
     public static class RomBuildView
     {
         private const string BuildApplicationMenuName = "BHP1999_Tool/Rom Build/Build App";
-        private const string TargetPlatform = "/target_platform";
         private const string RootPathKey = "/root_path";
         private const string BuildVersionKey = "/build_version";
 

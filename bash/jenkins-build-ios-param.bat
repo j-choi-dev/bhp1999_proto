@@ -1,9 +1,9 @@
 @echo off
 setlocal
 
-set BRANCH=%1
+set JOB=%1
 set MODE=%2
-set JOB=%3
+set BRANCH=%3
 
 echo JOB = %JOB%
 
