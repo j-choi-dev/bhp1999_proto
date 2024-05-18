@@ -1,4 +1,6 @@
 @echo off
+setlocal
+
 set BRANCH=%1
 set MODE=%2
 set JOB=%3
@@ -6,23 +8,25 @@ set JOB=%3
 @REM cd .. @REM Return to ROOT 
 echo JOB = %JOB%
 
-set PARENT_PATH=%CD%
+for %%I in ("%~dp0.") do set "PARENT_PATH=%%~fI"
+
 set TARGET_FOLDER=Rom
 set TARGET_METHOD=
 
-echo before parent_path = $parent_path
+echo before parent_path = %PARENT_PATH%
+
 set "curr_dir=%cd%"
 if "%curr_dir:bash=%" neq "%curr_dir%" (
     echo Back to ROOT
     cd ..
     cd ..
-    set "parent_path=%cd%"
-    echo %parent_path%
-    cd %parent_path%
+    set "PARENT_PATH=%cd%"
+    echo %PARENT_PATH%
+    cd %PARENT_PATH%
     set "curr_dir=%cd%"
     echo %curr_dir%
 )
-echo after parent_path = %parent_path%
+echo after parent_path = %PARENT_PATH%
 
 if "%MODE%" == "release" (
     set TARGET_METHOD=IOSReleaseBuildProcessByExternal
