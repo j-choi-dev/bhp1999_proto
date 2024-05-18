@@ -11,5 +11,6 @@ namespace CoreAssetUI.Presenter
         IObservable<Unit> OnClickLogIn { get; }
 
         void SetVersionInfo( string value );
+        void SetGUIDInfo( string value );
     }
 }

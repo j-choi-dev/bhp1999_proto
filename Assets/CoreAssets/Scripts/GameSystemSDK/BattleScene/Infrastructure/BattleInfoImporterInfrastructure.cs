@@ -22,6 +22,7 @@ namespace GameSystemSDK.BattleScene.Infrastructure
             return _list[index];
         }
 
+        // TODO 여기서 서버 데이터 받아옴 @Choi
         public async UniTask<IResult<IReadOnlyList<IStageInfoData>>> LoadBattleInfo(string rawData)
         {
             var retVal = ConverToDataList(rawData);
@@ -39,13 +40,17 @@ namespace GameSystemSDK.BattleScene.Infrastructure
                 var cols = rows[i].Split(",");
                 var data = new StageInfoData();
                 data.SetID( cols[0] );
-                data.SetMaxHandCount( int.Parse( cols[1] ) );
-                data.SetMaxDiscardCount( int.Parse( cols[2] ) );
-                data.SetGoldValue( int.Parse( cols[3] ) );
-                data.SetStageName( cols[4] );
-                data.SetStageBuff1( cols[5] );
-                data.SetStageBuff2( cols[6] );
-                data.SetStageBuff3( cols[7] );
+                data.SetWorldID( cols[1] );
+                data.SetAreaID( cols[2] );
+                data.SetStageID( cols[3] );
+                data.SetWorldName( cols[4] );
+                data.SetAreaName( cols[5] );
+                data.SetAreaName( cols[6] );
+                data.SetIsBossStage( int.Parse( cols[7]) == 1 );
+                data.SetMaxHandCount( int.Parse( cols[8] ) );
+                data.SetMaxDiscardCount( int.Parse( cols[9] ) );
+                data.SetGoldValue( int.Parse( cols[10] ) );
+                data.SetGoalScore( int.Parse( cols[11] ) );
                 list.Add( data );
             }
             return list;

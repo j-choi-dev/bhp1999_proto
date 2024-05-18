@@ -11,6 +11,7 @@ namespace GameSystemSDK.BattleScene.Domain
         IObservable<int> OnCircleValueChanged { get; }
         IObservable<int> OnManaValueChanged { get; }
         IObservable<Unit> OnHandOver { get; }
+        IObservable<int> OnGoalScoreChanged { get; }
 
         bool IsDiscardOver { get; }
 
@@ -18,6 +19,7 @@ namespace GameSystemSDK.BattleScene.Domain
         int MaxHandCount { get; }
         int CurrentDiscardCount { get; }
         int CurrGold { get; }
+        int GoalScore { get; }
 
         int CircleValue { get; }
         int ManaValue { get; }
@@ -27,6 +29,7 @@ namespace GameSystemSDK.BattleScene.Domain
         void SetMaxHandCount( int val );
         void SetMaxDiscardCount( int val );
         void SetGold( int val );
+        void SetGoalScore( int val );
 
         void SetCircleValue( int value );
         void SetManaValue( int value );

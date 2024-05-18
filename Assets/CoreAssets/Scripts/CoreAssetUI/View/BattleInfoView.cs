@@ -50,5 +50,8 @@ namespace CoreAssetUI.View
 
         public void SetScorePercentageWithoutNotify( int value )
             => _scoreGuage.SetNumeratorWithoutNotify( value );
+
+        public void SetGoalScoreWithoutNotify( int value )
+            => _scoreGuage.SetDenominatorWithoutNotify( value );
     }
 }
