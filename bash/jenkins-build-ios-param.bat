@@ -8,7 +8,7 @@ set JOB=%3
 @REM cd .. @REM Return to ROOT 
 echo JOB = %JOB%
 
-for %%I in ("%~dp0.") do set "PARENT_PATH=%%~fI"
+set "PARENT_PATH=%~dp0"
 
 set TARGET_FOLDER=Rom
 set TARGET_METHOD=

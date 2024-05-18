@@ -8,7 +8,7 @@ set JOB=%3
 @REM cd .. @REM Return to ROOT 
 echo JOB = %JOB%
 
-for %%I in ("%~dp0.") do set "PARENT_PATH=%%~fI"
+set "PARENT_PATH=%~dp0"
 
 set TARGET_FOLDER=Rom
 set TARGET_METHOD=
@@ -29,10 +29,10 @@ if "%curr_dir:bash=%" neq "%curr_dir%" (
 echo after parent_path = %PARENT_PATH%
 
 if "%MODE%" == "release" (
-    set TARGET_METHOD=AndroidReleaseBuildProcessByExternal
+    set TARGET_METHOD=IOSReleaseBuildProcessByExternal
     echo Release :: "%TARGET_METHOD%"
 ) else (
-    set TARGET_METHOD=AndroidBuildProcessByExternal
+    set TARGET_METHOD=IOSBuildProcessByExternal
     echo Not Release :: "%TARGET_METHOD%"
 )
 echo TARGET_METHOD :: "%TARGET_METHOD%"
