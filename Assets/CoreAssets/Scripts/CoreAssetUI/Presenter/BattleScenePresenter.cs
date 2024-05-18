@@ -76,8 +76,10 @@ namespace CoreAssetUI.Presenter
             _battleInfoView.SetScorePlateOn( false );
             _resultModal.SetActive( false );
             _shopModal.SetActive( false );
-            await _cardDeckModel.Initialize();
+
             await _gameProcessModel.Initialize();
+            await _cardDeckModel.Initialize( _gameProcessModel.GetPlayingCardDeck(1) );  // 임시로 1 셋팅
+            
             UpdateView();
 
         }

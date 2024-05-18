@@ -5,6 +5,7 @@ using GameSystemSDK.Common;
 using GameSystemSDK.Common.Domain;
 using GameSystemSDK.Server.Application;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UniRx;
 
@@ -108,6 +109,7 @@ namespace GameSystemSDK.BattleScene.Model
         public void SetManaValue( int value ) => _gameRuleValueCntext.SetManaValue( value );
         public void SetMaxHandCount( int val ) => _gameRuleValueCntext.SetMaxHandCount( val );
         public void SetMaxDiscardCount( int val ) => _gameRuleValueCntext.SetMaxDiscardCount( val );
+        public IReadOnlyList<IPlayingCardInfo> GetPlayingCardDeck(int DeckGroup) => _battleInfoContext.GetPlayingCardDeck(DeckGroup);
 
         public async UniTask Initialize()
         {
@@ -131,7 +133,7 @@ namespace GameSystemSDK.BattleScene.Model
 
             _onStageNameChanged.OnNext( _stageInfoData.StageName );
 
-            InitializeHandData();
+            InitializeGameRuleData();
         }
 
         public async UniTask RunHand()
@@ -192,7 +194,10 @@ namespace GameSystemSDK.BattleScene.Model
             await _sceneController.LoadSceneAsync( _sceneValueDomain.MainSceneName );
         }
 
-        private async void InitializeHandData()
+        /// <Todo>
+        /// 이 함수는 어플리케이션 켜질 때 한번만 로딩하면 될 것 같습니다.
+        /// </Todo>
+        private async void InitializeGameRuleData()
         {
             var path = new HandTablePath();
             var handConditionRawData = _battleResourceContext.GetTableRawData( path.PokerHandsConditionCsvName );

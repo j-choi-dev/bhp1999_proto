@@ -1,6 +1,7 @@
 using CommonSystem.Util;
 using GameSystemSDK.BattleScene.Domain;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GameSystemSDK.BattleScene.Infrastructure
 {

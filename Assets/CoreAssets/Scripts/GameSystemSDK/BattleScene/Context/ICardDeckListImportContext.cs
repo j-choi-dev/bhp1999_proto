@@ -6,6 +6,6 @@ namespace GameSystemSDK.BattleScene.Application
 {
     public interface ICardDeckListImportContext
     {
-        UniTask<IReadOnlyList<IBattleCard>> LoadShuffledList();
+        UniTask<IReadOnlyList<IBattleCard>> LoadShuffledList( IReadOnlyList<IPlayingCardInfo> cardList );
     }
 }

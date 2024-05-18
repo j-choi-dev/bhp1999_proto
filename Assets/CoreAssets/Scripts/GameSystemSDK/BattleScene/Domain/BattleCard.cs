@@ -16,6 +16,8 @@ namespace GameSystemSDK.BattleScene.Domain
 
         public int Value { get; private set; } = 0;
 
+        public int Chip { get; private set; } = 0;
+
         public string IllustResourceID { get; private set; } = string.Empty;
 
         public string IconResourceID { get; private set; } = string.Empty;
@@ -39,6 +41,9 @@ namespace GameSystemSDK.BattleScene.Domain
             => Type = value;
 
         public void SetValue( int value )
+            => Value = value;
+
+        public void SetChip(int value)
             => Value = value;
 
         public void SetDrawn( bool isValue )

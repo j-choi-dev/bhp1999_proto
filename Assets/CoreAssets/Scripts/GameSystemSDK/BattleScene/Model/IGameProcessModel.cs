@@ -143,6 +143,8 @@ namespace GameSystemSDK.BattleScene.Model
         /// <param name="val">Mana°ª</param>
         void SetManaValue( int value );
 
+        IReadOnlyList<IPlayingCardInfo> GetPlayingCardDeck( int DeckGroup );
+
         /// <summary>
         /// Game Finish Process
         /// </summary>

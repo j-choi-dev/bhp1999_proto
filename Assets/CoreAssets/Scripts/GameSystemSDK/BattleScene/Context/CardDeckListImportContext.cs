@@ -13,9 +13,9 @@ namespace GameSystemSDK.BattleScene.Application
             _importDomain = importDomain;
         }
 
-        public UniTask<IReadOnlyList<IBattleCard>> LoadShuffledList()
+        public UniTask<IReadOnlyList<IBattleCard>> LoadShuffledList( IReadOnlyList<IPlayingCardInfo> cardList )
         {
-            return _importDomain.GenerateShuffledList();
+            return _importDomain.GenerateShuffledList( cardList );
         }
     }
 }
