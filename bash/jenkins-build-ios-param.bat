@@ -5,10 +5,9 @@ set BRANCH=%1
 set MODE=%2
 set JOB=%3
 
-@REM cd .. @REM Return to ROOT 
 echo JOB = %JOB%
 
-set "PARENT_PATH=%~dp0"
+set "PARENT_PATH=%cd%"
 
 set TARGET_FOLDER=Rom
 set TARGET_METHOD=
@@ -16,15 +15,16 @@ set TARGET_METHOD=
 echo before parent_path = %PARENT_PATH%
 
 set "curr_dir=%cd%"
-if "%curr_dir:bash=%" neq "%curr_dir%" (
+set "new_dir=%curr_dir:bash=%"
+if not "%new_dir%" == "%curr_dir%" (
     echo Back to ROOT
     cd ..
-    cd ..
-    set "PARENT_PATH=%cd%"
+    set "curr_dir=%cd%"
+    echo curr_dir = %curr_dir%
+
+    set "PARENT_PATH=%curr_dir%"
     echo %PARENT_PATH%
     cd %PARENT_PATH%
-    set "curr_dir=%cd%"
-    echo %curr_dir%
 )
 echo after parent_path = %PARENT_PATH%
 
