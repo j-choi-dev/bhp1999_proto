@@ -176,7 +176,18 @@ namespace GameSystemSDK.BattleScene.Model
 
             var handRawData = _battleResourceContext.GetTableRawData( path.PokerHandsCsvName );
             _battleInfoContext.InitHandDataList( handRawData.Value );
+
+            var playingCardRawData = _battleResourceContext.GetTableRawData(path.PlayingCardCsvName);
+            _battleInfoContext.InitPlayingCardListStorageDomain(playingCardRawData.Value);
+
+            var cardUpgradeRawData = _battleResourceContext.GetTableRawData(path.CardUpgradeCsvName);
+            _battleInfoContext.InitCardUpgradeStorageDomain(cardUpgradeRawData.Value);
+
+            var cardEffectRawData = _battleResourceContext.GetTableRawData(path.CardEffectCsvName);
+            _battleInfoContext.InitCardEffectStorageDomain(cardEffectRawData.Value);
+
             await UniTask.Delay( 1 );
+
         }
     }
 }

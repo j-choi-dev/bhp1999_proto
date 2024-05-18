@@ -130,6 +130,16 @@ namespace GameSystemSDK.Battle.Installer
                 .AsCached();
 
             Container
+                .Bind<IPlayingCardListStorageDomain>()
+                .To<PlayingCardListStorage>()
+                .AsCached();
+
+            Container
+                .Bind<ICardUpgradeListStorageDomain>()
+                .To<CardUpgradeListStorageDomain>()
+                .AsCached();
+
+            Container
                 .Bind<IHandScoreCalcuratorDomain>()
                 .To<HandScoreCalcurator>()
                 .AsCached();

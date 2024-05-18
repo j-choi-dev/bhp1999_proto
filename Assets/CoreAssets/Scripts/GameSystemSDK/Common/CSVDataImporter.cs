@@ -26,11 +26,13 @@ namespace CommonSystem.Util
             var rows = rawData.Split("\n");
             for( var rowIdx = 0; rowIdx < rows.Length; rowIdx++ )
             {
-                if( string.IsNullOrEmpty( rows[rowIdx] ) )
+                var replaceRow = rows[rowIdx].Replace("\r", "");
+
+                if ( string.IsNullOrEmpty(replaceRow) )
                 {
                     break;
                 }
-                var values = rows[rowIdx].Split(',');
+                var values = replaceRow.Split(',');
                 if( rowIdx == 0 )
                 {
                     header.AddRange( values );
