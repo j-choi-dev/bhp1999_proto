@@ -12,7 +12,15 @@ log_path=$parent_path"/Builds/Log/"$target_folder"/"$curr_time"_log.txt"
 root_path=$1
 build_version=$2
 
-cd ..
+echo before parent_path = $parent_path
+if [[ $curr_dir == *"bash"* ]]; then
+    echo "Back to ROOT"
+    parent_path=$(dirname $(cd $(dirname $0); pwd))
+    cd $parent_path
+    curr_dir=$(pwd) 
+    echo $curr_dir
+fi
+echo after parent_path = $parent_path
 
 #########################################
 # Build Process
