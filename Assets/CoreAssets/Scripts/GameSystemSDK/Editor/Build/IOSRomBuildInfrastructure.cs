@@ -12,17 +12,17 @@ namespace GameSystemSDK.Editor.Build.Infrastructure
     public class IOSRomBuildInfrastructure : IRomBuildDomain
     {
         private string _rootPath = string.Empty;
-        private string _buildFolder = string.Empty;
         private string _buildPath = string.Empty;
         private string _buildExtension = string.Empty;
+        private string _version = string.Empty;
         private BuildTarget _buildTarget = BuildTarget.NoTarget;
         private NamedBuildTarget _namedBuildTarget = NamedBuildTarget.Unknown;
         private IconKind _iconKind = default;
 
-        public IOSRomBuildInfrastructure( string buildPath )
+        public IOSRomBuildInfrastructure( string buildPath, string version )
         {
             _rootPath = buildPath;
-            _buildFolder = buildPath;
+            _version = version;
             _buildTarget = BuildTarget.iOS;
             _namedBuildTarget = NamedBuildTarget.iOS;
             _buildExtension = "/XcodeProject";
@@ -35,6 +35,7 @@ namespace GameSystemSDK.Editor.Build.Infrastructure
 
             PlayerSettings.companyName = "No Company";
             PlayerSettings.productName = "BHP1999_proto";
+            PlayerSettings.applicationIdentifier = "com.nocompany.bhp1999proto";
             if( PlayerSettings.defaultScreenWidth != 1080 )
             {
                 PlayerSettings.defaultScreenWidth = 1080;
@@ -47,7 +48,7 @@ namespace GameSystemSDK.Editor.Build.Infrastructure
             {
                 PlayerSettings.fullScreenMode = FullScreenMode.FullScreenWindow;
             }
-            _buildPath = $"{_rootPath}/{UnityEngine.Application.productName}{_buildExtension}";
+            _buildPath = $"{_rootPath}/{UnityEngine.Application.productName}_{_version}{_buildExtension}";
 
             var path = "Assets/CoreAssets/Scripts/GameSystemSDK/Editor/Build/AppIcon/icon.png";
             var icon = new Texture2D[] { ( Texture2D )AssetDatabase.LoadAssetAtPath( path, typeof( Texture2D ) ) };
@@ -57,9 +58,9 @@ namespace GameSystemSDK.Editor.Build.Infrastructure
 
         public bool BuildProcess()
         {
-            if( Directory.Exists( _buildFolder ) )
+            if( Directory.Exists( _buildPath ) )
             {
-                Directory.Delete( _buildFolder, true );
+                Directory.Delete( _buildPath, true );
             }
 
             var scenes = EditorBuildSettings.scenes
@@ -81,9 +82,10 @@ namespace GameSystemSDK.Editor.Build.Infrastructure
                 File.Delete( zipPath );
             }
             ZipFile.CreateFromDirectory( directory, zipPath );
-            Process.Start( _buildFolder );
+            Process.Start( _buildPath );
             var icon = new Texture2D[] { };
             PlayerSettings.SetIcons( _namedBuildTarget, icon, _iconKind );
+            PlayerSettings.applicationIdentifier = string.Empty;
             PlayerSettings.companyName = string.Empty;
             PlayerSettings.productName = string.Empty;
             return true;

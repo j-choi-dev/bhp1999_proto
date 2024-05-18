@@ -10,50 +10,37 @@ namespace GameSystemSDK.Editor.Build.View
     {
         private const string BuildAndroidApplicationMenuName = "BHP1999_Tool/Rom Build/Build Android App";
         private const string BuildIOSApplicationMenuName = "BHP1999_Tool/Rom Build/Build IOS App";
-        private const string RootPathKey = "/root_path";
         private const string BuildVersionKey = "/build_version";
 
         [MenuItem( BuildAndroidApplicationMenuName, priority = 11 )]
         private static async void BuildAndroidProcess()
         {
-            var version = await RomBuildWindow.GetVersion();
-            if( string.IsNullOrEmpty( version ) )
-            {
-                return;
-            }
+            UnityEngine.Debug.Log( $"CHOI :: BuildIOSProcess({EditorUserBuildSettings.activeBuildTarget})" );
+            EditorUserBuildSettings.SwitchActiveBuildTarget( BuildTargetGroup.Android, BuildTarget.Android );
+            var buildVersion = PlayerSettings.bundleVersion;
 
-            PlayerSettings.bundleVersion = version;
-            var buildFolder = $"BHP1999_{version}";
+            var buildFolder = $"BHP1999_{buildVersion}_{System.DateTime.Now.ToString("yyyyMMdd_HHmmss")}";
             var exportDirPath = System.IO.Path.Combine(RomBuildPath.RomExportRootPath, buildFolder);
-            var adapter = new RomBundleAdapter( new AndroidRomBuildInfrastructure(exportDirPath));
+            var adapter = new RomBundleAdapter( new AndroidRomBuildInfrastructure(exportDirPath, buildVersion));
             adapter.BuildAssetBundle();
         }
 
         [MenuItem( BuildIOSApplicationMenuName, priority = 11 )]
         private static async void BuildIOSProcess()
         {
-            var version = await RomBuildWindow.GetVersion();
-            if( string.IsNullOrEmpty( version ) )
-            {
-                return;
-            }
+            UnityEngine.Debug.Log( $"CHOI :: BuildIOSProcess({EditorUserBuildSettings.activeBuildTarget})" );
+            EditorUserBuildSettings.SwitchActiveBuildTarget( BuildTargetGroup.Android, BuildTarget.Android );
+            var buildVersion = PlayerSettings.bundleVersion;
 
-            PlayerSettings.bundleVersion = version;
-            var buildFolder = $"BHP1999_{version}";
+            var buildFolder = $"BHP1999_{buildVersion}_{System.DateTime.Now.ToString("yyyyMMdd_HHmmss")}";
             var exportDirPath = System.IO.Path.Combine(RomBuildPath.RomExportRootPath, buildFolder);
-            var adapter = new RomBundleAdapter( new AndroidRomBuildInfrastructure(exportDirPath));
+            var adapter = new RomBundleAdapter( new IOSRomBuildInfrastructure(exportDirPath, buildVersion));
             adapter.BuildAssetBundle();
         }
 
-        private static async void AndroidBuildProcessByExternal()
+        private static void AndroidBuildProcessByExternal()
         {
-            var rawRootPath = System.Environment.GetCommandLineArgs()
-                .SkipWhile(element => !element.Equals(RootPathKey))
-                .Skip(1)
-                .FirstOrDefault();
-            var rootPath = !string.IsNullOrEmpty(rawRootPath) ?
-                rawRootPath :
-                RomBuildPath.RomExportRootPath;
+            var rootPath = RomBuildPath.RomExportRootPath;
 
             var rawBuildVersion = System.Environment.GetCommandLineArgs()
                 .SkipWhile(element => !element.Equals(BuildVersionKey))
@@ -63,24 +50,14 @@ namespace GameSystemSDK.Editor.Build.View
                 rawBuildVersion :
                 PlayerSettings.bundleVersion;
 
-            var dateTIme = System.DateTime.Now.ToString( "yyyyMMdd_HHmmss" );
-
             var buildFolder = $"BHP1999_{buildVersion}_{System.DateTime.Now.ToString("yyyyMMdd_HHmmss")}";
-
-            var exportDirPath = System.IO.Path.Combine(rootPath, buildFolder);
-            var adapter = new RomBundleAdapter( new IOSRomBuildInfrastructure(exportDirPath) );
+            var exportDirPath = System.IO.Path.Combine(RomBuildPath.RomExportRootPath, buildFolder);
+            var adapter = new RomBundleAdapter( new AndroidRomBuildInfrastructure(exportDirPath, buildVersion) );
+            adapter.BuildAssetBundle();
         }
 
-        private static async void IOSBuildProcessByExternal()
+        private static void IOSBuildProcessByExternal()
         {
-            var rawRootPath = System.Environment.GetCommandLineArgs()
-                .SkipWhile(element => !element.Equals(RootPathKey))
-                .Skip(1)
-                .FirstOrDefault();
-            var rootPath = !string.IsNullOrEmpty(rawRootPath) ?
-                rawRootPath :
-                RomBuildPath.RomExportRootPath;
-
             var rawBuildVersion = System.Environment.GetCommandLineArgs()
                 .SkipWhile(element => !element.Equals(BuildVersionKey))
                 .Skip(1)
@@ -89,12 +66,10 @@ namespace GameSystemSDK.Editor.Build.View
                 rawBuildVersion :
                 PlayerSettings.bundleVersion;
 
-            var dateTIme = System.DateTime.Now.ToString( "yyyyMMdd_HHmmss" );
-
             var buildFolder = $"BHP1999_{buildVersion}_{System.DateTime.Now.ToString("yyyyMMdd_HHmmss")}";
-
-            var exportDirPath = System.IO.Path.Combine(rootPath, buildFolder);
-            var adapter = new RomBundleAdapter( new IOSRomBuildInfrastructure(exportDirPath) );
+            var exportDirPath = System.IO.Path.Combine(RomBuildPath.RomExportRootPath, buildFolder);
+            var adapter = new RomBundleAdapter( new IOSRomBuildInfrastructure(exportDirPath, buildVersion) );
+            adapter.BuildAssetBundle();
         }
     }
 }
