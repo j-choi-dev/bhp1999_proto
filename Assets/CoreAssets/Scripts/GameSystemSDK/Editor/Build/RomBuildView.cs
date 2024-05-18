@@ -8,12 +8,29 @@ namespace GameSystemSDK.Editor.Build.View
 {
     public static class RomBuildView
     {
-        private const string BuildApplicationMenuName = "BHP1999_Tool/Rom Build/Build App";
+        private const string BuildAndroidApplicationMenuName = "BHP1999_Tool/Rom Build/Build Android App";
+        private const string BuildIOSApplicationMenuName = "BHP1999_Tool/Rom Build/Build IOS App";
         private const string RootPathKey = "/root_path";
         private const string BuildVersionKey = "/build_version";
 
-        [MenuItem( BuildApplicationMenuName, priority = 11 )]
-        private static async void BuildProcess()
+        [MenuItem( BuildAndroidApplicationMenuName, priority = 11 )]
+        private static async void BuildAndroidProcess()
+        {
+            var version = await RomBuildWindow.GetVersion();
+            if( string.IsNullOrEmpty( version ) )
+            {
+                return;
+            }
+
+            PlayerSettings.bundleVersion = version;
+            var buildFolder = $"BHP1999_{version}";
+            var exportDirPath = System.IO.Path.Combine(RomBuildPath.RomExportRootPath, buildFolder);
+            var adapter = new RomBundleAdapter( new AndroidRomBuildInfrastructure(exportDirPath));
+            adapter.BuildAssetBundle();
+        }
+
+        [MenuItem( BuildIOSApplicationMenuName, priority = 11 )]
+        private static async void BuildIOSProcess()
         {
             var version = await RomBuildWindow.GetVersion();
             if( string.IsNullOrEmpty( version ) )
@@ -51,7 +68,7 @@ namespace GameSystemSDK.Editor.Build.View
             var buildFolder = $"BHP1999_{buildVersion}_{System.DateTime.Now.ToString("yyyyMMdd_HHmmss")}";
 
             var exportDirPath = System.IO.Path.Combine(rootPath, buildFolder);
-            var adapter = new RomBundleAdapter( new AndroidRomBuildInfrastructure(exportDirPath) );
+            var adapter = new RomBundleAdapter( new IOSRomBuildInfrastructure(exportDirPath) );
         }
 
         private static async void IOSBuildProcessByExternal()
