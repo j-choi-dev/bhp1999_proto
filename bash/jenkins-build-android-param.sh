@@ -37,6 +37,8 @@ else
   echo Not Release :: "$target_method"
 fi
 
+cd ..
+
 echo -e  "[ Rom Build ] Build start!\n"
 
 "$editor_path_win_root" -projectPath "$parent_path" -executeMethod GameSystemSDK.Editor.Build.View.RomBuildView.$target_method -batchmode -quit -logFile "$log_path" /root_path "$root_path" /build_version "$build_version"

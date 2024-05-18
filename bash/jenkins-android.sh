@@ -12,6 +12,8 @@ log_path=$parent_path"/Builds/Log/"$target_folder"/"$curr_time"_log.txt"
 root_path=$1
 build_version=$2
 
+cd ..
+
 #########################################
 # Build Process
 #########################################

@@ -23,6 +23,8 @@ set EDITOR_PATH=C:\Program Files\Unity\Hub\Editor\2022.3.22f1\Editor\Unity.exe
 set UNITY_SUCCESS_MSG=Application will terminate with return code 0
 set LOG_PATH=%PARENT_PATH%\Builds\Log\%TARGET_FOLDER%\%JOB%_log.txt
 
+cd ..
+
 echo LOG_PATH = %LOG_PATH%
 echo -e  "[ Rom Build ] Build start! %BRANCH% ... %MODE%\n"
 
