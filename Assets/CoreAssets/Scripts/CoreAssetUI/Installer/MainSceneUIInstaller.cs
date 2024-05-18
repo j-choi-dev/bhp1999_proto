@@ -7,12 +7,18 @@ namespace CoreAssetUI.Installer
 {
     public class MainSceneUIInstaller : MonoInstaller<MainSceneUIInstaller>
     {
-        [SerializeField] private MainSceneFooterMenuView _mainSceneFooterMenuView = null;
+        [SerializeField] private StageSelectModal _stageSelectModal = null;
+        [SerializeField] private BattleEnterConfirmModal _battleEnterConfirmModal = null;
+
         public override void InstallBindings()
         {
             Container
-                .Bind<IMainSceneFooterMenuView>()
-                .FromInstance( _mainSceneFooterMenuView );
+                .Bind<IStageSelectModal>()
+                .FromInstance( _stageSelectModal );
+
+            Container
+                .Bind<IBattleEnterConfirmModal>()
+                .FromInstance( _battleEnterConfirmModal );
         }
     }
 }

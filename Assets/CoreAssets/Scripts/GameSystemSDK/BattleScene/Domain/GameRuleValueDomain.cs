@@ -23,6 +23,9 @@ namespace GameSystemSDK.BattleScene.Domain
         private Subject<Unit> _onHandOver = new Subject<Unit>();
         public IObservable<Unit> OnHandOver => _onHandOver; // TODO άτι©ͺ«ͺβ£Ώ @Choi 24.04.14
 
+        private Subject<int> _onGoalScoreChanged = new Subject<int>();
+        public IObservable<int> OnGoalScoreChanged => _onGoalScoreChanged;
+
         public bool IsDiscardOver { get; private set; } = false;
 
         public int MaxHandCount { get; private set; } = 0;
@@ -32,6 +35,7 @@ namespace GameSystemSDK.BattleScene.Domain
         public int CurrentDiscardCount { get; private set; } = 0;
 
         public int CurrGold { get; private set; } = 0;
+        public int GoalScore { get; private set; } = 0;
 
         public int CircleValue { get; private set; } = 0;
 
@@ -88,6 +92,12 @@ namespace GameSystemSDK.BattleScene.Domain
             MaxDiscardCount = val;
             CurrentDiscardCount = val;
             _onDiscardChanged.OnNext( MaxDiscardCount );
+        }
+
+        public void SetGoalScore( int val )
+        {
+            GoalScore = val;
+            _onGoalScoreChanged.OnNext( GoalScore );
         }
     }
 }
