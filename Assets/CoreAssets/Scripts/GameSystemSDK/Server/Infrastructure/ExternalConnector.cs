@@ -1,4 +1,4 @@
-using Cysharp.Threading.Tasks;
+ï»¿using Cysharp.Threading.Tasks;
 using GameSystemSDK.Util;
 using GameSystemSDK.Server.Domain;
 using System;
@@ -26,12 +26,6 @@ namespace GameSystemSDK.Server.Infrastructure
         {
             _playerInfoPath = System.IO.Path.Combine( Path, PlayerInfoFileName );
             _tempPath = System.IO.Path.Combine( Path, TempFileName );
-
-            if( FileIOUtil.IsExist( _playerInfoPath ) == false )
-            {
-                FileIOUtil.CreateNewFile( _playerInfoPath );
-                _playInfo = new PlayInfo();
-            }
         }
 
         public async UniTask Initialize()
@@ -40,21 +34,20 @@ namespace GameSystemSDK.Server.Infrastructure
             {
                 FileIOUtil.CreateNewFile( _playerInfoPath );
                 _playInfo = new PlayInfo();
+                Debug.Log( $"Initialize(New User)" );
                 return;
             }
-            var bytes = await FileIOUtil.Load( _playerInfoPath );
-            _playInfo = bytes.Length > 0 ?
-                SerializeUtil.Deserialize<PlayInfo>( bytes ) :
-                new PlayInfo();
+            var text = await FileIOUtil.LoadText( _playerInfoPath );
+            _playInfo = SerializeUtil.FromJson<PlayInfo>( text );
+            Debug.Log( $"Initialize(User Exist)\n{_playerInfoPath}\n{text}" );
             _onChanged.OnNext( _playInfo );
-            Debug.Log( $"Initialize ... Path : {_playerInfoPath}, bytes : {bytes.Length}, {_playInfo.UID}, {_playInfo.ClearedStage}" );
         }
 
         public async UniTask<string> GetID()
         {
             if( string.IsNullOrEmpty( _playInfo.UID ) )
             {
-                _playInfo.UID = SystemInfo.deviceUniqueIdentifier;
+                _playInfo.uid = SystemInfo.deviceUniqueIdentifier;
             }
             await UpdateStorage();
             _onChanged.OnNext( _playInfo );
@@ -65,7 +58,7 @@ namespace GameSystemSDK.Server.Infrastructure
         {
             if( string.IsNullOrEmpty( _playInfo.ClearedStage ) )
             {
-                _playInfo.ClearedStage = "0";
+                _playInfo.clearedStage = "0";
             }
             await UpdateStorage();
             _onChanged.OnNext( _playInfo );
@@ -76,7 +69,7 @@ namespace GameSystemSDK.Server.Infrastructure
         {
             await UniTask.DelayFrame( 1 );
 
-            _playInfo.LastLogIn = System.DateTime.UtcNow.Millisecond.ToString();
+            _playInfo.lastLogIn = System.DateTime.UtcNow.Millisecond.ToString();
             await UpdateStorage();
             _onChanged.OnNext( _playInfo );
             return _playInfo.LastLogIn;
@@ -84,14 +77,14 @@ namespace GameSystemSDK.Server.Infrastructure
 
         public void UpdateLogInTime()
         {
-            _playInfo.LastLogIn = System.DateTime.UtcNow.Millisecond.ToString();
+            _playInfo.lastLogIn = System.DateTime.UtcNow.Millisecond.ToString();
             UpdateStorage().Forget();
         }
 
         public async UniTask UpdateStorage()
         {
-            var saveData = SerializeUtil.Serialize(_playInfo);
-            await FileIOUtil.Save( _playerInfoPath, saveData );
+            var text = SerializeUtil.ToJson(_playInfo);
+            await FileIOUtil.SaveText( _playerInfoPath, text );
         }
 
         public async UniTask<IReadOnlyList<string>> GetCardInfo()
@@ -128,9 +121,8 @@ namespace GameSystemSDK.Server.Infrastructure
             tempValue.Value = id;
 
             var text = SerializeUtil.ToJson(tempValue);
-
             await FileIOUtil.SaveText( _tempPath, text );
-            Debug.Log( "(°¡¶ó)Server ¼Û½Å -> ¹èÆ²½Å ÀÌµ¿(¹èÆ²½Å ÃÊ±âÈ­ ½Ã, (°¡¶ó)Server·ÎºÎÅÍ ¼ö½Å)" );
+            Debug.Log( $"(ê°€ë¼)Server ì†¡ì‹  -> {text}" );
         }
 
         public async UniTask SetClearedStageInfo( string id )
@@ -139,8 +131,7 @@ namespace GameSystemSDK.Server.Infrastructure
             {
                 return;
             }
-            _playInfo.ClearedStage = id;
-            Debug.Log( $"SetClearedStageInfo ... {_playInfo.ClearedStage}" );
+            _playInfo.clearedStage = id;
             await UpdateStorage();
             await UniTask.DelayFrame( 1 );
         }
@@ -149,7 +140,7 @@ namespace GameSystemSDK.Server.Infrastructure
         {
             var text = await FileIOUtil.LoadText( _tempPath );
             var retVal = SerializeUtil.FromJson<TempValue>( text );
-            Debug.Log( $"(°¡¶ó)Server ¼ö½Å -> {retVal.Key}, {retVal.Value}" );
+            Debug.Log( $"(ê°€ë¼)Server ìˆ˜ì‹  -> {text}" );
             return retVal.Value;
         }
     }

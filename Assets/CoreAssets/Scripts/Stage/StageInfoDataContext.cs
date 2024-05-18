@@ -19,9 +19,9 @@ namespace GameSystemSDK.Stage.Application
         public IObservable<IReadOnlyList<IStageInfoData>> OnListChanged => _stageInfoListDomain.OnListChanged;
         public IReadOnlyList<IStageInfoData> List => _stageInfoListDomain.List;
 
-        public IObservable<IStageInfoData> OnCurrentStageChanged => _stageInfoListDomain.OnCurrentStageChanged;
+        public IObservable<IStageInfoData> OnLatestStageChanged => _stageInfoListDomain.OnLatestStageChanged;
 
-        public IStageInfoData CurrentStage => _stageInfoListDomain.CurrentStage;
+        public IStageInfoData CurrentLatestStage => _stageInfoListDomain.CurrentLatestStage;
 
         public StageInfoDataContext( IDataConvertDomain dataConvertDomain,
             IStageInfoListDomain stageInfoListDomain )
@@ -36,18 +36,15 @@ namespace GameSystemSDK.Stage.Application
             _stageInfoListDomain.SetList( list );
         }
 
-        public IResult<IReadOnlyList<IStageInfoData>> CurrentUserStageInfoCheck( string id )
+        public IResult<IReadOnlyList<IStageInfoData>> CheckCurrentStageInfo( string id )
         {
-            var list = _stageInfoListDomain.List;
-            list.Select( arg =>
-            {
-                var targetId = arg.ID;
-                var compare = string.Compare(targetId, id);
-                arg.SetIsClear( compare <= 0 );
-                return arg;
-            } ).ToList();
-            _stageInfoListDomain.SetList( list );
+            _stageInfoListDomain.UpdateClearedStage( id );
             return Result.Success( _stageInfoListDomain.List );
+        }
+
+        public IResult<IStageInfoData> GetLatestPlayableStage()
+        {
+            throw new NotImplementedException();
         }
     }
 }

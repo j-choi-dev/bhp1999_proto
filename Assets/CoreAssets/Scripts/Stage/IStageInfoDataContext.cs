@@ -9,11 +9,12 @@ namespace GameSystemSDK.Stage.Application
 {
     public interface IStageInfoDataContext
     {
-        IObservable<IStageInfoData> OnCurrentStageChanged { get; }
-        IStageInfoData CurrentStage { get; }
+        IObservable<IStageInfoData> OnLatestStageChanged { get; }
+        IStageInfoData CurrentLatestStage { get; }
         IObservable<IReadOnlyList<IStageInfoData>> OnListChanged { get; }
         IReadOnlyList<IStageInfoData> List { get; }
         void SetStageInfoByTable( string rawData );
-        IResult<IReadOnlyList<IStageInfoData>> CurrentUserStageInfoCheck( string id );
+        IResult<IReadOnlyList<IStageInfoData>> CheckCurrentStageInfo( string id );
+        IResult<IStageInfoData> GetLatestPlayableStage();
     }
 }

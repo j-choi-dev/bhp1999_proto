@@ -15,10 +15,15 @@ namespace GameSystemSDK.Server.Domain
     [System.Serializable]
     public class PlayInfo : IPlayInfo
     {
-        public string UID { get; set; } = string.Empty;
-        public string ClearedStage { get; set; } = string.Empty;
-        public string LastLogIn { get; set; } = string.Empty;
-        public List<string> CurrentSpecialCardList { get; set; } = new List<string>();
+        public string uid = string.Empty;
+        public string clearedStage = string.Empty;
+        public string lastLogIn = string.Empty;
+        public List<string> currentSpecialCardList = new List<string>();
+
+        public string UID => uid;
+        public string ClearedStage => clearedStage;
+        public string LastLogIn => lastLogIn;
+        public List<string> CurrentSpecialCardList => currentSpecialCardList;
     }
 
     [System.Serializable]

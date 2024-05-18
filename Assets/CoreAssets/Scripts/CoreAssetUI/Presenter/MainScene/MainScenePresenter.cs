@@ -80,7 +80,7 @@ namespace CoreAssetUI.Presenter
                 } )
                 .AddTo( this );
 
-            _stageInfoDataModel.OnCurrentStageChanged
+            _stageInfoDataModel.OnLatestStageChanged
                 .Subscribe( arg =>
                 {
                     _stageSelectModal.SetWorldName( arg.WorldName );

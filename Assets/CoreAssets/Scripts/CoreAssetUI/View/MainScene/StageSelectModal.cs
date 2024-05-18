@@ -60,11 +60,11 @@ namespace CoreAssetUI.View
             for(int i = 0; i< _buttonList.Count; i++ )
             {
                 _buttonList[i].SetStageID( list[i].ID );
-                _buttonList[i].SetAvaliableState( isNewArea && i == 0 ? true : i == latestClearIndex);
-                _buttonList[i].SetCursorActive( isNewArea && i == 0 ? true : i == latestClearIndex );
+                _buttonList[i].SetAvaliableState( isNewArea && i == 0 ? true : i == latestClearIndex+1);
+                _buttonList[i].SetCursorActive( isNewArea && i == 0 ? true : i == latestClearIndex+1 );
                 //_buttonList[i].SetButtonEnabled( i >= latestClearIndex ||
                 //    latestClearIndex == list.Count-1 ); //TODO 판정오류 있음(報告済み) @Choi 
-                _buttonList[i].SetButtonEnabled( isNewArea && i == 0 ? true : i <= latestClearIndex );
+                _buttonList[i].SetButtonEnabled( isNewArea && i == 0 ? true : i <= latestClearIndex+1 );
 
                 _buttonList[i].SetFlameMarkActive( isNewArea && i == 0 ? true : list[i].IsBossStage );
                 _buttonList[i].SetClearedState( isNewArea && i == 0 ? true : list[i].IsClear );
