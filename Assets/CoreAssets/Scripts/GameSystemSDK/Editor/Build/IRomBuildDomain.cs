@@ -1,4 +1,4 @@
-namespace StudioRomBuild.Editor.Domain
+namespace GameSystemSDK.Editor.Build.Domain
 {
 	public interface IRomBuildDomain
     {

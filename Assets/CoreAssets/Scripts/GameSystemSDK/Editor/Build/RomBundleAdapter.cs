@@ -1,7 +1,7 @@
-using StudioRomBuild.Editor.Domain;
+using GameSystemSDK.Editor.Build.Domain;
 using UnityEngine;
 
-namespace StudioRomBuild.Editor.Application
+namespace GameSystemSDK.Editor.Build.Application
 {
 	public class RomBundleAdapter
 	{

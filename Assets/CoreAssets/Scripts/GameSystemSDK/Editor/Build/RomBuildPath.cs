@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace StudioRomBuild.Editor.Domain
+namespace GameSystemSDK.Editor.Build.Domain
 {
     public static class RomBuildPath
     {

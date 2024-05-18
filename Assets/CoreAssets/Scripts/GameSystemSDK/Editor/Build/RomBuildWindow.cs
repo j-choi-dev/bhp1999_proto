@@ -1,10 +1,8 @@
 ﻿using Cysharp.Threading.Tasks;
-using System;
-using Unity;
 using UnityEditor;
 using UnityEngine;
 
-namespace StudioRomBuild.Editor.View
+namespace GameSystemSDK.Editor.Build.View
 {
     public class RomBuildWindow : EditorWindow
     {

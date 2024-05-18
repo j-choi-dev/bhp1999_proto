@@ -1,10 +1,10 @@
-﻿using StudioRomBuild.Editor.Application;
-using StudioRomBuild.Editor.Infrastructure;
-using StudioRomBuild.Editor.Domain;
+﻿using GameSystemSDK.Editor.Build.Application;
+using GameSystemSDK.Editor.Build.Domain;
+using GameSystemSDK.Editor.Build.Infrastructure;
 using System.Linq;
 using UnityEditor;
 
-namespace StudioRomBuild.Editor.View
+namespace GameSystemSDK.Editor.Build.View
 {
     public static class RomBuildView
     {

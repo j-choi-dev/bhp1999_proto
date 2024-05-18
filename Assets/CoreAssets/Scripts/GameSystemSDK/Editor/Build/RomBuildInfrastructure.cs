@@ -1,13 +1,13 @@
-﻿using StudioRomBuild.Editor.Domain;
-using System.Linq;
+﻿using System.Linq;
 using UnityEditor;
 using System.IO;
 using System.IO.Compression;
 using System.Diagnostics;
 using UnityEngine;
 using UnityEditor.Build;
+using GameSystemSDK.Editor.Build.Domain;
 
-namespace StudioRomBuild.Editor.Infrastructure
+namespace GameSystemSDK.Editor.Build.Infrastructure
 {
     public class RomBuildInfrastructure : IRomBuildDomain
     {
