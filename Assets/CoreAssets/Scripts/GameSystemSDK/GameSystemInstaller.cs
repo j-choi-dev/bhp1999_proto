@@ -1,3 +1,7 @@
+using GameSystemSDK.Common.Application;
+using GameSystemSDK.Common.Domain;
+using GameSystemSDK.Common.Infrastructure;
+using GameSystemSDK.Common.Model;
 using GameSystemSDK.Resource.Application;
 using GameSystemSDK.Resource.Domain;
 using GameSystemSDK.Resource.Infrastructure;
@@ -32,6 +36,11 @@ namespace GameSystemSDK.Common.Installer
                 .To<ExternalConnectModel>()
                 .AsCached();
 
+            Container
+                .Bind<IGameConfigSettingModel>()
+                .To<GameConfigSettingModel>()
+                .AsCached();
+
 
             Container
                 .Bind<IExternalConnectContext>()
@@ -43,10 +52,20 @@ namespace GameSystemSDK.Common.Installer
                 .To<LocalResourceFileLoadContext>()
                 .AsCached();
 
+            Container
+                .Bind<IGameConfigSettingContext>()
+                .To<GameConfigSettingContext>()
+                .AsCached();
+
 
             Container
                 .Bind<IExternalConnectDomain>()
                 .To<ExternalConnector>()
+                .AsCached();
+
+            Container
+                .Bind<IGameConfigSettingDomain>()
+                .To<GameConfigSettingInfrastructure>()
                 .AsCached();
 
             Container
