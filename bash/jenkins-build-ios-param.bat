@@ -11,10 +11,10 @@ set TARGET_FOLDER=Rom
 set TARGET_METHOD=
 
 if "%MODE%" == "release" (
-    set TARGET_METHOD=ReleaseBuildProcessByExternal
+    set TARGET_METHOD=IOSReleaseBuildProcessByExternal
     echo Release :: "%TARGET_METHOD%"
 ) else (
-    set TARGET_METHOD=BuildProcessByExternal
+    set TARGET_METHOD=IOSBuildProcessByExternal
     echo Not Release :: "%TARGET_METHOD%"
 )
 echo TARGET_METHOD :: "%TARGET_METHOD%"

@@ -30,10 +30,10 @@ unity_successed_msg="Application will terminate with return code 0"
 log_path=$parent_path"/Builds/Log/"$target_folder"/"$curr_time"_log.txt"
 
 if [[ $MODE == *"release"* ]]; then
-  target_method="ReleaseBuildProcessByExternal"
+  target_method="AndroidReleaseBuildProcessByExternal"
   echo Release :: "$target_method"
 else
-  target_method="BuildProcessByExternal"
+  target_method="AndroidBuildProcessByExternal"
   echo Not Release :: "$target_method"
 fi
 

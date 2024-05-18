@@ -17,7 +17,7 @@ build_version=$2
 #########################################
 echo -e  "[ Rom Build ] Build start!\n"
 
-"$editor_path_win_root" -projectPath "$parent_path" -executeMethod GameSystemSDK.Editor.Build.View.RomBuildView.BuildProcessByExternal -batchmode -quit -logFile "$log_path" /root_path "$root_path" /build_version "$build_version"
+"$editor_path_win_root" -projectPath "$parent_path" -executeMethod GameSystemSDK.Editor.Build.View.RomBuildView.AndroidBuildProcessByExternal -batchmode -quit -logFile "$log_path" /root_path "$root_path" /build_version "$build_version"
 while read LINE;do
     echo $LINE
 done < $log_path
