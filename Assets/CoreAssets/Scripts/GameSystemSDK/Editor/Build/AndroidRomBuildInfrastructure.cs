@@ -9,7 +9,7 @@ using GameSystemSDK.Editor.Build.Domain;
 
 namespace GameSystemSDK.Editor.Build.Infrastructure
 {
-    public class RomBuildInfrastructure : IRomBuildDomain
+    public class AndroidRomBuildInfrastructure : IRomBuildDomain
     {
         private string _rootPath = string.Empty;
         private string _buildFolder = string.Empty;
@@ -19,24 +19,20 @@ namespace GameSystemSDK.Editor.Build.Infrastructure
         private NamedBuildTarget _namedBuildTarget = NamedBuildTarget.Unknown;
         private IconKind _iconKind = default;
 
-        public RomBuildInfrastructure( string buildPath )
+        public AndroidRomBuildInfrastructure( string buildPath )
         {
             _rootPath = buildPath;
             _buildFolder = buildPath;
-#if UNITY_ANDROID
             _buildTarget = BuildTarget.Android;
             _namedBuildTarget = NamedBuildTarget.Android;
             _buildExtension = ".apk";
-# elif UNITY_IOS
-            _buildTarget = BuildTarget.iOS;
-            _namedBuildTarget = NamedBuildTarget.iOS;
-            _buildExtension = "/XcodeProject";
-#endif
             _iconKind = IconKind.Application | IconKind.Store;
         }
 
         public bool PreProcess()
         {
+            EditorUserBuildSettings.SwitchActiveBuildTarget( BuildTargetGroup.Android, BuildTarget.Android );
+
             PlayerSettings.companyName = "No Company";
             PlayerSettings.productName = "BHP1999_proto";
             if( PlayerSettings.defaultScreenWidth != 1080 )
