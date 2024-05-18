@@ -53,10 +53,10 @@ namespace GameSystemSDK.BattleScene.Model
             _deckListImportContext = deckListImportContext;
         }
 
-        public async UniTask Initialize()
+        public async UniTask Initialize( IReadOnlyList<IPlayingCardInfo> cardList )
         {
             var mock = UnityEngine.Random.Range(0, 9);
-            var generateShuffleOperation = await _deckListImportContext.LoadShuffledList();
+            var generateShuffleOperation = await _deckListImportContext.LoadShuffledList( cardList );
             _cardListContext.SetCardList( generateShuffleOperation );
             _selectedListContext.Clear();
             _handCardListContext.UpdateList( _cardListContext.AllList );

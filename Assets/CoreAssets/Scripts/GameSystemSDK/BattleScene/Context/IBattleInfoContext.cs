@@ -18,6 +18,11 @@ namespace GameSystemSDK.BattleScene.Application
         IReadOnlyList<IHandInfoData> HandInfoDataList { get; }
         IReadOnlyDictionary<int, IHandConditionData> HandConditionDictionary { get; }
 
+        IReadOnlyList<IPlayingCardInfo> PlayingCardInfoList { get; }
+
+        IReadOnlyList<ICardUpgradeInfo> CardUpgradeList { get; }
+        IReadOnlyDictionary<int, ICardEffectInfo> CardEffectDictionary { get; }
+
         /// <summary>
         /// 스테이지 정보 데이터 리스트를 로드
         /// </summary>
@@ -50,5 +55,13 @@ namespace GameSystemSDK.BattleScene.Application
         /// </summary>
         /// <param name="rawData">족보 조건 테이블 Raw Data</param>
         void InitHandConditionDataList( string rawData );
+
+        void InitPlayingCardListStorageDomain( string rawData );
+
+        void InitCardUpgradeStorageDomain(string rawData);
+        void InitCardEffectStorageDomain(string rawData);
+
+
+        IReadOnlyList<IPlayingCardInfo> GetPlayingCardDeck( int DeckGroup );
     }
 }

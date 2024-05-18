@@ -7,6 +7,6 @@ namespace GameSystemSDK.BattleScene.Domain
 {
     public interface ICardDeckListGenerateDomain
     {
-        UniTask<IReadOnlyList<IBattleCard>> GenerateShuffledList();
+        UniTask<IReadOnlyList<IBattleCard>> GenerateShuffledList( IReadOnlyList<IPlayingCardInfo> cardList );
     }
 }

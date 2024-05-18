@@ -9,7 +9,7 @@ namespace GameSystemSDK.BattleScene.Model
 {
     public interface ICardListModel
     {
-        UniTask Initialize();
+        UniTask Initialize( IReadOnlyList<IPlayingCardInfo> cardList );
 
         IReadOnlyList<IBattleCard> AllDeckList { get; }
         IReadOnlyList<IBattleCard> CurrentHandDeckList { get; }
