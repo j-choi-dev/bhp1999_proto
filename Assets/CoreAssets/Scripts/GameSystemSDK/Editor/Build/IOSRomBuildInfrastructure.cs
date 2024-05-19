@@ -12,6 +12,7 @@ namespace GameSystemSDK.Editor.Build.Infrastructure
     public class IOSRomBuildInfrastructure : IRomBuildDomain
     {
         private string _rootPath = string.Empty;
+        private string _buildFolder = string.Empty;
         private string _buildPath = string.Empty;
         private string _buildExtension = string.Empty;
         private string _version = string.Empty;
@@ -33,7 +34,7 @@ namespace GameSystemSDK.Editor.Build.Infrastructure
         {
             EditorUserBuildSettings.SwitchActiveBuildTarget( BuildTargetGroup.iOS, BuildTarget.iOS );
 
-            PlayerSettings.companyName = "No Company";
+            PlayerSettings.companyName = "NoCompany";
             PlayerSettings.productName = "BHP1999_proto";
             PlayerSettings.applicationIdentifier = "com.nocompany.bhp1999proto";
             if( PlayerSettings.defaultScreenWidth != 1080 )
@@ -58,11 +59,6 @@ namespace GameSystemSDK.Editor.Build.Infrastructure
 
         public bool BuildProcess()
         {
-            if( Directory.Exists( _buildPath ) )
-            {
-                Directory.Delete( _buildPath, true );
-            }
-
             var scenes = EditorBuildSettings.scenes
                             .Where(scene => scene.enabled)
                             .Select(scene => scene.path)
