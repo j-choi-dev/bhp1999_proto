@@ -11,19 +11,16 @@ namespace GameSystemSDK.Editor.Build.Infrastructure
 {
     public class AndroidRomBuildInfrastructure : IRomBuildDomain
     {
-        private string _rootPath = string.Empty;
-        private string _buildFolder = string.Empty;
+        private string _folderName = string.Empty;
         private string _buildPath = string.Empty;
         private string _buildExtension = string.Empty;
-        private string _version = string.Empty;
         private BuildTarget _buildTarget = BuildTarget.NoTarget;
         private NamedBuildTarget _namedBuildTarget = NamedBuildTarget.Unknown;
         private IconKind _iconKind = default;
 
-        public AndroidRomBuildInfrastructure( string buildPath, string version )
+        public AndroidRomBuildInfrastructure( string folderName )
         {
-            _rootPath = buildPath;
-            _version = version;
+            _folderName = folderName;
             _buildTarget = BuildTarget.Android;
             _namedBuildTarget = NamedBuildTarget.Android;
             _buildExtension = ".apk";
@@ -34,7 +31,7 @@ namespace GameSystemSDK.Editor.Build.Infrastructure
         {
             EditorUserBuildSettings.SwitchActiveBuildTarget( BuildTargetGroup.Android, BuildTarget.Android );
 
-            PlayerSettings.companyName = "No Company";
+            PlayerSettings.companyName = "NoCompany";
             PlayerSettings.productName = "BHP1999_proto";
             PlayerSettings.applicationIdentifier = "com.nocompany.bhp1999proto";
             if( PlayerSettings.defaultScreenWidth != 1080 )
@@ -49,7 +46,15 @@ namespace GameSystemSDK.Editor.Build.Infrastructure
             {
                 PlayerSettings.fullScreenMode = FullScreenMode.FullScreenWindow;
             }
-            _buildPath = $"{_rootPath}/{UnityEngine.Application.productName}_{_version}{_buildExtension}";
+            if( PlayerSettings.Android.targetSdkVersion != AndroidSdkVersions.AndroidApiLevel30 )
+            {
+                PlayerSettings.Android.targetSdkVersion = AndroidSdkVersions.AndroidApiLevel30;
+            }
+            if( Directory.Exists( _folderName ) == false )
+            {
+                Directory.CreateDirectory( _folderName );
+            }
+            _buildPath = $"{RomBuildPath.BuildRomSubDirPath}/{_folderName}/{_folderName}{_buildExtension}";
 
             var path = "Assets/CoreAssets/Scripts/GameSystemSDK/Editor/Build/AppIcon/icon.png";
             var icon = new Texture2D[] { ( Texture2D )AssetDatabase.LoadAssetAtPath( path, typeof( Texture2D ) ) };

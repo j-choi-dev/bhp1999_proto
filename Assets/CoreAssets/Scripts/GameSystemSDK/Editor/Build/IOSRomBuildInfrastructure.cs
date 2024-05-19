@@ -11,21 +11,18 @@ namespace GameSystemSDK.Editor.Build.Infrastructure
 {
     public class IOSRomBuildInfrastructure : IRomBuildDomain
     {
-        private string _rootPath = string.Empty;
-        private string _buildFolder = string.Empty;
+        private string _folderName = string.Empty;
         private string _buildPath = string.Empty;
         private string _buildExtension = string.Empty;
-        private string _version = string.Empty;
         private BuildTarget _buildTarget = BuildTarget.NoTarget;
         private NamedBuildTarget _namedBuildTarget = NamedBuildTarget.Unknown;
         private IconKind _iconKind = default;
 
-        public IOSRomBuildInfrastructure( string buildPath, string version )
+        public IOSRomBuildInfrastructure( string folderName )
         {
-            _rootPath = buildPath;
-            _version = version;
-            _buildTarget = BuildTarget.iOS;
-            _namedBuildTarget = NamedBuildTarget.iOS;
+            _folderName = folderName;
+            _buildTarget = BuildTarget.Android;
+            _namedBuildTarget = NamedBuildTarget.Android;
             _buildExtension = "/XcodeProject";
             _iconKind = IconKind.Application | IconKind.Store;
         }
@@ -49,7 +46,11 @@ namespace GameSystemSDK.Editor.Build.Infrastructure
             {
                 PlayerSettings.fullScreenMode = FullScreenMode.FullScreenWindow;
             }
-            _buildPath = $"{_rootPath}/{UnityEngine.Application.productName}_{_version}{_buildExtension}";
+            if( Directory.Exists( _folderName ) == false )
+            {
+                Directory.CreateDirectory( _folderName );
+            }
+            _buildPath = $"{RomBuildPath.BuildRomSubDirPath}/{_folderName}/{_folderName}{_buildExtension}";
 
             var path = "Assets/CoreAssets/Scripts/GameSystemSDK/Editor/Build/AppIcon/icon.png";
             var icon = new Texture2D[] { ( Texture2D )AssetDatabase.LoadAssetAtPath( path, typeof( Texture2D ) ) };

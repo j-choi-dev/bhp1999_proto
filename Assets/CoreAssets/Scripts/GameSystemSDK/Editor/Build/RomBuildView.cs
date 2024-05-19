@@ -15,26 +15,33 @@ namespace GameSystemSDK.Editor.Build.View
         [MenuItem( BuildAndroidApplicationMenuName, priority = 11 )]
         private static async void BuildAndroidProcess()
         {
+            if( EditorUserBuildSettings.activeBuildTarget != BuildTarget.Android )
+            {
+                return;
+            }
             UnityEngine.Debug.Log( $"CHOI :: BuildIOSProcess({EditorUserBuildSettings.activeBuildTarget})" );
             EditorUserBuildSettings.SwitchActiveBuildTarget( BuildTargetGroup.Android, BuildTarget.Android );
             var buildVersion = PlayerSettings.bundleVersion;
 
             var buildFolder = $"BHP1999_{buildVersion}_{System.DateTime.Now.ToString("yyyyMMdd_HHmmss")}";
-            var exportDirPath = System.IO.Path.Combine(RomBuildPath.RomExportRootPath, buildFolder);
-            var adapter = new RomBundleAdapter( new AndroidRomBuildInfrastructure(exportDirPath, buildVersion));
+            var folderName = System.IO.Path.Combine(RomBuildPath.RomExportRootPath, buildFolder);
+            var adapter = new RomBundleAdapter( new AndroidRomBuildInfrastructure(folderName));
             adapter.BuildAssetBundle();
         }
 
         [MenuItem( BuildIOSApplicationMenuName, priority = 11 )]
         private static async void BuildIOSProcess()
         {
-            UnityEngine.Debug.Log( $"CHOI :: BuildIOSProcess({EditorUserBuildSettings.activeBuildTarget})" );
+            if( EditorUserBuildSettings.activeBuildTarget != BuildTarget.iOS )
+            {
+                return;
+            }
             EditorUserBuildSettings.SwitchActiveBuildTarget( BuildTargetGroup.Android, BuildTarget.Android );
             var buildVersion = PlayerSettings.bundleVersion;
 
             var buildFolder = $"BHP1999_{buildVersion}_{System.DateTime.Now.ToString("yyyyMMdd_HHmmss")}";
-            var exportDirPath = System.IO.Path.Combine(RomBuildPath.RomExportRootPath, buildFolder);
-            var adapter = new RomBundleAdapter( new IOSRomBuildInfrastructure(exportDirPath, buildVersion));
+            var folderName = System.IO.Path.Combine(RomBuildPath.RomExportRootPath, buildFolder);
+            var adapter = new RomBundleAdapter( new IOSRomBuildInfrastructure(folderName));
             adapter.BuildAssetBundle();
         }
 
@@ -50,8 +57,8 @@ namespace GameSystemSDK.Editor.Build.View
                 rawBuildVersion :
                 PlayerSettings.bundleVersion;
 
-            var exportDirPath = $"BHP1999_{buildVersion}_{System.DateTime.Now.ToString("yyyyMMdd_HHmmss")}";
-            var adapter = new RomBundleAdapter( new AndroidRomBuildInfrastructure(exportDirPath, buildVersion) );
+            var folderName = $"BHP1999_{buildVersion}_{System.DateTime.Now.ToString("yyyyMMdd_HHmmss")}";
+            var adapter = new RomBundleAdapter( new AndroidRomBuildInfrastructure(folderName) );
             adapter.BuildAssetBundle();
         }
 
@@ -66,8 +73,8 @@ namespace GameSystemSDK.Editor.Build.View
                 PlayerSettings.bundleVersion;
 
             var buildFolder = $"BHP1999_{buildVersion}_{System.DateTime.Now.ToString("yyyyMMdd_HHmmss")}";
-            var exportDirPath = System.IO.Path.Combine(RomBuildPath.RomExportRootPath, buildFolder);
-            var adapter = new RomBundleAdapter( new IOSRomBuildInfrastructure(exportDirPath, buildVersion) );
+            var folderName = System.IO.Path.Combine(RomBuildPath.RomExportRootPath, buildFolder);
+            var adapter = new RomBundleAdapter( new IOSRomBuildInfrastructure(folderName) );
             adapter.BuildAssetBundle();
         }
     }
