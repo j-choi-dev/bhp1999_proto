@@ -50,8 +50,7 @@ namespace GameSystemSDK.Editor.Build.View
                 rawBuildVersion :
                 PlayerSettings.bundleVersion;
 
-            var buildFolder = $"BHP1999_{buildVersion}_{System.DateTime.Now.ToString("yyyyMMdd_HHmmss")}";
-            var exportDirPath = System.IO.Path.Combine(RomBuildPath.RomExportRootPath, buildFolder);
+            var exportDirPath = $"BHP1999_{buildVersion}_{System.DateTime.Now.ToString("yyyyMMdd_HHmmss")}";
             var adapter = new RomBundleAdapter( new AndroidRomBuildInfrastructure(exportDirPath, buildVersion) );
             adapter.BuildAssetBundle();
         }

@@ -59,11 +59,6 @@ namespace GameSystemSDK.Editor.Build.Infrastructure
 
         public bool BuildProcess()
         {
-            if( Directory.Exists( _rootPath ) )
-            {
-                Directory.Delete( _rootPath, true );
-            }
-
             var scenes = EditorBuildSettings.scenes
                             .Where(scene => scene.enabled)
                             .Select(scene => scene.path)
