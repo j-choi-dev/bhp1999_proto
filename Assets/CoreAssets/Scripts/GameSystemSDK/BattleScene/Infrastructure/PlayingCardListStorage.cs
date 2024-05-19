@@ -20,7 +20,7 @@ namespace GameSystemSDK.BattleScene.Infrastructure
                 var deckGroup = int.Parse(CSVUtil.GetData(rawData, i, "DeckGroup"));
                 var chip = int.Parse(CSVUtil.GetData(rawData, i, "Chip"));
                 var rank = int.Parse(CSVUtil.GetData(rawData, i, "Rank"));
-                var suite = int.Parse(CSVUtil.GetData(rawData, i, "Suite"));
+                var suite = EnumUtil<CardType>.Parse(CSVUtil.GetData(rawData, i, "Suite"));
 
                 // 그림카드의 값이 비어있다면 False
                 string strPicture = CSVUtil.GetData(rawData, i, "PictureCard");

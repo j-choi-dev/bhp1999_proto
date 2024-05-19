@@ -12,7 +12,7 @@ namespace GameSystemSDK.BattleScene.Domain
         int DeckGroup { get; }
         int Chip { get; }
         int Rank { get; }
-        int Suite { get; }
+        CardType Suite { get; }
         bool PictureCard { get; }
         string IllustResourceID { get; }
         string IconResourceID { get; }
@@ -24,7 +24,7 @@ namespace GameSystemSDK.BattleScene.Domain
         public int DeckGroup { get; private set; }
         public int Chip { get; private set; }
         public int Rank { get; private set; }
-        public int Suite { get; private set; }
+        public CardType Suite { get; private set; }
         public bool PictureCard { get; private set; }
         public string IllustResourceID { get; private set; }
         public string IconResourceID { get; private set; }
@@ -33,7 +33,7 @@ namespace GameSystemSDK.BattleScene.Domain
             int deckGroup,
             int chip,
             int rank,
-            int suite,
+            CardType suite,
             bool pictureCard,
             string illustResourceID,
             string iconResourceID)

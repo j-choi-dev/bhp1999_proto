@@ -97,6 +97,8 @@ namespace GameSystemSDK.BattleScene.Model
         /// <returns>비동기 처리 UniTask</returns>
         UniTask RunHand();
 
+        void UpdateHandDeckInfo();
+
         void DiscardProcess( string id );
 
         /// <summary>

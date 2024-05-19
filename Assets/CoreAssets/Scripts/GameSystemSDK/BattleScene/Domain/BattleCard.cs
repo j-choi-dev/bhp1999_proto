@@ -12,7 +12,7 @@ namespace GameSystemSDK.BattleScene.Domain
 
         public int Index { get; private set; } = 0;
 
-        public int Type { get; private set; } = 0;
+        public CardType Type { get; private set; } = CardType.None;
 
         public int Value { get; private set; } = 0;
 
@@ -37,14 +37,14 @@ namespace GameSystemSDK.BattleScene.Domain
         public void SetIllustResourceID( string sprite )
             => IllustResourceID = sprite;
 
-        public void SetType( int value )
-            => Type = value;
+        public void SetType( CardType type )
+            => Type = type;
 
         public void SetValue( int value )
             => Value = value;
 
         public void SetChip(int value)
-            => Value = value;
+            => Chip = value;
 
         public void SetDrawn( bool isValue )
             => IsDrawn = isValue;
@@ -57,5 +57,30 @@ namespace GameSystemSDK.BattleScene.Domain
 
         public void SetIsSelected( bool isValue )
             => IsSelected = isValue;
+
+        // <TODO>
+        // 카드가 여러개 생기면 Type이랑 Value 같다고 같은 카드라고는 볼 수 없다.
+        // 카드 처음에 배포할 때 고유 UID를 생성해서 주고 그걸 비교해야 한다.
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+            if (!(obj is BattleCard))
+            {
+                return false;
+            }
+
+            var other = (BattleCard)obj;
+
+            return Type == other.Type && Value == other.Value;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = HashCode.Combine(Type, Value);
+            return hashCode;
+        }
     }
 }

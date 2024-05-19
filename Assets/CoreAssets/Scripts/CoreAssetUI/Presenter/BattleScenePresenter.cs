@@ -94,6 +94,7 @@ namespace CoreAssetUI.Presenter
                         return;
                     }
                     _cardDeckModel.MoveToSelectedList( arg.id );
+                    _gameProcessModel.UpdateHandDeckInfo();
                 } )
                 .AddTo( this );
 
@@ -119,6 +120,7 @@ namespace CoreAssetUI.Presenter
                         return;
                     }
                     _cardDeckModel.ReturnToHandList( arg.id );
+                    _gameProcessModel.UpdateHandDeckInfo();
                 } )
                 .AddTo( this );
 

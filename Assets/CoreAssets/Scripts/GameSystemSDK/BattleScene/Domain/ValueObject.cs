@@ -21,12 +21,12 @@ namespace GameSystemSDK.BattleScene.Domain
 
     public enum CardType
     {
-        Red,
-        Black,
-        Blue,
-        Yellow,
+        None,
+        Diamond,
+        Heart,
+        Club,
+        Spade,
         Max,
-        None = Max
     }
     public enum PokerNumCheckType
     {

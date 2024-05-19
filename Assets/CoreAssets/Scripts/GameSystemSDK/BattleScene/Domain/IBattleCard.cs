@@ -6,7 +6,7 @@ namespace GameSystemSDK.BattleScene.Domain
     {
         public string ID { get; }
         public int Index { get; }
-        public int Type { get; }
+        public CardType Type { get; }
         public int Value { get; }
 
         public int Chip { get; }
@@ -18,7 +18,7 @@ namespace GameSystemSDK.BattleScene.Domain
 
         void SetID( string value );
         void SetIndex( int value );
-        void SetType( int value );
+        void SetType( CardType type );
         void SetValue( int value );
         void SetChip( int value );
         public void SetIllustResourceID( string sprite );
@@ -26,5 +26,9 @@ namespace GameSystemSDK.BattleScene.Domain
         public void SetInHand( bool isValue );
         public void SetIsSelected( bool isValue );
         public void SetDrawn( bool isValue );
+
+        //public bool Equals(object obj);
+
+        //public int GetHashCode();
     }
 }
