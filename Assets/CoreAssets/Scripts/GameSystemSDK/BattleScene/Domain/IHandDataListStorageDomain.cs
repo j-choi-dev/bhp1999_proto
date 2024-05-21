@@ -9,7 +9,7 @@ namespace GameSystemSDK.BattleScene.Domain
     public interface IHandDataListStorageDomain
     {
         /// <summary>
-            ///  외부에서 참조할 족보 데이터 리스트
+        ///  외부에서 참조할 족보 데이터 리스트
         /// </summary>
         IReadOnlyList<IHandInfoData> HandInfoDataList { get; }
 
@@ -29,5 +29,7 @@ namespace GameSystemSDK.BattleScene.Domain
         /// </summary>
         /// <param name="rawData">string type Raw Data</param>
         void InitHandConditionDataList( IReadOnlyList<Dictionary<string, string>> rawData );
+
+        void InitHandLevelDataList(IReadOnlyList<Dictionary<string, string>> rawData);
     }
 }

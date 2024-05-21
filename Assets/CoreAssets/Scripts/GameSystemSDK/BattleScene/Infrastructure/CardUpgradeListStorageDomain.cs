@@ -6,12 +6,8 @@ namespace GameSystemSDK.BattleScene.Infrastructure
 {
     public class CardUpgradeListStorageDomain : ICardUpgradeListStorageDomain
     {
-        private List<ICardUpgradeInfo> _cardUpgradeList = new List<ICardUpgradeInfo>();
-        public IReadOnlyList<ICardUpgradeInfo> CardUpgradeList => _cardUpgradeList;
-
-        private Dictionary<int, ICardEffectInfo> _cardEffectDictionary = new Dictionary<int, ICardEffectInfo>();
-        public IReadOnlyDictionary<int, ICardEffectInfo> CardEffectDictionary => _cardEffectDictionary;
-
+        private Dictionary<int, ICardUpgradeInfo> _cardUpgradeDictionary = new Dictionary<int, ICardUpgradeInfo>();
+        public IReadOnlyDictionary<int, ICardUpgradeInfo> CardUpgradeDictionary => _cardUpgradeDictionary;
 
         public void InitCardUpgradeList(IReadOnlyList<Dictionary<string, string>> rawData)
         {
@@ -23,7 +19,7 @@ namespace GameSystemSDK.BattleScene.Infrastructure
 
                 var data = new CardUpgradeInfo(id, upgradeType, conditionType);
 
-                _cardUpgradeList.Add(data);
+                _cardUpgradeDictionary.Add(data.ID, data);
             }
         }
 
@@ -39,7 +35,11 @@ namespace GameSystemSDK.BattleScene.Infrastructure
 
                 var currPairCondition = new CardEffectInfo(id, groupId, checkType, rate, effectParam);
 
-                _cardEffectDictionary.Add(currPairCondition.ID, currPairCondition);
+                ICardUpgradeInfo cardUpgradeInfo;
+                if (_cardUpgradeDictionary.TryGetValue(currPairCondition.GroupID, out cardUpgradeInfo) == true )
+                {
+                    cardUpgradeInfo.AddEffect( currPairCondition );
+                }
             }
         }
     }

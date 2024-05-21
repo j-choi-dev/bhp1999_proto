@@ -10,34 +10,36 @@ namespace GameSystemSDK.BattleScene.Domain
     {
         int ID { get; }
         string PairName { get; }
-        int AddPoint { get; }
-        int MultiplePoint { get; }
         IReadOnlyList<IHandConditionData> ConditionList { get; }
         OperationType OperationType { get; }
+        IReadOnlyDictionary<int, IHandLevelData> HandLevelDictionary { get; }
+        void AddCardLevel(HandLevelData levelData);
     }
 
     public class HandInfoData : IHandInfoData
     {
         public int ID { get; private set; }
         public string PairName { get; private set; }
-        public int AddPoint { get; private set; }
-        public int MultiplePoint { get; private set; }
         public IReadOnlyList<IHandConditionData> ConditionList { get; private set; }
         public OperationType OperationType { get; private set; }
 
+        private Dictionary<int, IHandLevelData> _handLevelDictionary = new Dictionary<int, IHandLevelData>();      
+        public IReadOnlyDictionary<int, IHandLevelData> HandLevelDictionary => _handLevelDictionary;
+
         public HandInfoData( int id,
             string pairName,
-            int addPoint,
-            int multiplePoint,
             OperationType opType,
             IReadOnlyList<IHandConditionData> conditionList )
         {
             this.ID = id;
             this.PairName = pairName;
-            this.AddPoint = addPoint;
-            this.MultiplePoint = multiplePoint;
             this.OperationType = opType;
             this.ConditionList = conditionList;
+        }
+
+        public void AddCardLevel( HandLevelData levelData )
+        {
+            _handLevelDictionary.Add(levelData.HandsLevel, levelData);
         }
     }
 }

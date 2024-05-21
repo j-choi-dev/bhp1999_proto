@@ -213,6 +213,9 @@ namespace GameSystemSDK.BattleScene.Model
             var handRawData = _battleResourceContext.GetTableRawData( path.PokerHandsCsvName );
             _battleInfoContext.InitHandDataList( handRawData.Value );
 
+            var handLevelRawData = _battleResourceContext.GetTableRawData(path.PokerHandsLevelCsvName);
+            _battleInfoContext.InitHandLevelDataList(handLevelRawData.Value);
+
             var playingCardRawData = _battleResourceContext.GetTableRawData(path.PlayingCardCsvName);
             _battleInfoContext.InitPlayingCardListStorageDomain(playingCardRawData.Value);
 

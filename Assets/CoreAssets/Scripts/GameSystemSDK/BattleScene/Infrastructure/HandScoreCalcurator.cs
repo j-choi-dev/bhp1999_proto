@@ -29,6 +29,9 @@ namespace GameSystemSDK.BattleScene.Domain
             return (pokerHandsID, outCardList);
         }
 
+        // <TODO>
+        // 일단 무조건 1레벨 득점을 돌려준다.
+        // 현재 레벨 구현하면 더 올려서 주도록 하자.
         public IHandConditionInfo GetPokerHandsInfoByID( IReadOnlyList<IHandInfoData> handDataList, int id )
         {
             for( int i = 0; i < handDataList.Count; i++ )
@@ -38,8 +41,8 @@ namespace GameSystemSDK.BattleScene.Domain
                     continue;
                 }
                 var name = handDataList[i].PairName;
-                var addPoint = handDataList[i].AddPoint;
-                var multiPoint = handDataList[i].MultiplePoint;
+                var addPoint = handDataList[i].HandLevelDictionary[1].AddPoint;
+                var multiPoint = handDataList[i].HandLevelDictionary[1].MultiplePoint;
                 var retVal = new HandConditionInfo( name, addPoint, multiPoint );
                 return retVal;
             }
