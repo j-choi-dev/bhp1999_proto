@@ -15,5 +15,7 @@ namespace GameSystemSDK.BattleScene.Application
         IObservable<(int index, int score)> OnScoreInfoChanged { get; }
         IObservable<bool> OnIsEffectProccess { get; }
         UniTask RunScoreEffectProcess( IDetailScoreInfo detail, AudioClip effect );
+
+        void SelectHandProcess(IHandConditionInfo conditionInfo);
     }
 }

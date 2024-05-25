@@ -12,10 +12,9 @@ namespace GameSystemSDK.BattleScene.Infrastructure
             return GetShuffledCardList( cardList );
         }
 
-        // Todo
+        // <TODO>
         // 일단 현재 리소스 이름에 맞춰서 -1 한 상태
         // 리소스에 맞춰 이름이든 데이터든 변경 필요함
-        // Chip도 계산에 현재 빠져 있음
         private static IReadOnlyList<IBattleCard> GetShuffledCardList( IReadOnlyList<IPlayingCardInfo> cardList )
         {
             var rand = new System.Random();
@@ -29,8 +28,8 @@ namespace GameSystemSDK.BattleScene.Infrastructure
                 card.SetType(val.Suite);
                 card.SetValue(val.Rank);
                 card.SetChip(val.Chip);
-                card.SetIllustResourceID($"card-type-{val.Suite-1}");   
-                card.SetIconResourceID($"icon-type-{val.Suite-1}");
+                card.SetIllustResourceID($"card-type-{((int)val.Suite) - 1}");   
+                card.SetIconResourceID($"icon-type-{((int)val.Suite) - 1}");
                 list.Add(card);
             }
 

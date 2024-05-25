@@ -8,9 +8,7 @@ namespace GameSystemSDK.BattleScene.Domain
     /// </summary>
     public interface ICardUpgradeListStorageDomain
     {
-        IReadOnlyList<ICardUpgradeInfo> CardUpgradeList { get; }
-
-        IReadOnlyDictionary<int, ICardEffectInfo> CardEffectDictionary { get; }
+        IReadOnlyDictionary<int, ICardUpgradeInfo> CardUpgradeDictionary { get; }
 
         void InitCardUpgradeList( IReadOnlyList<Dictionary<string, string>> rawData );
 

@@ -22,8 +22,6 @@ namespace GameSystemSDK.BattleScene.Infrastructure
                 // 이 변수들은 안 들어가면 게임 뻗는게 맞음
                 var id = int.Parse( CSVUtil.GetData( rawData, i, "PokerHandsID" ) );
                 var pairName = CSVUtil.GetData( rawData, i, "HandsName" );
-                var addPoint = int.Parse( CSVUtil.GetData( rawData, i, "AddPoint" ) );
-                var multiplePoint = int.Parse( CSVUtil.GetData( rawData, i, "MultiplePoint" ) );
 
                 // 여기서부터는 비어 있을 수 있음
                 string strOper = CSVUtil.GetData(rawData, i, "OperatorType");
@@ -44,9 +42,9 @@ namespace GameSystemSDK.BattleScene.Infrastructure
                     var condition = _handConditionDictionary[iCondition];
                     conditionList.Add( condition );
                 }
-                var data = new HandInfoData(id, pairName, addPoint, multiplePoint, oper, conditionList);
+                var data = new HandInfoData(id, pairName, oper, conditionList);
 
-                _handInfoDataList.Add( data );
+                _handInfoDataList.Add(data);
             }
         }
 
@@ -60,6 +58,28 @@ namespace GameSystemSDK.BattleScene.Infrastructure
                 var count = int.Parse( CSVUtil.GetData( rawData, i, "Count" ) );
                 var currPairCondition = new HandConditionData(id, pattern, checkType, count);
                 _handConditionDictionary.Add( currPairCondition.ID, currPairCondition );
+            }
+        }
+
+        public void InitHandLevelDataList( IReadOnlyList<Dictionary<string, string>> rawData )
+        {
+            for (int i = 0; i < rawData.Count; i++)
+            {
+                var id = int.Parse(CSVUtil.GetData(rawData, i, "PokerHandsLevelID"));
+                var groupId = int.Parse(CSVUtil.GetData(rawData, i, "PokerHandsID"));
+                var level = int.Parse(CSVUtil.GetData(rawData, i, "HandsLevel"));
+                var addPoint = int.Parse(CSVUtil.GetData(rawData, i, "AddPoint"));
+                var multiplePoint = int.Parse(CSVUtil.GetData(rawData, i, "MultiplePoint"));
+
+                var currHandLevel = new HandLevelData(id, groupId, level, addPoint, multiplePoint);
+
+                foreach (var handInfo in _handInfoDataList)
+                {
+                    if( handInfo.ID == currHandLevel.GroupID )
+                    {
+                        handInfo.AddCardLevel(currHandLevel);
+                    }
+                }
             }
         }
     }

@@ -136,14 +136,21 @@ namespace GameSystemSDK.BattleScene.Model
             InitializeGameRuleData();
         }
 
+        public void UpdateHandDeckInfo()
+        {
+            var handList = _battleInfoContext.HandInfoDataList;
+            var scoreTupple = _handScoreCalcurateContext.GetMaxPokerScore(handList, _selectedListContext.List);
+            var conditionInfo = _handScoreCalcurateContext.GetPokerHandsInfoByID( handList, scoreTupple.id );
+            _battleEffectContext.SelectHandProcess(conditionInfo);
+        }
+
         public async UniTask RunHand()
         {
             _onHandProcessRun.OnNext( true );
-            var list = _selectedListContext.List;
             var handList = _battleInfoContext.HandInfoDataList;
             var scoreTupple = _handScoreCalcurateContext.GetMaxPokerScore( handList, _selectedListContext.List );
             var conditionInfo = _handScoreCalcurateContext.GetPokerHandsInfoByID( handList, scoreTupple.id );
-            var scoreInfo = _handScoreCalcurateContext.GetScoreData( _selectedListContext.List, conditionInfo );
+            var scoreInfo = _handScoreCalcurateContext.GetScoreData(scoreTupple.Item2, conditionInfo );
 
             await UniTask.Delay( 500 );
             var soundEffectId = $"battle00{UnityEngine.Random.Range(1, 5)}";
@@ -205,6 +212,9 @@ namespace GameSystemSDK.BattleScene.Model
 
             var handRawData = _battleResourceContext.GetTableRawData( path.PokerHandsCsvName );
             _battleInfoContext.InitHandDataList( handRawData.Value );
+
+            var handLevelRawData = _battleResourceContext.GetTableRawData(path.PokerHandsLevelCsvName);
+            _battleInfoContext.InitHandLevelDataList(handLevelRawData.Value);
 
             var playingCardRawData = _battleResourceContext.GetTableRawData(path.PlayingCardCsvName);
             _battleInfoContext.InitPlayingCardListStorageDomain(playingCardRawData.Value);

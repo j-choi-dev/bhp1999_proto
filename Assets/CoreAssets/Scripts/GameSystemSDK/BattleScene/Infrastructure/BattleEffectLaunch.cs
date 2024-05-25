@@ -2,8 +2,10 @@ using Cysharp.Threading.Tasks;
 using GameSystemSDK.BattleScene.Domain;
 using GameSystemSDK.Sound;
 using System;
+using System.Net;
 using UniRx;
 using UnityEngine;
+using UnityEngine.Experimental.GlobalIllumination;
 
 namespace GameSystemSDK.BattleScene.Infrastructure
 {
@@ -43,15 +45,27 @@ namespace GameSystemSDK.BattleScene.Infrastructure
             for(var i = 0; i< detail.HandCardList.Count; i++ )
             {
                 scoreMsg += string.IsNullOrEmpty( scoreMsg ) ?
-                    detail.HandCardList[i].Value :
-                    $" + {detail.HandCardList[i].Value}";
-                _onScoreInfoChanged.OnNext( (i,detail.HandCardList[i].Value) );
+                    detail.HandCardList[i].Chip :
+                    $" + {detail.HandCardList[i].Chip}";
+                _onScoreInfoChanged.OnNext( (i,detail.HandCardList[i].Chip) );
                 await UniTask.Delay( 1500 );
             }
             await UniTask.Delay( Interval * 2 );
             _onTotalScoreChanged.OnNext( _totalScore );
             await UniTask.Delay( Interval * 2 );
             _onIsEffectProccess.OnNext( false );
+        }
+
+        public void SelectHandProcess( IHandConditionInfo conditionInfo )
+        {
+            if( conditionInfo == null )
+            {
+                _onSkillNameChanged.OnNext($"판정: 없음" );
+                return;
+            }
+
+            var strMsg = $"판정: {conditionInfo.Name} -> ({conditionInfo.AddPoint} X {conditionInfo.MultiplePoint})";
+            _onSkillNameChanged.OnNext(strMsg);
         }
     }
 }

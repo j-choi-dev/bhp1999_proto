@@ -12,7 +12,9 @@ namespace GameSystemSDK.BattleScene.Domain
         IReadOnlyList<IBattleCard> HandCardList { get; }
         IReadOnlyList<int> PointList { get; }
         int MultiplePoint { get; }
+        int AddPoint { get; }
         public int Score { get; }
+        public string GetScoreMsg ();
     }
 
     public class DetailScoreInfo : IDetailScoreInfo
@@ -25,24 +27,36 @@ namespace GameSystemSDK.BattleScene.Domain
 
         public int MultiplePoint { get; private set; }
 
+        public int AddPoint { get; private set; }
+
         public int Score { get; private set; }
 
+
+        // Todo.
+        // 현재는 제출한 핸드에 있는 카드로 계산
+        // 추가적으로 지금 내 손에 남아 있는 카드를 순서대로 트리거 + 조커를 순서대로 트리거하는 과정을 거쳐야 한다.
+        // 현재는 한방에 점수를 뽑고 있는데 장기적으로는 실제로 카드 하나씩 이펙트 터지면서 순서대로 트리거하는 방식으로
+        // 변경해야 할 것으로 보인다.
         public DetailScoreInfo( IReadOnlyList<IBattleCard> cardList, IHandConditionInfo conditionInfo )
         {
             this.Name = conditionInfo.Name;
             this.MultiplePoint = conditionInfo.MultiplePoint;
+            this.AddPoint = conditionInfo.AddPoint;
             this.HandCardList = cardList;
-            this.PointList = cardList.Select( arg => arg.Value ).ToList();
+            this.PointList = cardList.Select( arg => arg.Chip ).ToList();
 
-            var realAddPoint = 0;
+            var realAddPoint = conditionInfo.AddPoint;
             for( var i = 0; i< cardList.Count; i++ )
             {
-                realAddPoint += cardList[i].Value;
+                realAddPoint += cardList[i].Chip;
             }
             this.Score = realAddPoint * conditionInfo.MultiplePoint;
-            var strMsg = $"판정: { conditionInfo.Name} -> ({string.Join(" + ", this.PointList)}) X {conditionInfo.MultiplePoint} = {this.Score }";
-            //UnityEngine.Debug.Log( $"{strMsg}" );
+        }
 
+        public string GetScoreMsg()
+        {
+            var strMsg = $"판정: {Name} -> ({AddPoint} + {string.Join(" + ", PointList)}) X {MultiplePoint} = {this.Score}";
+            return strMsg;
         }
     }
 }

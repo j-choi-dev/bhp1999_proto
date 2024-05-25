@@ -25,11 +25,8 @@ namespace GameSystemSDK.BattleScene.Application
         public IReadOnlyList<IPlayingCardInfo> PlayingCardInfoList
                 => _playingCardListStorageDomain.PlayingCardDeckList;
 
-        public IReadOnlyList<ICardUpgradeInfo> CardUpgradeList
-                => _cardUpgradeListStorageDomain.CardUpgradeList;
-
-        public IReadOnlyDictionary<int, ICardEffectInfo> CardEffectDictionary
-                => _cardUpgradeListStorageDomain.CardEffectDictionary;
+        public IReadOnlyDictionary<int, ICardUpgradeInfo> CardUpgradeDictionary
+                => _cardUpgradeListStorageDomain.CardUpgradeDictionary;
 
         public BattleInfoContext( IStageInfoImporterDomain battleInfoImporterDomain,
             IHandDataListStorageDomain handDataListStorageDomain,
@@ -61,6 +58,12 @@ namespace GameSystemSDK.BattleScene.Application
         {
             var csvData = CSVDataConverter.ConvertProcess(rawData);
             _handDataListStorageDomain.InitHandConditionDataList( csvData );
+        }
+
+        public void InitHandLevelDataList(string rawData)
+        {
+            var csvData = CSVDataConverter.ConvertProcess(rawData);
+            _handDataListStorageDomain.InitHandLevelDataList(csvData);
         }
 
         public void InitPlayingCardListStorageDomain( string rawData )

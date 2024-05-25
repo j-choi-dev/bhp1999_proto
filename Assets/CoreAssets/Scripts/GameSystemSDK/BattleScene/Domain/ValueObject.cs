@@ -7,6 +7,7 @@ namespace GameSystemSDK.BattleScene.Domain
         public readonly string StageDataMock => "StageDataMock";
         public readonly string PokerHandsCsvName => "PokerHands";
         public readonly string PokerHandsConditionCsvName => "PokerHandsCondition";
+        public readonly string PokerHandsLevelCsvName => "PokerHandsLevel";
         public readonly string PlayingCardCsvName => "PlayingCard";
         public readonly string CardUpgradeCsvName => "CardUpgrade";
         public readonly string CardEffectCsvName => "CardEffect";
@@ -21,12 +22,12 @@ namespace GameSystemSDK.BattleScene.Domain
 
     public enum CardType
     {
-        Red,
-        Black,
-        Blue,
-        Yellow,
+        None,
+        Diamond,
+        Heart,
+        Club,
+        Spade,
         Max,
-        None = Max
     }
     public enum PokerNumCheckType
     {

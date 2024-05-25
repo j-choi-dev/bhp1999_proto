@@ -1,0 +1,20 @@
+id,unUsed,EffectGroupId,비고 (참고용),OperationType,OperationParam1,OperationParam2,OperationParam3,OperationParam4,비고 (참고용)
+10101,,101,상점에서 파는 카드가 1장 추가됩니다. (3장),PlusShopSlot,1,,,,
+20101,,201,상점에서 파는 카드가 1장 더 추가됩니다. (4장),PlusShopSlot,2,,,,
+30101,,301,상점의 모든 카드와 부스터 팩은 25% 할인됩니다.,Sale,2500,,,,OpParam1 = 만분율
+40101,,401,상점의 모든 카드와 부스터 팩은 50% 할인됩니다.,Sale,5000,,,,OpParam1 = 만분율
+50101,,501,"포일, 홀로그램, 폴리크롬 카드가 일반 카드보다 2배 더 자주 나타납니다.",UncommonChance,20000,,,,OpParam1 = 만분율
+60101,,601,"포일, 홀로그램, 폴리크롬 카드가 일반 카드보다 4배 더 자주 나타납니다.",UncommonChance,40000,,,,OpParam1 = 만분율
+70101,,701,상점 새로고침 비용 $2 할인,RerollSale,2,,,,
+80101,,801,상점 새로고침 비용 $2 추가 할인,RerollSale,4,,,,
+90101,,901,+1 소모품 슬롯,ConsumeSlot,1,,,,
+100101,,1001,매 라운드마다 +1 플레이 횟수를 얻습니다.,StatHandCount,1,,,,"Stat 관련 OpParam1 = +/- 변동사항 / OpParam2 = 절대적으로 고정할 수치 / OpParam3 = +/- 변동사항 상한, 하한"
+110101,,1101,매 라운드마다 추가로 +1 플레이 횟수를 얻습니다.,StatHandCount,2,,,,"Stat 관련 OpParam1 = +/- 변동사항 / OpParam2 = 절대적으로 고정할 수치 / OpParam3 = +/- 변동사항 상한, 하한"
+120101,,1201,매 라운드마다 +1 버리기 횟수를 얻습니다.,StatDiscardCount,1,,,,"Stat 관련 OpParam1 = +/- 변동사항 / OpParam2 = 절대적으로 고정할 수치 / OpParam3 = +/- 변동사항 상한, 하한"
+130101,,1301,매 라운드마다 추가 +1 버리기 횟수를 얻습니다.,StatDiscardCount,2,,,,"Stat 관련 OpParam1 = +/- 변동사항 / OpParam2 = 절대적으로 고정할 수치 / OpParam3 = +/- 변동사항 상한, 하한"
+140101,,1401,이자 한도를 $10로 늘립니다.,InterestLimit,10,,,,
+150101,,1501,이자 한도를 $20로 늘립니다.,InterestLimit,20,,,,
+160101,,1601,아무 효과가 없습니다.,JokerSlot,0,,,,
+170101,,1701,+1 조커 슬롯,JokerSlot,1,,,,
+180101,,1801,핸드 사이즈 +1,StatHandSize,1,,,,"Stat 관련 OpParam1 = +/- 변동사항 / OpParam2 = 절대적으로 고정할 수치 / OpParam3 = +/- 변동사항 상한, 하한"
+190101,,1901,핸드 사이즈에 추가 +1,StatHandSize,2,,,,"Stat 관련 OpParam1 = +/- 변동사항 / OpParam2 = 절대적으로 고정할 수치 / OpParam3 = +/- 변동사항 상한, 하한"

@@ -29,6 +29,9 @@ namespace GameSystemSDK.BattleScene.Domain
             return (pokerHandsID, outCardList);
         }
 
+        // <TODO>
+        // 일단 무조건 1레벨 득점을 돌려준다.
+        // 현재 레벨 구현하면 더 올려서 주도록 하자.
         public IHandConditionInfo GetPokerHandsInfoByID( IReadOnlyList<IHandInfoData> handDataList, int id )
         {
             for( int i = 0; i < handDataList.Count; i++ )
@@ -38,18 +41,19 @@ namespace GameSystemSDK.BattleScene.Domain
                     continue;
                 }
                 var name = handDataList[i].PairName;
-                var addPoint = handDataList[i].AddPoint;
-                var multiPoint = handDataList[i].MultiplePoint;
+                var addPoint = handDataList[i].HandLevelDictionary[1].AddPoint;
+                var multiPoint = handDataList[i].HandLevelDictionary[1].MultiplePoint;
                 var retVal = new HandConditionInfo( name, addPoint, multiPoint );
                 return retVal;
             }
-            throw new System.NullReferenceException( $"Couldn't Find {id}" );
+
+            return null;
         }
 
         // 旧PokerHand.IsAccept
         private bool CheckScore( IHandInfoData data,
-            IReadOnlyList<IBattleCard> currCardList,
-            IReadOnlyList<IBattleCard> outCardList )
+            IReadOnlyList<IBattleCard> inputCurCardList,
+            List<IBattleCard> outCardList )
         {
             var isAccept = false;
             if( outCardList == null )
@@ -61,23 +65,21 @@ namespace GameSystemSDK.BattleScene.Domain
             {
                 case OperationType.OperationAND:
                     {
-                        List<IBattleCard> curCardList = currCardList.ToList();
+                        List<IBattleCard> curCardList = inputCurCardList.ToList();
                         List<IBattleCard> currOutCardList = new List<IBattleCard>();
                         for( int i = 0; i < data.ConditionList.Count; i++ )
                         {
                             if( CheckCondition( data.ConditionList[i], curCardList, currOutCardList ) == false )
                             {
                                 isAccept = false;
-                                currOutCardList = new List<IBattleCard>();
+                                currOutCardList.Clear();
                                 break;
                             }
 
                             isAccept = true;
-                            var target = currCardList
-                                .Where( cc => outCardList.Select( oc => oc.ID ).Contains( cc.ID ));
-                            currCardList.Except( target.ToList() );
+                            curCardList = curCardList.Except( currOutCardList ).ToList();
                         }
-                        outCardList.ToList().AddRange( currOutCardList );
+                        outCardList.AddRange( currOutCardList );
                     }
 
                     break;
@@ -85,24 +87,25 @@ namespace GameSystemSDK.BattleScene.Domain
                     for( int i = 0; i < data.ConditionList.Count; i++ )
                     {
                         List<IBattleCard> curOutCardList = new List<IBattleCard>();
-                        if( CheckCondition( data.ConditionList[i], currCardList, curOutCardList ) )
+                        if( CheckCondition( data.ConditionList[i], inputCurCardList, curOutCardList ) )
                         {
                             isAccept = true;
-                            outCardList.ToList().AddRange( curOutCardList );
+                            outCardList.AddRange( curOutCardList );
                             outCardList = outCardList.Distinct().ToList();
                         }
                     }
                     break;
                 default:
                     var highNum = 0;
-                    for( int i = 0; i < currCardList.Count; i++ )
+                    for( int i = 0; i < inputCurCardList.Count; i++ )
                     {
-                        if( highNum > ( int )currCardList[i].Value )
+                        if( highNum > inputCurCardList[i].Value )
                         {
                             continue;
                         }
-                        highNum = ( int )currCardList[i].Value;
-                        outCardList.ToList().Add( currCardList[i] );
+                        highNum = inputCurCardList[i].Value;
+                        outCardList.Clear();
+                        outCardList.Add(inputCurCardList[i] );
                     }
                     if( highNum > 0 )
                     {
@@ -117,7 +120,7 @@ namespace GameSystemSDK.BattleScene.Domain
         // 旧PokerHandsCondition.IsAccept
         private bool CheckCondition( IHandConditionData condition,
             IReadOnlyList<IBattleCard> CardList,
-            IReadOnlyList<IBattleCard> outCardList )
+            List<IBattleCard> outCardList )
         {
             switch( condition.CheckType )
             {
@@ -133,30 +136,29 @@ namespace GameSystemSDK.BattleScene.Domain
 
         private bool HasConsecutiveSequence( IHandConditionData condition,
             IReadOnlyList<IBattleCard> CardList,
-            IReadOnlyList<IBattleCard> outCardList )
+            List<IBattleCard> outCardList )
         {
             for( int i = 0; i < CardList.Count; i++ )
             {
-                if( condition.CardType != CardType.None && condition.CardType != ( CardType )CardList[i].Type )
+                if( condition.CardType != CardType.None && condition.CardType != CardList[i].Type )
                 {
                     continue;
                 }
 
                 int currentCount = 1;
-                outCardList.ToList().Add( CardList[i] );
+                outCardList.Add( CardList[i] );
 
                 while( true )
                 {
-                    var card = CardList.ToList().Find( arg => arg.Value ==CardList[i].Value + currentCount &&
-                        ( ( CardType )CardList[i].Type == CardType.None ||
-                         ( CardType )CardList[i].Type == ( CardType )CardList[i].Type ) );
+                    var card = CardList.ToList().Find( arg => arg.Value == CardList[i].Value + currentCount &&
+                        ( CardList[i].Type == CardType.None || CardList[i].Type == CardList[i].Type ) );
                     if( card == null )
                     {
                         break;
                     }
 
                     currentCount++;
-                    outCardList.ToList().Add( card );
+                    outCardList.Add( card );
                     if( currentCount == condition.Count )
                     {
                         return true;
@@ -168,18 +170,17 @@ namespace GameSystemSDK.BattleScene.Domain
 
         private bool HasSameNumbers( IHandConditionData condition,
             IReadOnlyList<IBattleCard> CardList,
-            IReadOnlyList<IBattleCard> outCardList )
+            List<IBattleCard> outCardList )
         {
             for( int i = 0; i < CardList.Count; i++ )
             {
-                if( condition.CardType != CardType.None
-                    && condition.CardType != ( CardType )CardList[i].Type )
+                if( condition.CardType != CardType.None && condition.CardType != CardList[i].Type )
                 {
                     continue;
                 }
 
                 int currentCount = 1;
-                outCardList.ToList().Add( CardList[i] );
+                outCardList.Add( CardList[i] );
 
                 for( int j = 0; j < CardList.Count; j++ )
                 {
@@ -189,13 +190,13 @@ namespace GameSystemSDK.BattleScene.Domain
                     }
 
                     if( CardList[i].Value != CardList[j].Value
-                        || ( condition.CardType != CardType.None && condition.CardType != ( CardType )CardList[j].Type ) )
+                        || ( condition.CardType != CardType.None && condition.CardType != CardList[j].Type ) )
                     {
                         continue;
                     }
 
                     currentCount++;
-                    outCardList.ToList().Add( CardList[j] );
+                    outCardList.Add( CardList[j] );
                     if( currentCount == condition.Count )
                     {
                         return true;
@@ -207,17 +208,17 @@ namespace GameSystemSDK.BattleScene.Domain
 
         private bool NonNumbers( IHandConditionData condition,
             IReadOnlyList<IBattleCard> CardList,
-            IReadOnlyList<IBattleCard> outCardList )
+            List<IBattleCard> outCardList )
         {
             int currentCount = 0;
             for( int i = 0; i < CardList.Count; i++ )
             {
-                if( condition.CardType != CardType.None && condition.CardType != ( CardType )CardList[i].Type )
+                if( condition.CardType != CardType.None && condition.CardType != CardList[i].Type )
                 {
                     continue;
                 }
 
-                outCardList.ToList().Add( CardList[i] );
+                outCardList.Add( CardList[i] );
                 currentCount++;
 
                 if( currentCount == condition.Count )
