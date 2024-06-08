@@ -1,4 +1,4 @@
-id,DeckGroup,Chip,Rank,Suite,PictureCard,IllustResourceID,IconResourceID
+id,deckGroup,chip,rank,suite,pictureCard,illustResourceID,iconResourceId
 1101,1,2,2,Diamond,,,
 1102,1,3,3,Diamond,,,
 1103,1,4,4,Diamond,,,

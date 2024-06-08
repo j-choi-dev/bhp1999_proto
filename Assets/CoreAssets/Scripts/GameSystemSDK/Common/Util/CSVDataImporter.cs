@@ -27,6 +27,7 @@ namespace CommonSystem.Util
             for( var rowIdx = 0; rowIdx < rows.Length; rowIdx++ )
             {
                 var replaceRow = rows[rowIdx].Replace("\r", "");
+                replaceRow = replaceRow.Replace(":", "");   // <TODO> 번역 필요한 텍스트키이다. 나중에 작업하자.
 
                 if ( string.IsNullOrEmpty(replaceRow) )
                 {

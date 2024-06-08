@@ -230,9 +230,9 @@ namespace GameSystemSDK.BattleScene.Domain
             return false;
         }
 
-        public IDetailScoreInfo GetScoreData( IReadOnlyList<IBattleCard> cardList, IHandConditionInfo condition )
+        public IDetailScoreInfo GetScoreData(IHandConditionInfo condition )
         {
-            var retVal = new DetailScoreInfo(cardList, condition);
+            var retVal = new DetailScoreInfo(condition);
             _onHandScoreInfoChanged.OnNext( retVal );
             return retVal;
         }

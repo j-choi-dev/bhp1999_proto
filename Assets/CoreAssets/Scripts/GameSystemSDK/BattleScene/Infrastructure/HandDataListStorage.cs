@@ -20,11 +20,11 @@ namespace GameSystemSDK.BattleScene.Infrastructure
             for( int i = 0; i < rawData.Count; i++ )
             {
                 // 이 변수들은 안 들어가면 게임 뻗는게 맞음
-                var id = int.Parse( CSVUtil.GetData( rawData, i, "PokerHandsID" ) );
-                var pairName = CSVUtil.GetData( rawData, i, "HandsName" );
+                var id = int.Parse( CSVUtil.GetData( rawData, i, "pokerHandsID" ) );
+                var pairName = CSVUtil.GetData( rawData, i, "handsName" );
 
                 // 여기서부터는 비어 있을 수 있음
-                string strOper = CSVUtil.GetData(rawData, i, "OperatorType");
+                string strOper = CSVUtil.GetData(rawData, i, "operatorType");
                 var oper = strOper.Equals( string.Empty ) ?
                         OperationType.None :
                         EnumUtil<OperationType>.Parse( strOper );
@@ -32,7 +32,7 @@ namespace GameSystemSDK.BattleScene.Infrastructure
                 var conditionList = new List<IHandConditionData>();
                 for( int iter = 1; iter <= MaxConditionNum; iter++ )
                 {
-                    string strCondition = CSVUtil.GetData(rawData, i, "Condition" + iter.ToString());
+                    string strCondition = CSVUtil.GetData(rawData, i, "condition" + iter.ToString());
                     if( strCondition.Equals( string.Empty ) )
                     {
                         break;
@@ -52,10 +52,10 @@ namespace GameSystemSDK.BattleScene.Infrastructure
         {
             for( int i = 0; i < rawData.Count; i++ )
             {
-                var id = int.Parse( CSVUtil.GetData( rawData, i, "PokerHandsConditionID" ) );
-                var pattern = EnumUtil<CardType>.Parse( CSVUtil.GetData( rawData, i, "PokerPattern" ) );
-                var checkType = EnumUtil<PokerNumCheckType>.Parse( CSVUtil.GetData( rawData, i, "PokerNumType" ) );
-                var count = int.Parse( CSVUtil.GetData( rawData, i, "Count" ) );
+                var id = int.Parse( CSVUtil.GetData( rawData, i, "pokerHandsConditionID" ) );
+                var pattern = EnumUtil<CardType>.Parse( CSVUtil.GetData( rawData, i, "pokerPattern" ) );
+                var checkType = EnumUtil<PokerNumCheckType>.Parse( CSVUtil.GetData( rawData, i, "pokerNumType" ) );
+                var count = int.Parse( CSVUtil.GetData( rawData, i, "count" ) );
                 var currPairCondition = new HandConditionData(id, pattern, checkType, count);
                 _handConditionDictionary.Add( currPairCondition.ID, currPairCondition );
             }
@@ -65,11 +65,11 @@ namespace GameSystemSDK.BattleScene.Infrastructure
         {
             for (int i = 0; i < rawData.Count; i++)
             {
-                var id = int.Parse(CSVUtil.GetData(rawData, i, "PokerHandsLevelID"));
-                var groupId = int.Parse(CSVUtil.GetData(rawData, i, "PokerHandsID"));
-                var level = int.Parse(CSVUtil.GetData(rawData, i, "HandsLevel"));
-                var addPoint = int.Parse(CSVUtil.GetData(rawData, i, "AddPoint"));
-                var multiplePoint = int.Parse(CSVUtil.GetData(rawData, i, "MultiplePoint"));
+                var id = int.Parse(CSVUtil.GetData(rawData, i, "pokerHandsLevelID"));
+                var groupId = int.Parse(CSVUtil.GetData(rawData, i, "pokerHandsID"));
+                var level = int.Parse(CSVUtil.GetData(rawData, i, "handsLevel"));
+                var addPoint = int.Parse(CSVUtil.GetData(rawData, i, "addPoint"));
+                var multiplePoint = int.Parse(CSVUtil.GetData(rawData, i, "multiplePoint"));
 
                 var currHandLevel = new HandLevelData(id, groupId, level, addPoint, multiplePoint);
 

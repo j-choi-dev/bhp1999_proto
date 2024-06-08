@@ -7,11 +7,6 @@ namespace GameSystemSDK.BattleScene.Application
     public interface IHandScoreCalcurateContext
     {
         /// <summary>
-        /// Hand Score Info Change Event
-        /// </summary>
-        public IObservable<IDetailScoreInfo> OnDetailScoreInfo { get; }
-
-        /// <summary>
         /// 点数取得
         /// </summary>
         /// <param name="handDataList">족보 데이터 리스트</param>
@@ -34,6 +29,6 @@ namespace GameSystemSDK.BattleScene.Application
         /// <param name="cardList">현재 턴에서 선택된 카드 리스트</param>
         /// <param name="condition">족보 연산 조건 데이터</param>
         /// <returns>최종 스코어와 상세 정보</returns>
-        IDetailScoreInfo GetScoreData( IReadOnlyList<IBattleCard> cardList, IHandConditionInfo condition );
+        IDetailScoreInfo GetScoreData( IHandConditionInfo condition );
     }
 }

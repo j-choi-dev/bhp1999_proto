@@ -1,4 +1,4 @@
-id,unUsed,EffectGroupId,비고 (참고용),OperationType,OperationParam1,OperationParam2,OperationParam3,OperationParam4,비고 (참고용)
+id,unUsed,effectGroupId,비고 (참고용),operationType,operationParam1,operationParam2,operationParam3,operationParam4,비고 (참고용)
 10101,,101,상점에서 파는 카드가 1장 추가됩니다. (3장),PlusShopSlot,1,,,,
 20101,,201,상점에서 파는 카드가 1장 더 추가됩니다. (4장),PlusShopSlot,2,,,,
 30101,,301,상점의 모든 카드와 부스터 팩은 25% 할인됩니다.,Sale,2500,,,,OpParam1 = 만분율

@@ -73,12 +73,12 @@ namespace CoreAssetUI.Presenter
         private async void Start()
         {
             _noticeConfirmModal.Show( false );
-            _battleInfoView.SetScorePlateOn( false );
+            _battleInfoView.SetScorePlateOn( true );    // <TODO> 일단 임시 세팅
             _resultModal.SetActive( false );
             _shopModal.SetActive( false );
 
             await _gameProcessModel.Initialize();
-            await _cardDeckModel.Initialize( _gameProcessModel.GetPlayingCardDeck(1) );  // 임시로 1 셋팅
+            await _cardDeckModel.Initialize( _gameProcessModel.GetPlayingCardDeck(1) );  // <TODO> 임시로 1 셋팅
             
             UpdateView();
 

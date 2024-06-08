@@ -11,8 +11,6 @@ namespace GameSystemSDK.BattleScene.Infrastructure
 {
     public class BattleEffectLaunch : IBattleEffectLaunchDomain
     {
-        private readonly int Interval = 300;
-
         private IGameSoundController _gameSoundController;
 
         private Subject<string> _onSkillNameChanged = new Subject<string>();
@@ -25,10 +23,6 @@ namespace GameSystemSDK.BattleScene.Infrastructure
         private Subject<bool> _onIsEffectProccess = new Subject<bool>();
         public IObservable<bool> OnIsEffectProccess => _onIsEffectProccess;
 
-        private int _totalScore = 0;
-        private Subject<int> _onTotalScoreChanged = new Subject<int>();
-        public IObservable<int> OnTotalScoreChanged => _onTotalScoreChanged;
-
         public BattleEffectLaunch( IGameSoundController gameSoundController ) // Refactoringするかも @Choi
         {
             _gameSoundController = gameSoundController;
@@ -36,29 +30,26 @@ namespace GameSystemSDK.BattleScene.Infrastructure
 
         public async UniTask RunScoreEffectProcess( IDetailScoreInfo detail, AudioClip effect )
         {
-            _onIsEffectProccess.OnNext( true );
-            _onSkillNameChanged.OnNext( detail.Name );
-            await UniTask.Delay( Interval * 2 );
+            //_onIsEffectProccess.OnNext( true );
+            _onSkillNameChanged.OnNext( detail.GetScoreMsg() );
+            await UniTask.Delay( 600 );
             _gameSoundController.PlayEffect( effect );
+        }
 
-            var scoreMsg = string.Empty;
-            for(var i = 0; i< detail.HandCardList.Count; i++ )
-            {
-                scoreMsg += string.IsNullOrEmpty( scoreMsg ) ?
-                    detail.HandCardList[i].Chip :
-                    $" + {detail.HandCardList[i].Chip}";
-                _onScoreInfoChanged.OnNext( (i,detail.HandCardList[i].Chip) );
-                await UniTask.Delay( 1500 );
-            }
-            await UniTask.Delay( Interval * 2 );
-            _onTotalScoreChanged.OnNext( _totalScore );
-            await UniTask.Delay( Interval * 2 );
-            _onIsEffectProccess.OnNext( false );
+        public void RunScoreNextEffectProcess(IDetailScoreInfo detail, int idx)
+        {
+            _onSkillNameChanged.OnNext( detail.GetScoreMsg() );
+            _onScoreInfoChanged.OnNext((idx, detail.HandCardList[idx].Chip ));
+        }
+
+        public void RunScoreEndEffectProcess()
+        {
+            _onSkillNameChanged.OnNext("");
         }
 
         public void SelectHandProcess( IHandConditionInfo conditionInfo )
         {
-            if( conditionInfo == null )
+            if ( conditionInfo == null )
             {
                 _onSkillNameChanged.OnNext($"판정: 없음" );
                 return;

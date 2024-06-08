@@ -1,6 +1,7 @@
 using Cysharp.Threading.Tasks;
 using GameSystemSDK.BattleScene.Application;
 using GameSystemSDK.BattleScene.Domain;
+using GameSystemSDK.BattleScene.Infrastructure;
 using GameSystemSDK.Common;
 using GameSystemSDK.Common.Domain;
 using GameSystemSDK.Server.Application;
@@ -136,6 +137,8 @@ namespace GameSystemSDK.BattleScene.Model
             InitializeGameRuleData();
         }
 
+        // <TODO>
+        // 카드 변경 시에도 족보 보이도록 작업 필요
         public void UpdateHandDeckInfo()
         {
             var handList = _battleInfoContext.HandInfoDataList;
@@ -150,29 +153,42 @@ namespace GameSystemSDK.BattleScene.Model
             var handList = _battleInfoContext.HandInfoDataList;
             var scoreTupple = _handScoreCalcurateContext.GetMaxPokerScore( handList, _selectedListContext.List );
             var conditionInfo = _handScoreCalcurateContext.GetPokerHandsInfoByID( handList, scoreTupple.id );
-            var scoreInfo = _handScoreCalcurateContext.GetScoreData(scoreTupple.Item2, conditionInfo );
 
-            await UniTask.Delay( 500 );
+            // 임시 코드들...
+            await UniTask.Delay(500);
             var soundEffectId = $"battle00{UnityEngine.Random.Range(1, 5)}";
-            var clip = _battleResourceContext.GetSoundEffectData( soundEffectId );
-            await _battleEffectContext.RunScoreEffectProcess( scoreInfo, clip.Value );
+            var clip = _battleResourceContext.GetSoundEffectData(soundEffectId);
+            // <TODO> 만약 여기서 핸드에 제출한 카드가 모두 트리거되는 조커를 쓴다면 scoreTupple.Item2가 아닌 handList를 넣어야 한다.
+            // <TODO> 제출한 카드를 하나씩 트리거하는 루틴.
+            // <TODO> 추후 손에 남은 카드, 조커 순으로 카드가 트리거되도록 작업한다.
+            var scoreInfo = _handScoreCalcurateContext.GetScoreData(conditionInfo);
+            await _battleEffectContext.RunScoreEffectProcess(scoreInfo, clip.Value);
+            for (int scoreHandIdx = 0; scoreHandIdx < scoreTupple.Item2.Count; scoreHandIdx++ )
+            {
+                await UniTask.Delay(1500);
+                scoreInfo.AddSummitScoreData( scoreTupple.Item2[scoreHandIdx]);
+                _battleEffectContext.RunScoreNextEffectProcess(scoreInfo, scoreHandIdx);
+            }
 
-            await UniTask.Delay( 250 );
-            _currTotalScore += scoreInfo.Score;
+            await UniTask.Delay( 1000 );
+            _currTotalScore += scoreInfo.GetScore();
             if( _currTotalScore >= _stageInfoData.GoalScore )
             {
                 UnityEngine.Debug.Log( "Stage Clear" );
                 await _externalConnectContext.SetClearedStageInfo( _stageInfoData.ID );
                 _onCleareStage.OnNext( Unit.Default );
             }
-            _onScoreChanged.OnNext( scoreInfo.Score );
+            _onScoreChanged.OnNext(scoreInfo.GetScore());
 
-
-            await UniTask.Delay( 250 );
+            await UniTask.Delay( 1000 );
             _cardListContext.SetIsDrawn( _selectedListContext.List.Select( arg => arg.ID ).ToList() );
             _selectedListContext.Clear();
             _handCardListContext.UpdateList( _cardListContext.AllList );
             DiscountHandCount();
+
+            _battleEffectContext.RunScoreEndEffectProcess();
+
+
             _onHandProcessRun.OnNext( false );
         }
 

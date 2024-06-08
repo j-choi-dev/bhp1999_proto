@@ -1,4 +1,4 @@
-id,CardUpgradeType,ActivateConditionType
+id,cardUpgradeType,activateConditionType
 101,Enhancement,WhenTrigger
 102,Enhancement,WhenTrigger
 103,Enhancement,WhenTrigger

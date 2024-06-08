@@ -1,4 +1,4 @@
-id,:name,EffectId,:describe,UnlockCondition,Value,JokerGrade,JokerImagePath
+id,:name,effectId,:describe,unlockCondition,value,jokerImagePath,JokerImagePath
 101,합연산 조커,101,+4 멀티,,2,1,
 201,곱연산 조커,201,x2 멀티,,15,1,
 301,욕심쟁이 조커,301,다이아몬드 문양 카드 득점 시 +4 멀티,,5,1,

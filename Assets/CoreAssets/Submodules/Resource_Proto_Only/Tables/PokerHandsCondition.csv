@@ -1,4 +1,4 @@
-PokerHandsConditionID,PokerPattern,PokerNumType,Count
+pokerHandsConditionID,pokerPattern,pokerNumType,count
 1,None,Pair,2
 2,None,Pair,3
 3,None,Straight,5

@@ -30,11 +30,11 @@ namespace GameSystemSDK.BattleScene.Domain
 
 
         /// <summary>
-        /// 최종 스코어와 상세 정보를 반환
+        /// 최종 스코어를 위한 기본 정보 생성
         /// </summary>
-        /// <param name="cardList">현재 턴에서 선택된 카드 리스트</param>
         /// <param name="condition">족보 연산 조건 데이터</param>
-        /// <returns>최종 스코어와 상세 정보</returns>
-        IDetailScoreInfo GetScoreData( IReadOnlyList<IBattleCard> cardList, IHandConditionInfo condition );
+        /// <returns>족보에 의한 최종 스코어 객체 기본 생성</returns>
+        /// 변경 되었음
+        IDetailScoreInfo GetScoreData( IHandConditionInfo condition );
     }
 }
