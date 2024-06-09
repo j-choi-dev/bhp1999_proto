@@ -95,14 +95,14 @@ namespace GameSystemSDK.BattleScene.Model
             }
             var card = _cardListContext.GetCard( id );
             _selectedListContext.Add(card);
-            _handCardListContext.SetIsSelected( card.ID, true );
+            _handCardListContext.SetIsSelected( card.PlayingCardInfo.ID.ToString(), true );
         }
 
         public void ReturnToHandList( string id )
         {
             var card = _cardListContext.GetCard( id );
-            _handCardListContext.SetIsSelected( card.ID, false );
-            _selectedListContext.Remove( card.ID );
+            _handCardListContext.SetIsSelected( card.PlayingCardInfo.ID.ToString(), false );
+            _selectedListContext.Remove( card.PlayingCardInfo.ID.ToString() );
         }
     }
 }

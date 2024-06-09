@@ -65,7 +65,7 @@ namespace CoreAssetUI.View
                 {
                     continue;
                 }
-                var cell = Instantiate(_prefab, _rootMarkerList[i].Transform);
+                var cell = Instantiate(_prefab, _rootMarkerList[i].SelectionTransform);
 
                 cell.GameObject.transform.localPosition = Vector3.zero;
                 cell.GameObject.transform.localRotation = Quaternion.identity;

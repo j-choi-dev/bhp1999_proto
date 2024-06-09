@@ -46,7 +46,7 @@ namespace GameSystemSDK.BattleScene.Domain
 
         public void RemoveCard( string id )
         {
-            var card = _list.Find( arg => arg.ID.Equals( id ) );
+            var card = _list.Find( arg => arg.PlayingCardInfo.ID.ToString().Equals( id ) );
             _list.Remove( card );
             _onRemove.OnNext( card );
             _onCardListChanged.OnNext( _list );
@@ -54,7 +54,7 @@ namespace GameSystemSDK.BattleScene.Domain
 
         public IBattleCard GetCard( string id )
         {
-            var card = _list.First( arg => arg.ID.Equals( id ) );
+            var card = _list.First( arg => arg.PlayingCardInfo.ID.ToString().Equals( id ) );
             return card;
         }
 
@@ -62,7 +62,7 @@ namespace GameSystemSDK.BattleScene.Domain
         {
             for(int i = 0; i< idList.Count; i++ )
             {
-                var card = _list.Find( arg => arg.ID.Equals( idList[i] ) );
+                var card = _list.Find( arg => arg.PlayingCardInfo.ID.ToString().Equals( idList[i] ) );
                 _list.Remove( card );
             }
             _onClear.OnNext( Unit.Default );
