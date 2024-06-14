@@ -22,7 +22,7 @@ namespace GameSystemSDK.BattleScene.Domain
 
         public IPlayingCardInfo PlayingCardInfo { get; private set; }
         public int Index { get; private set; } = 0;
-        public bool IsInHand { get; private set; } = false;
+        public bool IsInPlayDeck { get; private set; } = false;
         public bool IsSelected { get; private set; } = false;
         public bool IsDrawn { get; private set; } = false;
         public bool IsUsable { get; private set; } = true;
@@ -52,7 +52,7 @@ namespace GameSystemSDK.BattleScene.Domain
             => Index = value;
 
         public void SetInHand( bool isValue )
-            => IsInHand = isValue;
+            => IsInPlayDeck = isValue;
 
         public void SetIsSelected( bool isValue )
             => IsSelected = isValue;

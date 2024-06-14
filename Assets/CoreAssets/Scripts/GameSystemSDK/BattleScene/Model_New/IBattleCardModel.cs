@@ -12,6 +12,7 @@ namespace GameSystemSDK.BattleScene.Model
     /// Auth : Choi 
     public interface IBattleCardModel
     {
+        int MaxSelectionCount { get; }
         /// <summary>
         /// 현재 (유효한) 카드 리스트
         /// </summary>
@@ -29,11 +30,11 @@ namespace GameSystemSDK.BattleScene.Model
         /// <summary>
         /// 8장 이상 구성되는 핸드 카드의 추가 이벤트
         /// </summary>
-        IObservable<IBattleCard> OnHandCardAdd { get; }
+        IObservable<IBattleCard> OnPlayingCardAdd { get; }
         /// <summary>a
         /// 8장 이상 구성되는 핸드 카드의 삭제 이벤트
         /// </summary>
-        IObservable<IBattleCard> OnHandCardRemoved { get; }
+        IObservable<IBattleCard> OnPlayingCardRemoved { get; }
         /// <summary>
         /// 8장 이상 구성되는 핸드 카드의 전체 삭제 이벤트
         /// </summary>

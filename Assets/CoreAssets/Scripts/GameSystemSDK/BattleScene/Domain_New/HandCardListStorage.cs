@@ -26,17 +26,17 @@ namespace GameSystemSDK.Card.Domain
         private Subject<Unit> _onCleared = new Subject<Unit>();
         public IObservable<Unit> OnAllCardListCleared => _onCleared;
 
+        public IReadOnlyList<IBattleCard> CurrentPlayingCardList => _list.Where( arg => arg.IsInPlayDeck && arg.IsDrawn == false ).ToList();
 
-        private Subject<IReadOnlyList<IBattleCard>> _onSetUpCardListChanged = new Subject<IReadOnlyList<IBattleCard>>();
-        public IObservable<IReadOnlyList<IBattleCard>> OnSetUpCardListChanged => _onSetUpCardListChanged;
+        private Subject<IReadOnlyList<IBattleCard>> _onPlayingCardListChanged = new Subject<IReadOnlyList<IBattleCard>>();
+        public IObservable<IReadOnlyList<IBattleCard>> OnPlayingCardListChanged => _onPlayingCardListChanged;
 
-        public IReadOnlyList<IBattleCard> CurrentSetUpCardList => _list.Where( arg => arg.IsInHand && arg.IsDrawn == false ).ToList();
-
-        private Subject<IBattleCard> _onSetUpCardListAdd = new Subject<IBattleCard>();
-        public IObservable<IBattleCard> OnSetUpCardListAdd => _onSetUpCardListAdd;
-
-        private Subject<IBattleCard> _onSetUpCardListRemoved = new Subject<IBattleCard>();
-        public IObservable<IBattleCard> OnSetUpCardListRemoved => _onSetUpCardListRemoved;
+        private Subject<IBattleCard> _onPlayingCardListAdd = new Subject<IBattleCard>();
+        public IObservable<IBattleCard> OnPlayingCardListAdd => _onPlayingCardListAdd;
+        private Subject<IBattleCard> _onPlayingCardListRemoved = new Subject<IBattleCard>();
+        public IObservable<IBattleCard> OnPlayingCardListRemoved => _onPlayingCardListRemoved;
+        private Subject<Unit> _onPlayingCardListCleared = new Subject<Unit>();
+        public IObservable<Unit> OnPlayingCardListCleared => _onPlayingCardListCleared;
 
         public HandCardListStorage()
         {
@@ -88,20 +88,22 @@ namespace GameSystemSDK.Card.Domain
             _onListChanged.OnNext( _list );
         }
 
-        public IReadOnlyList<IBattleCard> GetNewSetUpCardList( IReadOnlyList<string> list )
+        public IReadOnlyList<IBattleCard> GetPlayingCardList()
         {
-            var target = _list.Where( x => list.Any(y => y.Equals(x.PlayingCardInfo.ID.ToString()) == false) )
-                .Where(arg => arg.IsUsable && arg.IsDrawn == false && arg.IsInHand == false )
+            //var aaa = _list.Where( x => _list.Any(y => y.Equals(x.PlayingCardInfo.ID.ToString()) == false) );
+            //UnityEngine.Debug.Log( $"aaa.Count = {aaa.Count()}" );
+            var target = _list.Where( x => _list.Any(y => y.Equals(x.PlayingCardInfo.ID.ToString()) == false) )
+                .Where(arg => arg.IsUsable && arg.IsDrawn == false && arg.IsInPlayDeck == false )
                 .ToList();
-            var retVal = CurrentSetUpCardList.ToList();
-            for( int i = 0; i < _totalHandDeckCount - list.Count; i++ )
+            var retVal = CurrentPlayingCardList.ToList();
+            for( int i = 0; i < _totalHandDeckCount - CurrentPlayingCardList.Count; i++ )
             {
                 var data = target[i];
                 retVal.Add( data );
                 _list.Where( arg => arg.PlayingCardInfo.ID.ToString().Equals( target[i] ) )
                     .ToList()
                     .ForEach( arg => arg.SetUsable( false ) );
-                _onSetUpCardListAdd.OnNext( data );
+                _onPlayingCardListAdd.OnNext( data );
             }
             return retVal;
         }

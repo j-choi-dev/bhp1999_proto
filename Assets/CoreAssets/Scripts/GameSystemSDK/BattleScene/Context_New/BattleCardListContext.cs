@@ -15,20 +15,27 @@ namespace GameSystemSDK.Card.Application
         private IHandCardListDomain _handCardListDomain;
         private ISelectedCardListDomain _selectedCardListDomain;
 
+        public BattleCardListContext( IHandCardListDomain  handCardListDomain,
+            ISelectedCardListDomain selectedCardListDomain)
+        {
+            _handCardListDomain = handCardListDomain;
+            _selectedCardListDomain = selectedCardListDomain;
+        }
+
         public IObservable<IReadOnlyList<IBattleCard>> OnHandCardListChanged 
             => _handCardListDomain.OnListChanged;
 
         public IObservable<IReadOnlyList<IBattleCard>> OnSelectedCardListChanged 
             => _selectedCardListDomain.OnListChanged;
 
-        public IObservable<IBattleCard> OnHandCardAdd
-            => _handCardListDomain.OnAllCardListAdd;
+        public IObservable<IBattleCard> OnPlayingCardAdd
+            => _handCardListDomain.OnPlayingCardListAdd;
 
-        public IObservable<IBattleCard> OnHandCardRemoved
+        public IObservable<IBattleCard> OnHandPlayingRemoved
             => _handCardListDomain.OnAllCardListRemoved;
 
-        public IObservable<Unit> OnHandCardCleared
-            => _handCardListDomain.OnAllCardListCleared;
+        public IObservable<Unit> OnPlayingCardCleared
+            => _handCardListDomain.OnPlayingCardListCleared;
 
         public IObservable<IBattleCard> OnSelectedCardAdd
             => _selectedCardListDomain.OnAdd;
@@ -79,6 +86,11 @@ namespace GameSystemSDK.Card.Application
         public void SetUserCardList( IReadOnlyList<IBattleCard> list )
         {
             _handCardListDomain.SetCardList( list );
+        }
+
+        public void GetPlayingCardList()
+        {
+            _handCardListDomain.GetPlayingCardList();
         }
     }
 }

@@ -17,10 +17,6 @@ namespace GameSystemSDK.Battle.Installer
         [SerializeField] private NoticeConfirmModal _noticeConfirmModal;
         [SerializeField] private BattleSceneActivationView _activationView;
 
-        // New in Here
-        [SerializeField] private ListView _handDeckListView_;
-        [SerializeField] private ListView _selectedDeckListView_;
-
         //public override void InstallBindings()
         //{
         //    // View 
@@ -59,16 +55,6 @@ namespace GameSystemSDK.Battle.Installer
 
         public override void InstallBindings()
         {
-            // View 
-            Container
-                .Bind<IListView>()
-                .WithId( BindingID.HandDeckListView )
-                .FromInstance( _selectedDeckListView_ );
-            Container
-                .Bind<IListView>()
-                .WithId( BindingID.SelectedListView )
-                .FromInstance( _handDeckListView_ );
-
             Container
                 .Bind<ISelectedCardListView>()
                 .FromInstance( _selectedCardListView );

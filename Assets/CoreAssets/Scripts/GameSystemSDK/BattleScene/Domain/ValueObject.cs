@@ -71,4 +71,22 @@ namespace GameSystemSDK.BattleScene.Domain
         AdditionalTrigger,  // 한 번 더 트리거
         GenerateItem,   // 아이템 생성(행성과 타로는 OperationParam으로 구분하자?)
     }
+
+    public struct PlayingCardInfoColumnName
+    {
+        // 이 변수들은 안 들어가면 게임 뻗는게 맞음
+        public readonly string ID => "id";
+        public readonly string DeckGroup => "DeckGroup";
+        public readonly  string Chip => "Chip";
+        public readonly string Rank => "Rank";
+        public readonly string Suite => "Suite";
+        public readonly string PictureCard => "PictureCard";
+        public readonly string IllustResourceID =>"IllustResourceID";
+        public readonly string IconResourceID =>"IconResourceID";
+    }
+
+    public struct InGameConstValue
+    {
+        public readonly int MaxSelectCardCount => 5;
+    }
 }

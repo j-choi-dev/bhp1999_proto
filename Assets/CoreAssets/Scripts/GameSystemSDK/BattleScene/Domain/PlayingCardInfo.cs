@@ -72,6 +72,7 @@ namespace GameSystemSDK.BattleScene.Domain
         public PlayingCardInfo( int id,
             CardType suite,
             int chip,
+            int rank,
             string slot1,
             string slot2,
             string slot3 )
@@ -79,6 +80,7 @@ namespace GameSystemSDK.BattleScene.Domain
             this.ID = id;
             this.Chip = chip;
             this.Suite = suite;
+            this.Rank = rank;
             this.EnchantSloat1 = slot1;
             this.EnchantSloat2 = slot2;
             this.EnchantSloat3 = slot3;

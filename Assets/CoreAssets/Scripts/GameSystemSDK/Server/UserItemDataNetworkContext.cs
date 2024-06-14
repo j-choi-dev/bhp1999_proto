@@ -1,9 +1,10 @@
 using Cysharp.Threading.Tasks;
 using GameSystemSDK.BattleScene.Domain;
+using GameSystemSDK.Common.Domain;
 using GameSystemSDK.Server.Domain;
+using GameSystemSDK.Server.Infrastructure;
 using System.Collections.Generic;
 using UniRx;
-using IHandCardListDomain = GameSystemSDK.Card.Domain.IHandCardListDomain;
 
 namespace GameSystemSDK.Server.Apllication
 {
@@ -11,22 +12,36 @@ namespace GameSystemSDK.Server.Apllication
     {
         private IUserItemDataSenderDomain _sender;
         private IUserItemDataReceiverDomain _receiver;
-        private IHandCardListDomain _cardListDomain;
 
-        public UserItemDataNetworkContext( IUserItemDataSenderDomain sender )
+        public UserItemDataNetworkContext( IUserItemDataSenderDomain sender,
+            IUserItemDataReceiverDomain receiver )
         {
             _sender = sender;
+            _receiver = receiver;
         }
+
         public UniTask SendSetUserCardDataRequest( IReadOnlyList<IBattleCard> list )
         {
             throw new System.NotImplementedException();
         }
 
-        public async UniTask<IReadOnlyList<ICardBase>> UserCardDataRequest()
+        public async UniTask<IResult<IReadOnlyList<ICardBase>>> UserCardDataRequest()
         {
             await _sender.SendUserCardDataRequest();
-            var response = await _receiver.OnReceivedBattleCardList.First();
-            return new List<ICardBase>();
+
+            var mock = _receiver as UserItemDataReceiverMock;
+            if( mock != null )
+            {
+                var responseTask = _receiver.OnReceivedBattleCardList.First().ToUniTask(true);
+                await mock.SetMockData();
+                var response = await responseTask;
+                if( response != null )
+                {
+                    return Result.Success( response );
+                }
+            }
+
+            return Result.Fail<IReadOnlyList<ICardBase>>( "Failed to receive data" );
         }
     }
 }

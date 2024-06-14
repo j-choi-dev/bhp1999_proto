@@ -13,9 +13,10 @@ namespace GameSystemSDK.Server.Infrastructure
             throw new System.NotImplementedException();
         }
 
-        public UniTask SendUserCardDataRequest()
+        public async UniTask SendUserCardDataRequest()
         {
-            throw new System.NotImplementedException();
+            await UniTask.Delay( 100 );
+            Debug.LogError($"{new System.NotImplementedException( "SendUserCardDataRequest" ).Message}");
         }
     }
 }

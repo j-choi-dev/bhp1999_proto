@@ -11,9 +11,9 @@ namespace GameSystemSDK.Server.Infrastructure
 {
     public class UserItemDataReceiver : IUserItemDataReceiverDomain
     {
-        private Subject<byte[]> _onReceivedBattleCardList = new Subject<byte[]>();
-        public IObservable<byte[]> OnReceivedBattleCardList
-            => throw new NotImplementedException();
+        private Subject<IReadOnlyList<ICardBase>> _onReceivedBattleCardList = new Subject<IReadOnlyList<ICardBase>>();
+        public IObservable<IReadOnlyList<ICardBase>> OnReceivedBattleCardList
+            => _onReceivedBattleCardList;
 
         private CompositeDisposable _subscriptions = new CompositeDisposable();
 

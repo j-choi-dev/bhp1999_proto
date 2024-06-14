@@ -19,7 +19,7 @@ namespace CoreAssetUI.View
     {
         [SerializeField] private Transform _normalTransform = null;
         [SerializeField] private Transform _selectionTransform = null;
-        [SerializeField] private ICellBase _item = null;
+        private ICellBase _item = null;
 
         public Transform SelectionTransform => _selectionTransform;
         public Transform NormalTransform => _normalTransform;

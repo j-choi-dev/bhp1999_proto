@@ -55,7 +55,7 @@ namespace CoreAssetUI.View
             var cell = Instantiate(_prefab, _pivot).GetComponent<IDoubleTapCell>();
             cell.SetID( id );
             cell.SetDisplayText( title );
-            cell.SetImage( sprite );
+            cell.SetBackgroundImage( sprite );
             cell.SetSelectWithoutNotify( false );
             _cells.Add( cell );
 

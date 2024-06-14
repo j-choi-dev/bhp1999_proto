@@ -73,7 +73,7 @@ namespace CoreAssetUI.View
 
                 cell.SetID( id );
                 cell.SetDisplayText( title );
-                cell.SetImage( sprite );
+                cell.SetBackgroundImage( sprite );
                 cell.SetSelectWithoutNotify( false );
 
                 cell.OnClick

@@ -12,6 +12,7 @@ namespace CoreAssetUI.View
         [SerializeField] private ObservableButton _button = null;
         [SerializeField] private GameObject _selection = null;
         [SerializeField] private Image _image = null;
+        [SerializeField] private List<Image> _scores = null;
 
         private Subject<string> _onSelected = new Subject<string>();
 
@@ -21,11 +22,11 @@ namespace CoreAssetUI.View
 
         public GameObject GameObject => gameObject;
 
-        public bool IsVisible { get; set; }
+        public bool IsVisiable { get; set; }
         public bool IsSelected { get; set; }
         public bool IsInteractable { get; set; }
 
-        public IObservable<Unit> OnClick => throw new NotImplementedException();
+        public IObservable<Unit> OnClick => _button.OnClick;
 
         public string DisplayText { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
@@ -38,13 +39,13 @@ namespace CoreAssetUI.View
 
         private void Start()
         {
-            _selection.SetActive( true );
+            _selection.SetActive( false );
         }
 
         public void SetSelectionShow( bool isOn )
             => _selection.SetActive( isOn );
 
-        public void SetImage( Sprite sprite )
+        public void SetBackgroundImage( Sprite sprite )
             => _image.sprite = sprite;
 
         public void SetID( string id )
@@ -55,6 +56,14 @@ namespace CoreAssetUI.View
 
         public void SetDisplayText( string value )
             => throw new NotImplementedException();
+
+        public void SetValueText( IReadOnlyList<Sprite> values )
+        {
+            for(int i = 0; i < _scores.Count; i++)
+            {
+                _scores[i].sprite = values[i]; 
+            }
+        }
 
         public void SetIndex( int value )
             => Index = value;

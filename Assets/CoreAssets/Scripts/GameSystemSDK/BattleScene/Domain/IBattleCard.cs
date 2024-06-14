@@ -14,7 +14,7 @@ namespace GameSystemSDK.BattleScene.Domain
         //public string IconResourceID { get; }
         public IPlayingCardInfo PlayingCardInfo { get; }
         public int Index { get; }
-        public bool IsInHand { get; }
+        public bool IsInPlayDeck { get; }
         public bool IsSelected { get; }
         public bool IsDrawn { get; }
         public bool IsUsable { get; }

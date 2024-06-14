@@ -9,35 +9,11 @@ namespace GameSystemSDK.Resource.Infrastructure
     [CreateAssetMenu( fileName = "NewBattleResourceConfig", menuName = "GameSystemSDK/Resource/BattleResourceConfig" )]
     public class BattleResourceConfig : ScriptableObject, IBattleResourceConfig
     {
-        [SerializeField] private List<Sprite> _cardIllustList = null;
-        [SerializeField] private List<Sprite> _cardIconList = null;
         [SerializeField] private List<TextAsset> _tableList = null;
         [SerializeField] private List<AudioClip> _soundEffect = null;
 
-        public IReadOnlyList<Sprite> CardIllustList => _cardIllustList;
-
-        public IReadOnlyList<Sprite> CardIconList => _cardIconList;
         public IReadOnlyList<TextAsset> TableList => _tableList;
-
-        public IResult<Sprite> GetIllustSprite( string id )
-        {
-            var sprite = _cardIllustList.First(spr => spr.name.Equals(id));
-            if( sprite == null )
-            {
-                return Result.Fail<Sprite>( $"BattleResourceConfig.GetIllustSprite : {id} Not Exist" );
-            }
-            return Result.Success( sprite );
-        }
-
-        public IResult<Sprite> GetIconSprite( string id )
-        {
-            var sprite = _cardIconList.First(spr => spr.name.Equals(id));
-            if(sprite == null)
-            {
-                return Result.Fail<Sprite>( $"BattleResourceConfig.GetIconSprite : {id} Not Exist" );
-            }
-            return Result.Success(sprite);
-        }
+        public IReadOnlyList<AudioClip> SoundEffectList => _soundEffect;
 
         public IResult<string> GetTableRawData( string id )
         {

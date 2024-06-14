@@ -14,9 +14,9 @@ namespace GameSystemSDK.Card.Application
         IObservable<IReadOnlyList<IBattleCard>> OnHandCardListChanged { get; }
         IObservable<IReadOnlyList<IBattleCard>> OnSelectedCardListChanged { get; }
 
-        IObservable<IBattleCard> OnHandCardAdd { get; }
-        IObservable<IBattleCard> OnHandCardRemoved { get; }
-        IObservable<Unit> OnHandCardCleared { get; }
+        IObservable<IBattleCard> OnPlayingCardAdd { get; }
+        IObservable<IBattleCard> OnHandPlayingRemoved { get; }
+        IObservable<Unit> OnPlayingCardCleared { get; }
 
         IObservable<IBattleCard> OnSelectedCardAdd { get; }
         IObservable<IBattleCard> OnSelectedCardRemoved { get; }
@@ -35,5 +35,7 @@ namespace GameSystemSDK.Card.Application
         void AddSelectedCard( IReadOnlyList<IBattleCard> list );
         void AddSelectedCard( IBattleCard item );
         void ClearSelectedCardList();
+
+        void GetPlayingCardList();
     }
 }
