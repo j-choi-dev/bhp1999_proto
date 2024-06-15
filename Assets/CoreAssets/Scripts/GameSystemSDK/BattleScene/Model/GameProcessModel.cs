@@ -169,7 +169,7 @@ namespace GameSystemSDK.BattleScene.Model
 
 
             await UniTask.Delay( 250 );
-            _cardListContext.SetIsDrawn( _selectedListContext.List.Select( arg => arg.ID ).ToList() );
+            _cardListContext.SetIsDrawn( _selectedListContext.List.Select( arg => arg.PlayingCardInfo.ID.ToString() ).ToList() );
             _selectedListContext.Clear();
             _handCardListContext.UpdateList( _cardListContext.AllList );
             DiscountHandCount();
@@ -182,9 +182,8 @@ namespace GameSystemSDK.BattleScene.Model
             {
                 return;
             }
-            _cardListContext.AllList.ToList().Find( arg => arg.ID.Equals( id ) ).SetDrawn( true );
+            _cardListContext.AllList.ToList().Find( arg => arg.PlayingCardInfo.ID.ToString().Equals( id ) ).SetDrawn( true );
             var card = _cardListContext.GetCard(id);
-            UnityEngine.Debug.Log( $"card : {card.ID}, {card.IsDrawn}" );
 
             _handCardListContext.Remove( card );
             DiscountDiscardCount();

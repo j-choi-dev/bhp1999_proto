@@ -47,5 +47,20 @@ namespace CommonSystem.Util
                 .ToList();
             return retVal;
         }
+
+        public static IReadOnlyList<(string key, string value)> GetRowData( IReadOnlyList<Dictionary<string, string>> rawData,
+            string key,
+            string keyValue)
+        {
+            var index = rawData.ToList().FindIndex(arg => arg[key].Equals(keyValue));
+            var strValue = string.Empty;
+            if( rawData == null && rawData.Any() == false)
+            {
+                return null;
+            }
+            var target = rawData.ToList()[index];
+            var retVal = target.Select( arg => (arg.Key, arg.Value) ).ToList();
+            return retVal;
+        }
     }
 }

@@ -45,9 +45,9 @@ namespace GameSystemSDK.BattleScene.Infrastructure
             for(var i = 0; i< detail.HandCardList.Count; i++ )
             {
                 scoreMsg += string.IsNullOrEmpty( scoreMsg ) ?
-                    detail.HandCardList[i].Chip :
-                    $" + {detail.HandCardList[i].Chip}";
-                _onScoreInfoChanged.OnNext( (i,detail.HandCardList[i].Chip) );
+                    detail.HandCardList[i].PlayingCardInfo.Chip:
+                    $" + {detail.HandCardList[i].PlayingCardInfo.Chip}";
+                _onScoreInfoChanged.OnNext( (i,detail.HandCardList[i].PlayingCardInfo.Chip) );
                 await UniTask.Delay( 1500 );
             }
             await UniTask.Delay( Interval * 2 );

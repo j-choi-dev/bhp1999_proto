@@ -31,7 +31,7 @@ namespace GameSystemSDK.BattleScene.Domain
 
         public IResult RemoveCard( string id )
         {
-            var item = _list.First(arg => arg.ID.Equals(id));
+            var item = _list.First(arg => arg.PlayingCardInfo.ID.ToString().Equals(id));
             if( item == null )
             {
                 return Result.Fail( $"CardDeckModel.RemoveCard :  {id} Not Exist" );
@@ -43,7 +43,7 @@ namespace GameSystemSDK.BattleScene.Domain
 
         public IBattleCard GetCard( string id )
         {
-            var card = _list.First( arg => arg.ID.Equals( id ) );
+            var card = _list.First( arg => arg.PlayingCardInfo.ID.ToString().Equals( id ) );
             return card;
         }
 
@@ -51,7 +51,7 @@ namespace GameSystemSDK.BattleScene.Domain
         {
             for(int i = 0; i < idList.Count; i++ )
             {
-                _list.Where( arg => arg.ID.Equals(idList[i]) ).ToList().ForEach( arg => arg.SetDrawn(true) );
+                _list.Where( arg => arg.PlayingCardInfo.ID.ToString().Equals(idList[i]) ).ToList().ForEach( arg => arg.SetDrawn(true) );
             }
             _onCardListChanged.OnNext( _list );
         }

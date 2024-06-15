@@ -43,12 +43,12 @@ namespace GameSystemSDK.BattleScene.Domain
             this.MultiplePoint = conditionInfo.MultiplePoint;
             this.AddPoint = conditionInfo.AddPoint;
             this.HandCardList = cardList;
-            this.PointList = cardList.Select( arg => arg.Chip ).ToList();
+            this.PointList = cardList.Select( arg => arg.PlayingCardInfo.Chip ).ToList();
 
             var realAddPoint = conditionInfo.AddPoint;
             for( var i = 0; i< cardList.Count; i++ )
             {
-                realAddPoint += cardList[i].Chip;
+                realAddPoint += cardList[i].PlayingCardInfo.Chip;
             }
             this.Score = realAddPoint * conditionInfo.MultiplePoint;
         }

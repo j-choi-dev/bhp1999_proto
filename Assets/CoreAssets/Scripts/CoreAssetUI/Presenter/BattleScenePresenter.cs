@@ -165,21 +165,27 @@ namespace CoreAssetUI.Presenter
             _cardDeckModel.OnCurrentSelectedCardAdd
                 .Subscribe( item =>
                 {
-                    var sprite = _battleResourceModel.GetIllustSprite( item.IllustResourceID );
-                    _selectedCardListView.Add( item.ID, item.Value.ToString(), sprite, false );
+                    var sprite = _battleResourceModel.GetIllustSprite( item.PlayingCardInfo.IllustResourceID );
+                    _selectedCardListView.Add( item.PlayingCardInfo.ID.ToString(), 
+                        item.PlayingCardInfo.Chip.ToString(), 
+                        sprite, 
+                        false );
                 } )
                 .AddTo( this );
 
             _cardDeckModel.OnCurrentHandCardListAdd
                 .Subscribe( item =>
                 {
-                    var sprite = _battleResourceModel.GetIllustSprite( item.IllustResourceID );
-                    _handDeckListView.Add( item.ID, item.Value.ToString(), sprite, false );
+                    var sprite = _battleResourceModel.GetIllustSprite( item.PlayingCardInfo.IllustResourceID );
+                    _handDeckListView.Add( item.PlayingCardInfo.ID.ToString(), 
+                        item.PlayingCardInfo.Chip.ToString(), 
+                        sprite, 
+                        false );
                 } )
                 .AddTo( this );
 
             _cardDeckModel.OnCurrentSelectedCardRemoved
-                .Subscribe( item => _selectedCardListView.Remove( item.ID ) )
+                .Subscribe( item => _selectedCardListView.Remove( item.PlayingCardInfo.ID.ToString() ) )
                 .AddTo( this );
 
             _cardDeckModel.OnSelectedCardClear
@@ -273,8 +279,8 @@ namespace CoreAssetUI.Presenter
             _handDeckListView.Clear();
             for( int i = 0; i< _cardDeckModel.CurrentHandDeckList.Count; i++ )
             {
-                var sprite = _battleResourceModel.GetIllustSprite( list[i].IllustResourceID );
-                _handDeckListView.Add( list[i].ID, list[i].Value.ToString(), sprite, false );
+                var sprite = _battleResourceModel.GetIllustSprite( list[i].PlayingCardInfo.IllustResourceID );
+                _handDeckListView.Add( list[i].PlayingCardInfo.ID.ToString(), list[i].PlayingCardInfo.Chip.ToString(), sprite, false );
             }
             _runControlView.SetDiscardInteractable( false );
             _battleInfoView.SetHandCountWithoutNotify( _gameProcessModel.CurrentHandCount );

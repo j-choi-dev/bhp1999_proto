@@ -24,12 +24,11 @@ namespace GameSystemSDK.BattleScene.Infrastructure
             foreach (var val in cardList)
             {
                 var card = new BattleCard();
-                card.SetID(val.ID.ToString());
-                card.SetType(val.Suite);
-                card.SetValue(val.Rank);
-                card.SetChip(val.Chip);
-                card.SetIllustResourceID($"card-type-{((int)val.Suite) - 1}");   
-                card.SetIconResourceID($"icon-type-{((int)val.Suite) - 1}");
+                card.SetPlayingCardInfo(val);
+                card.SetUsable(true);
+                card.SetInHand( true );
+                card.SetIsSelected( false );
+                card.SetDrawn( false );
                 list.Add(card);
             }
 

@@ -99,11 +99,11 @@ namespace GameSystemSDK.BattleScene.Domain
                     var highNum = 0;
                     for( int i = 0; i < inputCurCardList.Count; i++ )
                     {
-                        if( highNum > inputCurCardList[i].Value )
+                        if( highNum > inputCurCardList[i].PlayingCardInfo.Chip )
                         {
                             continue;
                         }
-                        highNum = inputCurCardList[i].Value;
+                        highNum = inputCurCardList[i].PlayingCardInfo.Chip;
                         outCardList.Clear();
                         outCardList.Add(inputCurCardList[i] );
                     }
@@ -140,7 +140,7 @@ namespace GameSystemSDK.BattleScene.Domain
         {
             for( int i = 0; i < CardList.Count; i++ )
             {
-                if( condition.CardType != CardType.None && condition.CardType != CardList[i].Type )
+                if( condition.CardType != CardType.None && condition.CardType != CardList[i].PlayingCardInfo.Suite )
                 {
                     continue;
                 }
@@ -150,8 +150,8 @@ namespace GameSystemSDK.BattleScene.Domain
 
                 while( true )
                 {
-                    var card = CardList.ToList().Find( arg => arg.Value == CardList[i].Value + currentCount &&
-                        ( CardList[i].Type == CardType.None || CardList[i].Type == CardList[i].Type ) );
+                    var card = CardList.ToList().Find( arg => arg.PlayingCardInfo.Chip == CardList[i].PlayingCardInfo.Chip + currentCount &&
+                        ( CardList[i].PlayingCardInfo.Suite  == CardType.None || CardList[i].PlayingCardInfo.Suite == CardList[i].PlayingCardInfo.Suite ) );
                     if( card == null )
                     {
                         break;
@@ -174,7 +174,7 @@ namespace GameSystemSDK.BattleScene.Domain
         {
             for( int i = 0; i < CardList.Count; i++ )
             {
-                if( condition.CardType != CardType.None && condition.CardType != CardList[i].Type )
+                if( condition.CardType != CardType.None && condition.CardType != CardList[i].PlayingCardInfo.Suite )
                 {
                     continue;
                 }
@@ -189,8 +189,9 @@ namespace GameSystemSDK.BattleScene.Domain
                         continue;
                     }
 
-                    if( CardList[i].Value != CardList[j].Value
-                        || ( condition.CardType != CardType.None && condition.CardType != CardList[j].Type ) )
+                    if( CardList[i].PlayingCardInfo.Chip != CardList[j].PlayingCardInfo.Chip
+                        || ( condition.CardType != CardType.None && 
+                        condition.CardType != CardList[j].PlayingCardInfo.Suite ) )
                     {
                         continue;
                     }
@@ -213,7 +214,7 @@ namespace GameSystemSDK.BattleScene.Domain
             int currentCount = 0;
             for( int i = 0; i < CardList.Count; i++ )
             {
-                if( condition.CardType != CardType.None && condition.CardType != CardList[i].Type )
+                if( condition.CardType != CardType.None && condition.CardType != CardList[i].PlayingCardInfo.Suite )
                 {
                     continue;
                 }
