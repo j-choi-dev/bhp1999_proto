@@ -21,7 +21,7 @@ namespace GameSystemSDK.BattleScene.Application
         /// <param name="handDataList">족보 데이터 리스트</param>
         /// <param name="id">족보 조건 ID</param>
         /// <returns>족보 연산 데이터</returns>
-        IHandConditionInfo GetPokerHandsInfoByID( IReadOnlyList<IHandInfoData> handDataList, int id );
+        IHandConditionInfo GetPokerHandsInfoByID( IReadOnlyList<IHandInfoData> handDataList, int id, int handsLevel );
 
         /// <summary>
         /// 최종 스코어와 상세 정보를 반환

@@ -90,6 +90,7 @@ namespace GameSystemSDK.BattleScene.Model
         /// </summary>
         /// <returns>비동기 처리 UniTask</returns>
         UniTask Initialize();
+        UniTask InitGame();
 
         /// <summary>
         /// 핸드 실행
@@ -145,7 +146,7 @@ namespace GameSystemSDK.BattleScene.Model
         /// <param name="val">Mana값</param>
         void SetManaValue( int value );
 
-        IReadOnlyList<IPlayingCardInfo> GetPlayingCardDeck( int DeckGroup );
+        IReadOnlyList<IPlayingCardInfo> GetPlayingCardDeck();
 
         /// <summary>
         /// Game Finish Process

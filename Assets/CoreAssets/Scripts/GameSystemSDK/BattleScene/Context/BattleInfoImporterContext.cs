@@ -97,5 +97,23 @@ namespace GameSystemSDK.BattleScene.Application
 
             return retVal;
         }
+
+
+        public IReadOnlyList<IPlayingCardInfo> GetPlayingCardDeckByList( IReadOnlyList<string> cardList )
+        {
+            List<IPlayingCardInfo> retVal = new List<IPlayingCardInfo>();
+            foreach (var playingcard in PlayingCardInfoList)
+            {
+                foreach ( var cardID in cardList )
+                {
+                    if (playingcard.ID.ToString() == cardID)    // <TODO> 이 장소에 있으면 안되기도 하지만... 일단은 이렇게 하자. 지금은 플레이 카드의 개념이 좀 꼬여 있다.
+                    {
+                        retVal.Add(playingcard);
+                    }
+                }
+            }
+
+            return retVal;
+        }
     }
 }

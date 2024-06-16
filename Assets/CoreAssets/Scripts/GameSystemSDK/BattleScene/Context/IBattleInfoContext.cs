@@ -64,5 +64,6 @@ namespace GameSystemSDK.BattleScene.Application
 
 
         IReadOnlyList<IPlayingCardInfo> GetPlayingCardDeck( int DeckGroup );
+        IReadOnlyList<IPlayingCardInfo> GetPlayingCardDeckByList(IReadOnlyList<string> cardList );
     }
 }

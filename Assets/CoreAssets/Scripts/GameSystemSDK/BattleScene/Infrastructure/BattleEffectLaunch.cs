@@ -55,7 +55,7 @@ namespace GameSystemSDK.BattleScene.Infrastructure
                 return;
             }
 
-            var strMsg = $"판정: {conditionInfo.Name} -> ({conditionInfo.AddPoint} X {conditionInfo.MultiplePoint})";
+            var strMsg = $"판정: {conditionInfo.Name}:Lv. {conditionInfo.HandLevel} -> ({conditionInfo.AddPoint} X {conditionInfo.MultiplePoint})";
             _onSkillNameChanged.OnNext(strMsg);
         }
     }

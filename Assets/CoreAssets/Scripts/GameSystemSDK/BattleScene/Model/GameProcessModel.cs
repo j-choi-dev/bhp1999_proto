@@ -110,7 +110,24 @@ namespace GameSystemSDK.BattleScene.Model
         public void SetManaValue( int value ) => _gameRuleValueCntext.SetManaValue( value );
         public void SetMaxHandCount( int val ) => _gameRuleValueCntext.SetMaxHandCount( val );
         public void SetMaxDiscardCount( int val ) => _gameRuleValueCntext.SetMaxDiscardCount( val );
-        public IReadOnlyList<IPlayingCardInfo> GetPlayingCardDeck(int DeckGroup) => _battleInfoContext.GetPlayingCardDeck(DeckGroup);
+        public IReadOnlyList<IPlayingCardInfo> GetPlayingCardDeck()
+        {
+            var cardList = _externalConnectContext.GetCardInfo();
+
+            // <TODO>
+            // 임시로 넣어놨다.
+            // 최초 플레이어 정보 생성할 때는 거기에 맞게 넣어준다.
+            // 여기에 있을 부분은 아님.
+            if (cardList.Count == 0)
+            {
+                var playingCardList = _battleInfoContext.GetPlayingCardDeck(1);
+                _externalConnectContext.SetCardInfo( playingCardList );
+
+                cardList = _externalConnectContext.GetCardInfo();
+            }
+
+            return _battleInfoContext.GetPlayingCardDeckByList( cardList );
+        }
 
         public async UniTask Initialize()
         {
@@ -134,7 +151,15 @@ namespace GameSystemSDK.BattleScene.Model
 
             _onStageNameChanged.OnNext( _stageInfoData.StageName );
 
-            InitializeGameRuleData();
+            await InitGame();
+        }
+
+        // <TODO>
+        // 게임(스테이지의 묶음) 최초로 시작되었을 때 실행될 함수
+        // 현재는 이걸 게임 프로세스 모델 Initialize에서 부르고 있는데 게임 최초로 시작될 때로 옮겨야 한다
+        public async UniTask InitGame()
+        {
+            await InitializeGameRuleData();
         }
 
         // <TODO>
@@ -143,7 +168,8 @@ namespace GameSystemSDK.BattleScene.Model
         {
             var handList = _battleInfoContext.HandInfoDataList;
             var scoreTupple = _handScoreCalcurateContext.GetMaxPokerScore(handList, _selectedListContext.List);
-            var conditionInfo = _handScoreCalcurateContext.GetPokerHandsInfoByID( handList, scoreTupple.id );
+            var handsLevel = _externalConnectContext.GetHandLevel(scoreTupple.id);
+            var conditionInfo = _handScoreCalcurateContext.GetPokerHandsInfoByID( handList, scoreTupple.id, handsLevel);
             _battleEffectContext.SelectHandProcess(conditionInfo);
         }
 
@@ -152,7 +178,8 @@ namespace GameSystemSDK.BattleScene.Model
             _onHandProcessRun.OnNext( true );
             var handList = _battleInfoContext.HandInfoDataList;
             var scoreTupple = _handScoreCalcurateContext.GetMaxPokerScore( handList, _selectedListContext.List );
-            var conditionInfo = _handScoreCalcurateContext.GetPokerHandsInfoByID( handList, scoreTupple.id );
+            var handsLevel = _externalConnectContext.GetHandLevel(scoreTupple.id);
+            var conditionInfo = _handScoreCalcurateContext.GetPokerHandsInfoByID( handList, scoreTupple.id, handsLevel);
 
             // 임시 코드들...
             await UniTask.Delay(500);
@@ -220,7 +247,7 @@ namespace GameSystemSDK.BattleScene.Model
         /// <Todo>
         /// 이 함수는 어플리케이션 켜질 때 한번만 로딩하면 될 것 같습니다.
         /// </Todo>
-        private async void InitializeGameRuleData()
+        private async UniTask InitializeGameRuleData()
         {
             var path = new HandTablePath();
             var handConditionRawData = _battleResourceContext.GetTableRawData( path.PokerHandsConditionCsvName );

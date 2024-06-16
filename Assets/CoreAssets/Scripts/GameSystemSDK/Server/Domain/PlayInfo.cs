@@ -9,7 +9,8 @@ namespace GameSystemSDK.Server.Domain
         string UID { get; }
         string ClearedStage { get; }
         string LastLogIn { get; }
-        List<string> CurrentSpecialCardList { get; }
+        List<string> CurrentPlayingCardList { get; }
+        Dictionary<int, int> CurrentHandLevelDic { get; }
     }
 
     [System.Serializable]
@@ -18,12 +19,14 @@ namespace GameSystemSDK.Server.Domain
         public string uid = string.Empty;
         public string clearedStage = string.Empty;
         public string lastLogIn = string.Empty;
-        public List<string> currentSpecialCardList = new List<string>();
+        public List<string> currentPlayingCardList = new List<string>();
+        public Dictionary<int, int> currentHandLevelDic = new Dictionary<int, int>();
 
         public string UID => uid;
         public string ClearedStage => clearedStage;
         public string LastLogIn => lastLogIn;
-        public List<string> CurrentSpecialCardList => currentSpecialCardList;
+        public List<string> CurrentPlayingCardList => currentPlayingCardList;
+        public Dictionary<int, int> CurrentHandLevelDic => currentHandLevelDic;
     }
 
     [System.Serializable]

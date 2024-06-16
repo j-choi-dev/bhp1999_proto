@@ -17,8 +17,8 @@ namespace GameSystemSDK.BattleScene.Application
             IReadOnlyList<IBattleCard> cardList )
             => _calcurateDomain.GetMaxPokerScore( handDataList, cardList );
 
-        public IHandConditionInfo GetPokerHandsInfoByID( IReadOnlyList<IHandInfoData> handDataList, int id )
-            => _calcurateDomain.GetPokerHandsInfoByID( handDataList, id );
+        public IHandConditionInfo GetPokerHandsInfoByID( IReadOnlyList<IHandInfoData> handDataList, int id, int handsLevel)
+            => _calcurateDomain.GetPokerHandsInfoByID( handDataList, id, handsLevel);
 
         public IDetailScoreInfo GetScoreData( IHandConditionInfo condition )
             => _calcurateDomain.GetScoreData( condition );

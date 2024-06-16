@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace GameSystemSDK.BattleScene.Domain
 {
@@ -30,7 +31,7 @@ namespace GameSystemSDK.BattleScene.Domain
 
         public DetailScoreInfo( IHandConditionInfo conditionInfo )
         {
-            this.Name = conditionInfo.Name;
+            this.Name = conditionInfo.Name + $"Lv. {conditionInfo.HandLevel}";
             this.MultiplePoint = conditionInfo.MultiplePoint;
             this.AddPoint = conditionInfo.AddPoint;
         }

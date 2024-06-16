@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
+using GameSystemSDK.BattleScene.Domain;
 
 namespace GameSystemSDK.Server.Infrastructure
 {
@@ -87,31 +88,50 @@ namespace GameSystemSDK.Server.Infrastructure
             await FileIOUtil.SaveText( _playerInfoPath, text );
         }
 
-        public async UniTask<IReadOnlyList<string>> GetCardInfo()
+        public IReadOnlyList<string> GetCardInfo()
         {
-            await UniTask.DelayFrame( 1 );
-            return _playInfo.CurrentSpecialCardList;
+            return _playInfo.CurrentPlayingCardList;
+        }
+
+        public async UniTask SetCardInfo(IReadOnlyList<IPlayingCardInfo> cardInfoList)
+        {
+            //<TODO>
+            //지금은 그냥 임시로 카드 ID만 저장합니다.
+            //나중에는 카드 업그레이드 인포도 변환하여 저장 필요합니다. 
+            _playInfo.CurrentPlayingCardList.Clear();
+            foreach(var plyingCard in cardInfoList)
+            {
+                _playInfo.CurrentPlayingCardList.Add(plyingCard.ID.ToString());
+            }
+            await UpdateStorage();
+            await UniTask.DelayFrame(1);
         }
 
         public async UniTask AddCardInfo( string id )
         {
-            _playInfo.CurrentSpecialCardList.Add(id);
+            _playInfo.CurrentPlayingCardList.Add(id);
             await UpdateStorage();
             await UniTask.DelayFrame( 1 );
         }
 
         public async UniTask RemoveCardInfo( string id )
         {
-            _playInfo.CurrentSpecialCardList.Remove( id );
+            _playInfo.CurrentPlayingCardList.Remove( id );
             await UpdateStorage();
             await UniTask.DelayFrame( 1 );
         }
 
         public async UniTask ClearCardInfo()
         {
-            _playInfo.CurrentSpecialCardList.Clear();
+            _playInfo.CurrentPlayingCardList.Clear();
             await UpdateStorage();
             await UniTask.DelayFrame( 1 );
+        }
+
+        public async UniTask ChangeCardInfo(string id1, string id2 )
+        {
+            await RemoveCardInfo(id1);
+            await AddCardInfo(id2);
         }
 
         public async UniTask SetEnterStage( string id )
@@ -142,6 +162,39 @@ namespace GameSystemSDK.Server.Infrastructure
             var retVal = SerializeUtil.FromJson<TempValue>( text );
             Debug.Log( $"(가라)Server 수신 -> {text}" );
             return retVal.Value;
+        }
+
+        public async UniTask AddHandLevel( int handsID, int addHandsLevel )
+        {
+            int curHandsLevel = 1;
+            if(_playInfo.CurrentHandLevelDic.TryGetValue(handsID, out curHandsLevel) == true )
+            {
+                _playInfo.CurrentHandLevelDic.Remove(handsID);
+            }
+
+            curHandsLevel -= addHandsLevel;
+            if( curHandsLevel < 1 )
+            {
+                curHandsLevel = 1;
+            }
+
+            _playInfo.CurrentHandLevelDic.Add(handsID, curHandsLevel);
+
+            await UpdateStorage();
+            await UniTask.DelayFrame(1);
+        }
+
+        // <TODO> 지금은 초기화 단계가 꼬여서(HandLevel 데이터를 먼저 로딩해야 하는데..)
+        // 임시로 없는 데이터 달라고 하면 레벨1을 준다.
+        public int GetHandLevel(int handsID)
+        {
+            int curHandsLevel = 0;
+            if (_playInfo.CurrentHandLevelDic.TryGetValue(handsID, out curHandsLevel) == false )
+            {
+                return 2;
+            }
+
+            return curHandsLevel;
         }
     }
 }

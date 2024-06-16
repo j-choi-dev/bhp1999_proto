@@ -32,7 +32,7 @@ namespace GameSystemSDK.BattleScene.Domain
         // <TODO>
         // 일단 무조건 1레벨 득점을 돌려준다.
         // 현재 레벨 구현하면 더 올려서 주도록 하자.
-        public IHandConditionInfo GetPokerHandsInfoByID( IReadOnlyList<IHandInfoData> handDataList, int id )
+        public IHandConditionInfo GetPokerHandsInfoByID( IReadOnlyList<IHandInfoData> handDataList, int id, int handsLevel )
         {
             for( int i = 0; i < handDataList.Count; i++ )
             {
@@ -41,9 +41,9 @@ namespace GameSystemSDK.BattleScene.Domain
                     continue;
                 }
                 var name = handDataList[i].PairName;
-                var addPoint = handDataList[i].HandLevelDictionary[1].AddPoint;
-                var multiPoint = handDataList[i].HandLevelDictionary[1].MultiplePoint;
-                var retVal = new HandConditionInfo( name, addPoint, multiPoint );
+                var addPoint = handDataList[i].HandLevelDictionary[handsLevel].AddPoint;
+                var multiPoint = handDataList[i].HandLevelDictionary[handsLevel].MultiplePoint;
+                var retVal = new HandConditionInfo( name, handsLevel, addPoint, multiPoint );
                 return retVal;
             }
 

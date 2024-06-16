@@ -16,7 +16,7 @@ namespace GameSystemSDK.Server.Model
         UniTask<string> GetLogInTime();
         void SetClearedStageInfo( string id );
         UniTask UpdateInfo();
-        UniTask<IReadOnlyList<string>> GetCardInfo();
+        IReadOnlyList<string> GetCardInfo();
         void AddCardInfo( string id );
         void EnterStage( string id );
     }
