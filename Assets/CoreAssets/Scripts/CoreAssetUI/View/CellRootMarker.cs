@@ -6,8 +6,9 @@ namespace CoreAssetUI.View
 {
     public interface ICellRootMarker
     {
-        Transform Transform { get; }
-         bool IsAtatched { get; }
+        Transform SelectionTransform { get; }
+        Transform NormalTransform { get; }
+        bool IsAtatched { get; }
          ICellBase Item { get; }
 
          void SetItem( ICellBase item );
@@ -16,12 +17,15 @@ namespace CoreAssetUI.View
 
     public class CellRootMarker : MonoBehaviour, ICellRootMarker
     {
-        [SerializeField] private Transform _transform = null;
-        [SerializeField] private ICellBase _item = null;
+        [SerializeField] private Transform _normalTransform = null;
+        [SerializeField] private Transform _selectionTransform = null;
+        private ICellBase _item = null;
 
-        public Transform Transform => _transform;
+        public Transform SelectionTransform => _selectionTransform;
+        public Transform NormalTransform => _normalTransform;
         public bool IsAtatched => _item != null;
         public ICellBase Item => _item;
+
 
         public void SetItem( ICellBase item )
         {

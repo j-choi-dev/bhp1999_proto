@@ -15,6 +15,7 @@ namespace GameSystemSDK.BattleScene.Application
         /// Card Illust List
         /// </summary>
         IReadOnlyList<Sprite> CardIllustList { get; }
+        IReadOnlyList<Sprite> CardValueTextList { get; }
 
         /// <summary>
         /// Card Icon Illust List

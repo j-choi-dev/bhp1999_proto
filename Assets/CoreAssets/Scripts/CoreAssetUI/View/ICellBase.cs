@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
 
@@ -12,7 +13,7 @@ namespace CoreAssetUI.View
         string ID { get; set; }
         string DisplayText { get; set; }
 
-        bool IsVisible { get; set; }
+        bool IsVisiable { get; set; }
         bool IsSelected { get; set; }
         bool IsInteractable { get; set; }
         IObservable<Unit> OnClick { get; }
@@ -20,7 +21,7 @@ namespace CoreAssetUI.View
         void SetDisplayText( string value );
         void SetID( string value );
         void SetIndex( int value );
-        void SetImage( Sprite sprite );
+        void SetBackgroundImage( Sprite sprite );
         void SetSelectWithoutNotify( bool isSelected );
         void SetInteractable( bool isInteractable );
     }

@@ -1,7 +1,6 @@
 using Cysharp.Threading.Tasks;
 using GameSystemSDK.BattleScene.Application;
 using GameSystemSDK.BattleScene.Domain;
-using GameSystemSDK.BattleScene.Infrastructure;
 using GameSystemSDK.Common;
 using GameSystemSDK.Common.Domain;
 using GameSystemSDK.Server.Application;
@@ -110,24 +109,7 @@ namespace GameSystemSDK.BattleScene.Model
         public void SetManaValue( int value ) => _gameRuleValueCntext.SetManaValue( value );
         public void SetMaxHandCount( int val ) => _gameRuleValueCntext.SetMaxHandCount( val );
         public void SetMaxDiscardCount( int val ) => _gameRuleValueCntext.SetMaxDiscardCount( val );
-        public IReadOnlyList<IPlayingCardInfo> GetPlayingCardDeck()
-        {
-            var cardList = _externalConnectContext.GetCardInfo();
-
-            // <TODO>
-            // 임시로 넣어놨다.
-            // 최초 플레이어 정보 생성할 때는 거기에 맞게 넣어준다.
-            // 여기에 있을 부분은 아님.
-            if (cardList.Count == 0)
-            {
-                var playingCardList = _battleInfoContext.GetPlayingCardDeck(1);
-                _externalConnectContext.SetCardInfo( playingCardList );
-
-                cardList = _externalConnectContext.GetCardInfo();
-            }
-
-            return _battleInfoContext.GetPlayingCardDeckByList( cardList );
-        }
+        public IReadOnlyList<IPlayingCardInfo> GetPlayingCardDeck(int DeckGroup) => _battleInfoContext.GetPlayingCardDeck(DeckGroup);
 
         public async UniTask Initialize()
         {
@@ -151,25 +133,14 @@ namespace GameSystemSDK.BattleScene.Model
 
             _onStageNameChanged.OnNext( _stageInfoData.StageName );
 
-            await InitGame();
+            InitializeGameRuleData();
         }
 
-        // <TODO>
-        // 게임(스테이지의 묶음) 최초로 시작되었을 때 실행될 함수
-        // 현재는 이걸 게임 프로세스 모델 Initialize에서 부르고 있는데 게임 최초로 시작될 때로 옮겨야 한다
-        public async UniTask InitGame()
-        {
-            await InitializeGameRuleData();
-        }
-
-        // <TODO>
-        // 카드 변경 시에도 족보 보이도록 작업 필요
         public void UpdateHandDeckInfo()
         {
             var handList = _battleInfoContext.HandInfoDataList;
             var scoreTupple = _handScoreCalcurateContext.GetMaxPokerScore(handList, _selectedListContext.List);
-            var handsLevel = _externalConnectContext.GetHandLevel(scoreTupple.id);
-            var conditionInfo = _handScoreCalcurateContext.GetPokerHandsInfoByID( handList, scoreTupple.id, handsLevel);
+            var conditionInfo = _handScoreCalcurateContext.GetPokerHandsInfoByID( handList, scoreTupple.id );
             _battleEffectContext.SelectHandProcess(conditionInfo);
         }
 
@@ -178,44 +149,30 @@ namespace GameSystemSDK.BattleScene.Model
             _onHandProcessRun.OnNext( true );
             var handList = _battleInfoContext.HandInfoDataList;
             var scoreTupple = _handScoreCalcurateContext.GetMaxPokerScore( handList, _selectedListContext.List );
-            var handsLevel = _externalConnectContext.GetHandLevel(scoreTupple.id);
-            var conditionInfo = _handScoreCalcurateContext.GetPokerHandsInfoByID( handList, scoreTupple.id, handsLevel);
+            var conditionInfo = _handScoreCalcurateContext.GetPokerHandsInfoByID( handList, scoreTupple.id );
+            var scoreInfo = _handScoreCalcurateContext.GetScoreData(scoreTupple.Item2, conditionInfo );
 
-            // 임시 코드들...
-            await UniTask.Delay(500);
+            await UniTask.Delay( 500 );
             var soundEffectId = $"battle00{UnityEngine.Random.Range(1, 5)}";
-            var clip = _battleResourceContext.GetSoundEffectData(soundEffectId);
-            // <TODO> 만약 여기서 핸드에 제출한 카드가 모두 트리거되는 조커를 쓴다면 scoreTupple.Item2가 아닌 handList를 넣어야 한다.
-            // <TODO> 제출한 카드를 하나씩 트리거하는 루틴.
-            // <TODO> 추후 손에 남은 카드, 조커 순으로 카드가 트리거되도록 작업한다.
-            var scoreInfo = _handScoreCalcurateContext.GetScoreData(conditionInfo);
-            await _battleEffectContext.RunScoreEffectProcess(scoreInfo, clip.Value);
-            for (int scoreHandIdx = 0; scoreHandIdx < scoreTupple.Item2.Count; scoreHandIdx++ )
-            {
-                await UniTask.Delay(1500);
-                scoreInfo.AddSummitScoreData( scoreTupple.Item2[scoreHandIdx]);
-                _battleEffectContext.RunScoreNextEffectProcess(scoreInfo, scoreHandIdx);
-            }
+            var clip = _battleResourceContext.GetSoundEffectData( soundEffectId );
+            await _battleEffectContext.RunScoreEffectProcess( scoreInfo, clip.Value );
 
-            await UniTask.Delay( 1000 );
-            _currTotalScore += scoreInfo.GetScore();
+            await UniTask.Delay( 250 );
+            _currTotalScore += scoreInfo.Score;
             if( _currTotalScore >= _stageInfoData.GoalScore )
             {
                 UnityEngine.Debug.Log( "Stage Clear" );
                 await _externalConnectContext.SetClearedStageInfo( _stageInfoData.ID );
                 _onCleareStage.OnNext( Unit.Default );
             }
-            _onScoreChanged.OnNext(scoreInfo.GetScore());
+            _onScoreChanged.OnNext( scoreInfo.Score );
 
-            await UniTask.Delay( 1000 );
-            _cardListContext.SetIsDrawn( _selectedListContext.List.Select( arg => arg.ID ).ToList() );
+
+            await UniTask.Delay( 250 );
+            _cardListContext.SetIsDrawn( _selectedListContext.List.Select( arg => arg.PlayingCardInfo.ID.ToString() ).ToList() );
             _selectedListContext.Clear();
             _handCardListContext.UpdateList( _cardListContext.AllList );
             DiscountHandCount();
-
-            _battleEffectContext.RunScoreEndEffectProcess();
-
-
             _onHandProcessRun.OnNext( false );
         }
 
@@ -225,9 +182,8 @@ namespace GameSystemSDK.BattleScene.Model
             {
                 return;
             }
-            _cardListContext.AllList.ToList().Find( arg => arg.ID.Equals( id ) ).SetDrawn( true );
+            _cardListContext.AllList.ToList().Find( arg => arg.PlayingCardInfo.ID.ToString().Equals( id ) ).SetDrawn( true );
             var card = _cardListContext.GetCard(id);
-            UnityEngine.Debug.Log( $"card : {card.ID}, {card.IsDrawn}" );
 
             _handCardListContext.Remove( card );
             DiscountDiscardCount();
@@ -247,7 +203,7 @@ namespace GameSystemSDK.BattleScene.Model
         /// <Todo>
         /// 이 함수는 어플리케이션 켜질 때 한번만 로딩하면 될 것 같습니다.
         /// </Todo>
-        private async UniTask InitializeGameRuleData()
+        private async void InitializeGameRuleData()
         {
             var path = new HandTablePath();
             var handConditionRawData = _battleResourceContext.GetTableRawData( path.PokerHandsConditionCsvName );

@@ -2,6 +2,7 @@ using Zenject;
 using UnityEngine;
 using CoreAssetUI.View;
 using CoreAssetUI.Presenter;
+using CoreAssetUI;
 
 namespace GameSystemSDK.Battle.Installer
 {
@@ -16,13 +17,44 @@ namespace GameSystemSDK.Battle.Installer
         [SerializeField] private NoticeConfirmModal _noticeConfirmModal;
         [SerializeField] private BattleSceneActivationView _activationView;
 
+        //public override void InstallBindings()
+        //{
+        //    // View 
+        //    Container
+        //        .Bind<IHandDeckListView>()
+        //        .FromInstance( _handDeckListView );
+
+        //    Container
+        //        .Bind<ISelectedCardListView>()
+        //        .FromInstance( _selectedCardListView );
+
+        //    Container
+        //        .Bind<IBattleInfoView>()
+        //        .FromInstance( _battleInfoView );
+
+        //    Container
+        //        .Bind<IRunControlView>()
+        //        .FromInstance( _runControlView );
+
+        //    Container
+        //        .Bind<INoticeConfirmModal>()
+        //        .FromInstance( _noticeConfirmModal );
+
+        //    Container
+        //        .Bind<IResultModal>()
+        //        .FromInstance( _resultModal );
+
+        //    Container
+        //        .Bind<IShopModal>()
+        //        .FromInstance( _shopModal );
+
+        //    Container
+        //        .Bind<IBattleSceneActivationView>()
+        //        .FromInstance( _activationView );
+        //}
+
         public override void InstallBindings()
         {
-            // View 
-            Container
-                .Bind<IHandDeckListView>()
-                .FromInstance( _handDeckListView );
-
             Container
                 .Bind<ISelectedCardListView>()
                 .FromInstance( _selectedCardListView );
@@ -51,5 +83,6 @@ namespace GameSystemSDK.Battle.Installer
                 .Bind<IBattleSceneActivationView>()
                 .FromInstance( _activationView );
         }
+
     }
 }

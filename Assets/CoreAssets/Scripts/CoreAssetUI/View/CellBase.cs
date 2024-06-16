@@ -21,7 +21,7 @@ namespace CoreAssetUI.View
 
         public IObservable<Unit> OnClick => _button.OnClick;
 
-        public bool IsVisible { get => gameObject.activeSelf; set => gameObject.SetActive( value ); }
+        public bool IsVisiable { get => gameObject.activeSelf; set => gameObject.SetActive( value ); }
 
         public abstract bool IsSelected { get; set; }
 
@@ -32,7 +32,7 @@ namespace CoreAssetUI.View
             set { _isInteractable = value; }
         }
 
-        public void SetImage( Sprite sprite )
+        public void SetBackgroundImage( Sprite sprite )
         {
             if( _image == false )
             {
@@ -65,6 +65,11 @@ namespace CoreAssetUI.View
         public void SetInteractable( bool isInteractable )
         {
             _button.Interactable = isInteractable;
+        }
+
+        public void SetDisplayText( IReadOnlyList<Sprite> list )
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -41,7 +41,7 @@ namespace GameSystemSDK.BattleScene.Domain
 
         public void SetIsSelected( string id, bool isSelection )
         {
-            var index = _list.FindIndex(arg => arg.ID.Equals( id ));
+            var index = _list.FindIndex(arg => arg.PlayingCardInfo.ID.ToString().Equals( id ));
             _list[index].SetIsSelected( isSelection );
             _onCardListChanged.OnNext( List );
         }
@@ -49,14 +49,16 @@ namespace GameSystemSDK.BattleScene.Domain
         public void UpdateList( IReadOnlyList<IBattleCard> list )
         {
             var retVal = new List<IBattleCard>();
-            var notDrawnList = _list.Where( arg => arg.IsInHand == true && arg.IsDrawn == false ).ToList();
+            var notDrawnList = _list.Where( arg => arg.IsInPlayDeck == true && arg.IsDrawn == false ).ToList();
             retVal.AddRange( notDrawnList );
             for( int i = 0; i < _totalHandDeckCount - notDrawnList.Count; i++ )
             {
-                var valiableList = list.Where(arg => arg.IsInHand == false && arg.IsDrawn == false).ToList();
+                var valiableList = list.Where(arg => arg.IsInPlayDeck == false && arg.IsDrawn == false).ToList();
                 var data = valiableList.First();
                 retVal.Add( data );
-                list.Where( arg => arg.ID.Equals( data.ID ) ).ToList().ForEach( arg => arg.SetInHand( true ) );
+                list.Where( arg => arg.PlayingCardInfo.ID.ToString().Equals( data.PlayingCardInfo.ID.ToString() ) )
+                    .ToList()
+                    .ForEach( arg => arg.SetInHand( true ) );
                 _onAdd.OnNext( data );
             }
             _list.Clear();
@@ -66,7 +68,7 @@ namespace GameSystemSDK.BattleScene.Domain
 
         public IBattleCard GetCard( string id )
         {
-            var card = _list.First( arg => arg.ID.Equals( id ) );
+            var card = _list.First( arg => arg.PlayingCardInfo.ID.ToString().Equals( id ) );
             return card;
         }
 
