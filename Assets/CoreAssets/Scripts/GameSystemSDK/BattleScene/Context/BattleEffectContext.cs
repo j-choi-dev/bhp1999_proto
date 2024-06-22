@@ -22,6 +22,12 @@ namespace GameSystemSDK.BattleScene.Application
         public UniTask RunScoreEffectProcess( IDetailScoreInfo detail, AudioClip effect )
             => _battleEffectLaunchDomain.RunScoreEffectProcess( detail, effect );
 
+        public void RunScoreNextEffectProcess(IDetailScoreInfo detail, int idx)
+            => _battleEffectLaunchDomain.RunScoreNextEffectProcess(detail, idx);
+
+        public void RunScoreEndEffectProcess()
+            => _battleEffectLaunchDomain.RunScoreEndEffectProcess();
+
         public void SelectHandProcess( IHandConditionInfo conditionInfo )
             => _battleEffectLaunchDomain.SelectHandProcess( conditionInfo );
     }

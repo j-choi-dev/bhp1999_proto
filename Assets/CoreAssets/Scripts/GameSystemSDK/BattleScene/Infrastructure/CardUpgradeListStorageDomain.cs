@@ -14,8 +14,8 @@ namespace GameSystemSDK.BattleScene.Infrastructure
             for (int i = 0; i < rawData.Count; i++)
             {
                 var id = int.Parse(CSVUtil.GetData(rawData, i, "id"));
-                var upgradeType = EnumUtil<CardUpgradeType>.Parse(CSVUtil.GetData(rawData, i, "CardUpgradeType"));
-                var conditionType = EnumUtil<ActivateConditionType>.Parse(CSVUtil.GetData(rawData, i, "ActivateConditionType"));
+                var upgradeType = EnumUtil<CardUpgradeType>.Parse(CSVUtil.GetData(rawData, i, "cardUpgradeType"));
+                var conditionType = EnumUtil<ActivateConditionType>.Parse(CSVUtil.GetData(rawData, i, "activateConditionType"));
 
                 var data = new CardUpgradeInfo(id, upgradeType, conditionType);
 
@@ -28,10 +28,10 @@ namespace GameSystemSDK.BattleScene.Infrastructure
             for (int i = 0; i < rawData.Count; i++)
             {
                 var id = int.Parse(CSVUtil.GetData(rawData, i, "id"));
-                var groupId = int.Parse(CSVUtil.GetData(rawData, i, "Groupid"));
-                var checkType = EnumUtil<CardEffectOperationType>.Parse(CSVUtil.GetData(rawData, i, "CardEffectOperationType"));
-                var rate = double.Parse(CSVUtil.GetData(rawData, i, "OperationTriggerRate")) / 10000.0;
-                var effectParam = int.Parse(CSVUtil.GetData(rawData, i, "OperationParam"));
+                var groupId = int.Parse(CSVUtil.GetData(rawData, i, "groupid"));
+                var checkType = EnumUtil<CardEffectOperationType>.Parse(CSVUtil.GetData(rawData, i, "cardEffectOperationType"));
+                var rate = double.Parse(CSVUtil.GetData(rawData, i, "operationTriggerRate")) / 10000.0;
+                var effectParam = int.Parse(CSVUtil.GetData(rawData, i, "operationParam"));
 
                 var currPairCondition = new CardEffectInfo(id, groupId, checkType, rate, effectParam);
 

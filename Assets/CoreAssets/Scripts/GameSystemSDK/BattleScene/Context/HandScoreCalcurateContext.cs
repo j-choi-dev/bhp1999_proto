@@ -7,7 +7,6 @@ namespace GameSystemSDK.BattleScene.Application
     public class HandScoreCalcurateContext : IHandScoreCalcurateContext
     { 
         private IHandScoreCalcuratorDomain _calcurateDomain;
-        public IObservable<IDetailScoreInfo> OnDetailScoreInfo => _calcurateDomain.OnDetailScoreInfo;
 
         public HandScoreCalcurateContext( IHandScoreCalcuratorDomain calcurateDomain )
         {
@@ -18,10 +17,10 @@ namespace GameSystemSDK.BattleScene.Application
             IReadOnlyList<IBattleCard> cardList )
             => _calcurateDomain.GetMaxPokerScore( handDataList, cardList );
 
-        public IHandConditionInfo GetPokerHandsInfoByID( IReadOnlyList<IHandInfoData> handDataList, int id )
-            => _calcurateDomain.GetPokerHandsInfoByID( handDataList, id );
+        public IHandConditionInfo GetPokerHandsInfoByID( IReadOnlyList<IHandInfoData> handDataList, int id, int handsLevel)
+            => _calcurateDomain.GetPokerHandsInfoByID( handDataList, id, handsLevel);
 
-        public IDetailScoreInfo GetScoreData( IReadOnlyList<IBattleCard> cardList, IHandConditionInfo condition )
-            => _calcurateDomain.GetScoreData( cardList, condition );
+        public IDetailScoreInfo GetScoreData( IHandConditionInfo condition )
+            => _calcurateDomain.GetScoreData( condition );
     }
 }

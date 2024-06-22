@@ -73,12 +73,12 @@ namespace CoreAssetUI.Presenter
         private async void Start()
         {
             _noticeConfirmModal.Show( false );
-            _battleInfoView.SetScorePlateOn( false );
+            _battleInfoView.SetScorePlateOn( true );    // <TODO> 일단 임시 세팅
             _resultModal.SetActive( false );
             _shopModal.SetActive( false );
 
             await _gameProcessModel.Initialize();
-            await _cardDeckModel.Initialize( _gameProcessModel.GetPlayingCardDeck(1) );  // 임시로 1 셋팅
+            await _cardDeckModel.Initialize( _gameProcessModel.GetPlayingCardDeck() );  // <TODO> 임시로 1 셋팅
             
             UpdateView();
 
@@ -162,6 +162,7 @@ namespace CoreAssetUI.Presenter
                 .Subscribe( _ => UpdateView() )
                 .AddTo( this );
 
+            // <TODO> 여기서 카드 업그레이드를 표현할 방법을 찾습니다.
             _cardDeckModel.OnCurrentSelectedCardAdd
                 .Subscribe( item =>
                 {

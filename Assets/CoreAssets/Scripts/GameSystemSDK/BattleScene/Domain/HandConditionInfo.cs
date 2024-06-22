@@ -1,4 +1,7 @@
 
+using Palmmedia.ReportGenerator.Core.Reporting.Builders;
+using System.Runtime.InteropServices;
+
 namespace GameSystemSDK.BattleScene.Domain
 {
     /// <summary>
@@ -8,6 +11,7 @@ namespace GameSystemSDK.BattleScene.Domain
     public interface IHandConditionInfo
     {
         string Name { get; }
+        int HandLevel { get; }
         int AddPoint { get; }
         int MultiplePoint { get; }
     }
@@ -15,14 +19,16 @@ namespace GameSystemSDK.BattleScene.Domain
     public class HandConditionInfo : IHandConditionInfo
     {
         public string Name { get; private set; }
+        public int HandLevel { get; private set; }
         public int AddPoint { get; private set; }
         public int MultiplePoint { get; private set; }
 
-        public HandConditionInfo( string name, int addPoint, int multiplePoint )
+        public HandConditionInfo( string name, int handLevel, int addPoint, int multiplePoint )
         {
-            this.Name = name;
-            this.AddPoint = addPoint;
-            this.MultiplePoint = multiplePoint;
+            Name = name;
+            HandLevel = handLevel;
+            AddPoint = addPoint;
+            MultiplePoint = multiplePoint;
         }
     }
 }

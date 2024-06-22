@@ -1,4 +1,4 @@
-id,Groupid,CardEffectOperationType,OperationTriggerRate,OperationParam
+id,groupid,cardEffectOperationType,operationTriggerRate,operationParam
 10101,101,Chip,10000,30
 10201,102,Multiplier,10000,4
 10301,103,ChangeSuite,10000,5

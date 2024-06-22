@@ -22,9 +22,9 @@ namespace GameSystemSDK.Server.Model
             _externalConnectContext.AddCardInfo(id);
         }
 
-        public async UniTask<IReadOnlyList<string>> GetCardInfo()
+        public IReadOnlyList<string> GetCardInfo()
         {
-            return await _externalConnectContext.GetCardInfo();
+            return _externalConnectContext.GetCardInfo();
         }
 
         public async UniTask<string> GetClaeredStageID()
