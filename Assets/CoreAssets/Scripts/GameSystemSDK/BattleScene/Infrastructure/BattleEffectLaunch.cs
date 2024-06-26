@@ -39,7 +39,7 @@ namespace GameSystemSDK.BattleScene.Infrastructure
         public void RunScoreNextEffectProcess(IDetailScoreInfo detail, int idx)
         {
             _onSkillNameChanged.OnNext( detail.GetScoreMsg() );
-            _onScoreInfoChanged.OnNext((idx, detail.HandCardList[idx].Chip ));
+            _onScoreInfoChanged.OnNext((idx, detail.HandCardList[idx].PlayingCardInfo.Chip ));
         }
 
         public void RunScoreEndEffectProcess()

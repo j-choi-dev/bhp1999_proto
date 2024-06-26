@@ -109,7 +109,23 @@ namespace GameSystemSDK.BattleScene.Model
         public void SetManaValue( int value ) => _gameRuleValueCntext.SetManaValue( value );
         public void SetMaxHandCount( int val ) => _gameRuleValueCntext.SetMaxHandCount( val );
         public void SetMaxDiscardCount( int val ) => _gameRuleValueCntext.SetMaxDiscardCount( val );
-        public IReadOnlyList<IPlayingCardInfo> GetPlayingCardDeck(int DeckGroup) => _battleInfoContext.GetPlayingCardDeck(DeckGroup);
+        public IReadOnlyList<IPlayingCardInfo> GetPlayingCardDeck()
+        {
+            var cardList = _externalConnectContext.GetCardInfo();
+
+            // <TODO>
+            // 카드 덱 들고 오는 부분. 한번도 한 적이 없다면 임의로 1번 덱을 불러온다.
+            // 
+            if (cardList.Count == 0)
+            {
+                var playingCardList = _battleInfoContext.GetPlayingCardDeck(1);
+                _externalConnectContext.SetCardInfo(playingCardList);
+
+                cardList = _externalConnectContext.GetCardInfo();
+            }
+
+            return _battleInfoContext.GetPlayingCardDeckByList(cardList);
+        }
 
         public async UniTask Initialize()
         {
@@ -133,14 +149,20 @@ namespace GameSystemSDK.BattleScene.Model
 
             _onStageNameChanged.OnNext( _stageInfoData.StageName );
 
-            InitializeGameRuleData();
+            await InitGame();
+        }
+
+        public async UniTask InitGame()
+        {
+            await InitializeGameRuleData();
         }
 
         public void UpdateHandDeckInfo()
         {
             var handList = _battleInfoContext.HandInfoDataList;
             var scoreTupple = _handScoreCalcurateContext.GetMaxPokerScore(handList, _selectedListContext.List);
-            var conditionInfo = _handScoreCalcurateContext.GetPokerHandsInfoByID( handList, scoreTupple.id );
+            var handsLevel = _externalConnectContext.GetHandLevel(scoreTupple.id);
+            var conditionInfo = _handScoreCalcurateContext.GetPokerHandsInfoByID( handList, scoreTupple.id, handsLevel );
             _battleEffectContext.SelectHandProcess(conditionInfo);
         }
 
@@ -149,8 +171,9 @@ namespace GameSystemSDK.BattleScene.Model
             _onHandProcessRun.OnNext( true );
             var handList = _battleInfoContext.HandInfoDataList;
             var scoreTupple = _handScoreCalcurateContext.GetMaxPokerScore( handList, _selectedListContext.List );
-            var conditionInfo = _handScoreCalcurateContext.GetPokerHandsInfoByID( handList, scoreTupple.id );
-            var scoreInfo = _handScoreCalcurateContext.GetScoreData(scoreTupple.Item2, conditionInfo );
+            var handsLevel = _externalConnectContext.GetHandLevel(scoreTupple.id);
+            var conditionInfo = _handScoreCalcurateContext.GetPokerHandsInfoByID(handList, scoreTupple.id, handsLevel);
+            var scoreInfo = _handScoreCalcurateContext.GetScoreData(conditionInfo );
 
             await UniTask.Delay( 500 );
             var soundEffectId = $"battle00{UnityEngine.Random.Range(1, 5)}";
@@ -158,14 +181,14 @@ namespace GameSystemSDK.BattleScene.Model
             await _battleEffectContext.RunScoreEffectProcess( scoreInfo, clip.Value );
 
             await UniTask.Delay( 250 );
-            _currTotalScore += scoreInfo.Score;
+            _currTotalScore += scoreInfo.GetScore();
             if( _currTotalScore >= _stageInfoData.GoalScore )
             {
                 UnityEngine.Debug.Log( "Stage Clear" );
                 await _externalConnectContext.SetClearedStageInfo( _stageInfoData.ID );
                 _onCleareStage.OnNext( Unit.Default );
             }
-            _onScoreChanged.OnNext( scoreInfo.Score );
+            _onScoreChanged.OnNext(scoreInfo.GetScore());
 
 
             await UniTask.Delay( 250 );
@@ -203,7 +226,7 @@ namespace GameSystemSDK.BattleScene.Model
         /// <Todo>
         /// 이 함수는 어플리케이션 켜질 때 한번만 로딩하면 될 것 같습니다.
         /// </Todo>
-        private async void InitializeGameRuleData()
+        private async UniTask InitializeGameRuleData()
         {
             var path = new HandTablePath();
             var handConditionRawData = _battleResourceContext.GetTableRawData( path.PokerHandsConditionCsvName );
