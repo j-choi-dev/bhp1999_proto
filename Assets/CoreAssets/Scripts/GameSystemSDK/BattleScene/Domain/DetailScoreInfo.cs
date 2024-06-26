@@ -39,7 +39,7 @@ namespace GameSystemSDK.BattleScene.Domain
         public void AddSummitScoreData( IBattleCard addCard )
         {
             _handCardList.Add( addCard );
-            this.AddPoint += addCard.Chip;
+            this.AddPoint += addCard.PlayingCardInfo.Chip;
 
             // <TODO> Card에 효과가 있다면 해당 효과 적용
         }
