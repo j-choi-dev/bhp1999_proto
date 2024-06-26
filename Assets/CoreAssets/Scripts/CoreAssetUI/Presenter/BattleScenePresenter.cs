@@ -64,7 +64,6 @@ namespace CoreAssetUI.Presenter
         {
             _image.gameObject.SetActive( false );
             _text.text = string.Empty;
-            _gameSoundController.PlayEffect( "eff003" );
 
             SubscribeView();
             SubscribeModel();

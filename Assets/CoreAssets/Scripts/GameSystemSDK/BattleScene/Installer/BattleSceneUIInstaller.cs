@@ -56,6 +56,10 @@ namespace GameSystemSDK.Battle.Installer
         public override void InstallBindings()
         {
             Container
+                .Bind<IHandDeckListView>()
+                .FromInstance( _handDeckListView );
+
+            Container
                 .Bind<ISelectedCardListView>()
                 .FromInstance( _selectedCardListView );
 

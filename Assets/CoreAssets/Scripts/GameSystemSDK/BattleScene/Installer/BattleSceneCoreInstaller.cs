@@ -12,6 +12,7 @@ namespace GameSystemSDK.Battle.Installer
     public class BattleSceneCoreInstaller : MonoInstaller<BattleSceneCoreInstaller>
     {
         [SerializeField] private BattleResourceConfig _battleResourceConfig;
+        [SerializeField] private CardResourceConfig _cardResourceConfig = null;
 
         public override void InstallBindings()
         {
@@ -148,6 +149,9 @@ namespace GameSystemSDK.Battle.Installer
                 .Bind<IBattleEffectLaunchDomain>()
                 .To<BattleEffectLaunch>()
                 .AsCached();
+            Container
+                .Bind<ICardResourceConfig>()
+                .FromInstance( _cardResourceConfig );
             #endregion
         }
     }

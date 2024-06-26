@@ -84,10 +84,9 @@ namespace GameSystemSDK.Battle.Installer
                 .Bind<IBattleResourceConfig>()
                 .FromInstance( _battleResourceConfig )
                 .AsCached();
-            Container
-                .Bind<ICardResourceConfig>()
-                .FromInstance( _cardResourceConfig )
-                .AsCached();
+            //Container
+            //    .Bind<ICardResourceConfig>()
+            //    .FromInstance( _cardResourceConfig );
             #endregion
         }
     }
