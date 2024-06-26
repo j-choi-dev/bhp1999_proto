@@ -6,7 +6,7 @@ using GameSystemSDK.Resource.Domain;
 
 namespace GameSystemSDK.Resource.Infrastructure
 {
-    [CreateAssetMenu( fileName = "NewCardResourceConfig", menuName = "GameSystemSDK/Resource=/CardResourceConfig" )]
+    [CreateAssetMenu( fileName = "NewCardResourceConfig", menuName = "GameSystemSDK/Resource/CardResourceConfig" )]
     public class CardResourceConfig : ScriptableObject, ICardResourceConfig
 
     {

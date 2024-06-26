@@ -17,6 +17,7 @@ namespace GameSystemSDK.Resource.Infrastructure
 
         public IResult<string> GetTableRawData( string id )
         {
+            Debug.Log( id );
             var data = _tableList.First(spr => spr.name.Equals(id));
             if( data == null )
             {
