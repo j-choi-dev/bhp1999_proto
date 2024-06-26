@@ -11,3 +11,8 @@ pokerHandsConditionID,pokerPattern,pokerNumType,count
 10,Heart,Straight,5
 11,Club,Straight,5
 12,Spade,Straight,5
+13,None,Pair,5
+14,Diamond,Pair,5
+15,Heart,Pair,5
+16,Club,Pair,5
+17,Spade,Pair,5

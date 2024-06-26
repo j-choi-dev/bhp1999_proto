@@ -8,3 +8,5 @@ pokerHandsID,:handsName,operatorType,condition1,condition2,condition3,condition4
 7,풀하우스,OperationAND,2,1,,,
 8,포카드,OperationAND,8,,,,
 9,스트레이트플러시,OperationOR,9,10,11,12,
+10,파이브카드,OperationAND,13,,,,
+11,플러시파이브,OperationOR,14,15,16,17,

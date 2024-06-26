@@ -14,6 +14,7 @@ id,groupid,cardEffectOperationType,operationTriggerRate,operationParam
 20101,201,Chip,10000,50
 20201,202,Multiplier,10000,10
 20301,203,Xmultiplier,10000,2
+20401,204,Negative,10000,1
 30101,301,Dollar,10000,3
 30201,302,AdditionalTrigger,10000,1
 30301,303,GenerateItem,10000,1

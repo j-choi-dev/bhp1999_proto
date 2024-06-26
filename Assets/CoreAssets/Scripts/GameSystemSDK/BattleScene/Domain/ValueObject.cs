@@ -57,6 +57,7 @@ namespace GameSystemSDK.BattleScene.Domain
         RoundEnd,       // 라운드 끝났을 때 손에 보유하고 있다면
         CardPlayGetPoint,   // 득점에 사용된 카드 체크
         Discard,        // 버렸을 때
+        Always,         // 네거티브 효과인데 트리거됐을 때가 아닌 스스로 슬롯 무게를 차지하지 않는 느낌
     }
 
     public enum CardEffectOperationType
@@ -69,6 +70,7 @@ namespace GameSystemSDK.BattleScene.Domain
         Destroy,        // 해당 카드 파괴
         Dollar,         // 돈
         AdditionalTrigger,  // 한 번 더 트리거
+        Negative,
         GenerateItem,   // 아이템 생성(행성과 타로는 OperationParam으로 구분하자?)
     }
 
