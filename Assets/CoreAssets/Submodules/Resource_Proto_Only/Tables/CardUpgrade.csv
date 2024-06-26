@@ -10,6 +10,7 @@ id,cardUpgradeType,activateConditionType
 201,Edition,WhenTrigger
 202,Edition,WhenTrigger
 203,Edition,WhenTrigger
+204,Edition,Always
 301,Seal,CardPlayGetPoint
 302,Seal,WhenTrigger
 303,Seal,RoundEnd
