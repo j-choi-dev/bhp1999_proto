@@ -1,14 +1,13 @@
-using GameSystemSDK.Common.Application;
 using GameSystemSDK.Stage.Application;
 using GameSystemSDK.Stage.Domain;
 using GameSystemSDK.Stage.Model;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Zenject;
 
 namespace CoreAssetUI.Installer
 {
+    /// <summary>
+    /// Main Scene에서 필요로 하는 Instance/Compoenent 주입을 위한 Zenject Installer
+    /// </summary>
     public class MainSceneInstaller : MonoInstaller<MainSceneInstaller>
     {
         public override void InstallBindings()

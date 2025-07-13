@@ -5,6 +5,10 @@ using UniRx;
 
 namespace GameSystemSDK.BattleScene.Domain
 {
+    /// <summary>
+    /// 선택중인 카드 리스트에 대한 Domain 구현체
+    /// @Auth Choi
+    /// </summary>
     public class SelectedCardListDomain : ISelectedCardListDomain
     {
         private int _count = 0;
@@ -27,7 +31,7 @@ namespace GameSystemSDK.BattleScene.Domain
 
         public SelectedCardListDomain()
         {
-            _count = 5; // TODO @Choi
+            _count = 5; // TODO Magic Number @Choi
         }
 
         public void AddCard( IBattleCard data )

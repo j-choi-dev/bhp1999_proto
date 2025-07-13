@@ -3,6 +3,10 @@ using Cysharp.Threading.Tasks;
 
 namespace GameSystemSDK.Util
 {
+	/// <summary>
+	/// File 입출력 관련 Util
+	/// @Auth Choi
+	/// </summary>
     public static class FileIOUtil
     {
         public static async UniTask<byte[]> Load( string path )

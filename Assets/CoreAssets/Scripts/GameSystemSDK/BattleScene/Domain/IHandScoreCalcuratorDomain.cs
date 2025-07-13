@@ -6,7 +6,7 @@ namespace GameSystemSDK.BattleScene.Domain
     /// <summary>
     /// Poker 점수 계산 스크립트
     /// </summary>
-    /// <remarks>상호님 작성하신 스크립트</remarks>
+    /// @Auth Samdong
     public interface IHandScoreCalcuratorDomain
     {
         public IObservable<IDetailScoreInfo> OnDetailScoreInfo { get; }

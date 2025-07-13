@@ -3,6 +3,10 @@ using UnityEngine;
 
 namespace GameSystemSDK.Editor.Build.Application
 {
+	/// <summary>
+	/// Build 실행 및 처리 공정의 순서를 정의
+	/// @Auth Choi
+	/// </summary>
 	public class RomBundleAdapter
 	{
 		private IRomBuildDomain m_Builder;

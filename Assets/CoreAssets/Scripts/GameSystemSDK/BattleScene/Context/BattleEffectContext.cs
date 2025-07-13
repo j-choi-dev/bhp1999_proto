@@ -5,6 +5,10 @@ using UnityEngine;
 
 namespace GameSystemSDK.BattleScene.Application
 {
+    /// <summary>
+    /// 배틀 중 연출 관련 Model과 Domain 연계
+    /// @Auth Choi
+    /// </summary>
     public class BattleEffectContext : IBattleEffectContext
     {
         private IBattleEffectLaunchDomain _battleEffectLaunchDomain;

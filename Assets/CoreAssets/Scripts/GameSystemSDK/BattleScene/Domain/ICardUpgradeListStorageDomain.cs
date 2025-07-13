@@ -3,8 +3,8 @@ using System.Collections.Generic;
 namespace GameSystemSDK.BattleScene.Domain
 {
     /// <summary>
+    /// 족보 관련 데이터 초기화 및 보존하는 클래스
     /// @Auth Choi
-      /// 족보 관련 데이터 초기화 및 보존하는 클래스
     /// </summary>
     public interface ICardUpgradeListStorageDomain
     {

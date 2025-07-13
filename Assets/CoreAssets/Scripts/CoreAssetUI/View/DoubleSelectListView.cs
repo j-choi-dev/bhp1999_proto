@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using UniRx;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace CoreAssetUI.View
 {
     /// <summary>
+    /// 이중 선택이 가능한 Cell에 대한 List View
     /// @Auth Choi
     /// </summary>
-    /// <remarks>// TODO ダブルタップ専用は別度のIF作って分離し、そっちを同時継承させるのが良いかも @Choi 24.05.05</remarks>
+    // TODO ダブルタップ専用は別度のIF作って分離し、そっちを同時継承させるのが良いかも @Choi 24.05.05
     public abstract class DoubleSelectListView : MonoBehaviour, IListView
     {
         [SerializeField] protected CellBase _prefab;

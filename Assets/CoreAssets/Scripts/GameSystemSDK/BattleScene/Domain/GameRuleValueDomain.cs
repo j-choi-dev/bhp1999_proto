@@ -3,6 +3,10 @@ using UniRx;
 
 namespace GameSystemSDK.BattleScene.Domain
 {
+    /// <summary>
+    /// 게임 진행에 필요한 값(Rule)과 관련된 구현 클래스
+    /// @Auth Choi
+    /// </summary>
     public class GameRuleValueDomain : IGameRuleValueDomain
     {
         private Subject<int> _onHandChanged = new Subject<int>();

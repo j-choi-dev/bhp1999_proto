@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 namespace GameSystemSDK.Common.Domain
 {
+    /// <summary>
+    /// CSV 데이터를 필요로하는 각각의 데이터형으로 파싱을 수행하는 구현 클래스
+    /// @Auth Choi
+    /// </summary>
     public class DataConvertDomain : IDataConvertDomain
     {
         public IReadOnlyList<IStageInfoData> ConverToStageInfoDataList( string rawData )

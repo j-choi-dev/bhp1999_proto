@@ -1,14 +1,13 @@
 using GameSystemSDK.Common.Application;
 using GameSystemSDK.Common.Domain;
-using GameSystemSDK.Stage.Model;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Zenject;
 
 namespace CoreAssetUI.Installer
 {
-
+    /// <summary>
+    /// App 기동중 상시 사용할 Instance를 주입하는 Zenject Installer
+    /// @Auth Choi
+    /// </summary>
     public class CommonInstaller : MonoInstaller<CommonInstaller>
     {
         public override void InstallBindings()

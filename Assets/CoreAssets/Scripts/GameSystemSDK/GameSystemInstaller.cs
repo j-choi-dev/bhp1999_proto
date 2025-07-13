@@ -15,6 +15,10 @@ using Zenject;
 
 namespace GameSystemSDK.Common.Installer
 {
+    /// <summary>
+    /// 게임 시스템 전체에 필요한 Instance를 Inject하는 Installer
+    /// @Auth Choi
+    /// </summary>
     public class GameSystemInstaller : MonoInstaller<GameSystemInstaller>
     {
         [SerializeField] private GameSoundController _gameSoundController = null;

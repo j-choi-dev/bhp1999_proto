@@ -6,6 +6,9 @@ using UnityEditor;
 
 namespace GameSystemSDK.Editor.Build.View
 {
+    /// <summary>
+    /// 빌드 메뉴 View & 외부 CI 실행을 위한 메소드 제공
+    /// </summary>
     public static class RomBuildView
     {
         private const string BuildAndroidApplicationMenuName = "BHP1999_Tool/Rom Build/Build Android App";
@@ -45,6 +48,9 @@ namespace GameSystemSDK.Editor.Build.View
             adapter.BuildAssetBundle();
         }
 
+        /// <summary>
+        /// 외부 CI(Bash, cmd) 실행시 호출할 메소드
+        /// </summary>
         private static void AndroidBuildProcessByExternal()
         {
             var rootPath = RomBuildPath.RomExportRootPath;
@@ -62,6 +68,9 @@ namespace GameSystemSDK.Editor.Build.View
             adapter.BuildAssetBundle();
         }
 
+        /// <summary>
+        /// 외부 CI(Bash, cmd) 실행시 호출할 메소드
+        /// </summary>
         private static void IOSBuildProcessByExternal()
         {
             var rawBuildVersion = System.Environment.GetCommandLineArgs()

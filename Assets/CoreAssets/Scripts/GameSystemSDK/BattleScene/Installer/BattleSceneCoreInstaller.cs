@@ -9,6 +9,10 @@ using GameSystemSDK.Resource.Infrastructure;
 
 namespace GameSystemSDK.Battle.Installer
 {
+    /// <summary>
+    /// Battle Scene에서 사용할 Instance를 주입할 Zenject Installer
+    /// @Auth Choi
+    /// </summary>
     public class BattleSceneCoreInstaller : MonoInstaller<BattleSceneCoreInstaller>
     {
         [SerializeField] private BattleResourceConfig _battleResourceConfig;

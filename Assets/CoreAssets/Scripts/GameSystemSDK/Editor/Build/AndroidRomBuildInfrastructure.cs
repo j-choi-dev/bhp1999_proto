@@ -1,14 +1,16 @@
 ﻿using System.Linq;
 using UnityEditor;
 using System.IO;
-using System.IO.Compression;
-using System.Diagnostics;
 using UnityEngine;
 using UnityEditor.Build;
 using GameSystemSDK.Editor.Build.Domain;
 
 namespace GameSystemSDK.Editor.Build.Infrastructure
 {
+    /// <summary>
+    /// Android 빌드 실행 클래스
+    /// @Auth Choi
+    /// </summary>
     public class AndroidRomBuildInfrastructure : IRomBuildDomain
     {
         private string _folderName = string.Empty;

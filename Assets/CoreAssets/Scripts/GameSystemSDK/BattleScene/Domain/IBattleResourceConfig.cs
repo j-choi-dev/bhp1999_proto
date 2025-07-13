@@ -5,8 +5,8 @@ using UnityEngine;
 namespace GameSystemSDK.Resource.Domain
 {
     /// <summary>
+    /// 배틀 플레이 진행에 필요한 리소스를 취득
     /// @Auth Choi
-      /// 배틀 플레이 진행에 필요한 리소스를 취득
     /// </summary>
     public interface IBattleResourceConfig
     {

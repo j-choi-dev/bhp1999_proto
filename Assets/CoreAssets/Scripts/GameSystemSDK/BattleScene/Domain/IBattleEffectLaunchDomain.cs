@@ -5,7 +5,8 @@ using UnityEngine;
 namespace GameSystemSDK.BattleScene.Domain
 {
     /// <summary>
-    /// Effect 연출 관련 Domain Interface
+    /// Effect 연출 관련 Interface
+    /// @Auth Choi
     /// </summary>
     public interface IBattleEffectLaunchDomain
     {

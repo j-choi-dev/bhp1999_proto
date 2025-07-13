@@ -11,6 +11,10 @@ using UniRx;
 
 namespace GameSystemSDK.BattleScene.Model
 {
+    /// <summary>
+    /// 게임의 진행로직 및 게임 진행에 필요한 수치의 Model 구현 클래스
+    /// @Auth Choi
+    /// </summary>
     public class GameProcessModel : IGameProcessModel
     {
         private IGameRuleValueCntext _gameRuleValueCntext;

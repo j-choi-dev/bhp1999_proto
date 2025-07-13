@@ -5,6 +5,10 @@ using System.Collections.Generic;
 
 namespace GameSystemSDK.Server.Application
 {
+    /// <summary>
+    /// Server등 외부와의 접속 및 통신시 관련된 Model과 Domain을 연결의 구현 클래스
+    /// @Auth Choi
+    /// </summary>
     public class ExternalConnectContext : IExternalConnectContext
     {
         private IExternalConnectDomain _externalConnectDomain;

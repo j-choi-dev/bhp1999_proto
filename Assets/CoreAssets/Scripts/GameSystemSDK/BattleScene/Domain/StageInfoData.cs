@@ -1,5 +1,9 @@
 namespace GameSystemSDK.BattleScene.Domain
 {
+    /// <summary>
+    /// Stage 정보 데이터 클래스
+    /// @Auth Choi
+    /// </summary>
     public class StageInfoData : IStageInfoData
     {
         public string ID { get; private set; } = string.Empty;

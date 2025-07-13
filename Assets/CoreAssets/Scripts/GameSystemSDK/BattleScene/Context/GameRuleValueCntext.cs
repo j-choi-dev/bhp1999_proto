@@ -4,6 +4,10 @@ using UniRx;
 
 namespace GameSystemSDK.BattleScene.Application
 {
+    /// <summary>
+    /// 게임 진행에 필요한 값(Rule)과 관련된 Model과 Domain 연계 
+    /// @Auth Choi
+    /// </summary>
     public class GameRuleValueCntext : IGameRuleValueCntext
     {
         private IGameRuleValueDomain _gameRuleValueDomain;

@@ -4,8 +4,8 @@ namespace GameSystemSDK.BattleScene.Domain
 {
     /// <summary>
     ///  족보 데이터
+    ///  @Auth Samdong
     /// </summary>
-    /// <remarks>상호님 작성하신 스크립트</remarks>
     public interface IHandInfoData
     {
         int ID { get; }

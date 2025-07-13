@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace GameSystemSDK.BattleScene.Model
 {
     /// <summary>
-    /// @Auth Choi
     /// 배틀신에서 사용되는 모든 리소스를 취득할 수 있는 창구 클래스
+    /// @Auth Choi
     /// </summary>
     public interface IBattleResourceModel
     {

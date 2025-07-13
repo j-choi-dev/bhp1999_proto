@@ -1,24 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace GameSystemSDK.BattleScene.Infrastructure
 {
-    //public interface IBattleCardIcon
-    //{
-    //    public string ID { get; }
-    //    public int Index { get; }
-    //    public int Type { get; }
-    //    public int Value { get; }
-    //    public string ResourceID { get; }
-
-    //    void SetID( string value );
-    //    void SetIndex( int value );
-    //    void SetType( int value );
-    //    void SetValue( int value );
-    //    public void SetResourceID( string value );
-    //}
-
+    /// <summary>
+    /// Battle에 사용되는 카드 아이콘 클래스
+    /// @Auth Choi
+    /// </summary>
     public class BattleCardIcon : MonoBehaviour
     {
         public string ID { get; private set; } = string.Empty;

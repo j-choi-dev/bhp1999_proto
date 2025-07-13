@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UniRx;
 using System;
 using Cysharp.Threading.Tasks;
@@ -9,8 +7,8 @@ using GameSystemSDK.BattleScene.Domain;
 namespace GameSystemSDK.BattleScene.Model
 {
     /// <summary>
+    /// 게임의 진행로직 및 게임 진행에 필요한 수치의 Model
     /// @Auth Choi
-    /// 게임의 진행로직 및 게임 진행에 필요한 수치의 Model 클래스
     /// </summary>
     public interface IGameProcessModel
     {

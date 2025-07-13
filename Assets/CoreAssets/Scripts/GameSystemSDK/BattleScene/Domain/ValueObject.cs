@@ -2,6 +2,11 @@
 
 namespace GameSystemSDK.BattleScene.Domain
 {
+    /// <summary>
+    /// 카드 테이블 관련 파일명 변수
+    /// @Auth Choi
+    /// </summary>
+    /// <remark>추후 암호화 필요함 @Choi</remark>
     public struct HandTablePath
     {
         public readonly string StageDataMock => "StageDataMock";
@@ -12,6 +17,10 @@ namespace GameSystemSDK.BattleScene.Domain
         public readonly string CardEffectCsvName => "CardEffect";
     }
 
+    /// <summary>
+    /// UI 고정 메시지
+    /// @Auth Choi
+    /// </summary>
     public struct UIMessageData
     {
         public readonly string GameOverHader => "GameOver";

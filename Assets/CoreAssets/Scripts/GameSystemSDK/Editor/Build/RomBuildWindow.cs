@@ -4,6 +4,10 @@ using UnityEngine;
 
 namespace GameSystemSDK.Editor.Build.View
 {
+    /// <summary>
+    /// Version명 지정 등을 수동으로 할 경우 사용할 Editor View
+    /// @Auth Choi
+    /// </summary>
     public class RomBuildWindow : EditorWindow
     {
         public bool DateTimeNow { get; private set; }

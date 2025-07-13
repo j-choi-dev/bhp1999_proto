@@ -6,6 +6,11 @@ using GameSystemSDK.Resource.Domain;
 
 namespace GameSystemSDK.Resource.Infrastructure
 {
+    /// <summary>
+    /// 배틀에 필요한 리소스를 캐싱하기 위한 Scriptable Object 
+    /// @Auth Choi
+    /// </summary>
+    /// <remarks>// TODO 알파로 넘어갈 경우, 반드시 폐기 대상! @Choi</remarks>
     [CreateAssetMenu( fileName = "NewBattleResourceConfig", menuName = "GameSystemSDK/Resource/BattleResourceConfig" )]
     public class BattleResourceConfig : ScriptableObject, IBattleResourceConfig
     {

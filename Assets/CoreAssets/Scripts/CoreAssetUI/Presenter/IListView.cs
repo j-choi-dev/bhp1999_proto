@@ -5,6 +5,10 @@ using UnityEngine;
 
 namespace CoreAssetUI.Presenter
 {
+    /// <summary>
+    /// Cell을 가지는 List View에 대한 IF
+    /// @Auth Choi
+    /// </summary>
     public interface IListView
     {
         IReadOnlyList<ICellBase> Cells { get; }

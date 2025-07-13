@@ -1,12 +1,15 @@
 using CommonSystem.Util;
 using Cysharp.Threading.Tasks;
 using GameSystemSDK.BattleScene.Domain;
-using GameSystemSDK.BattleScene.Infrastructure;
 using GameSystemSDK.Common.Domain;
 using System.Collections.Generic;
 
 namespace GameSystemSDK.BattleScene.Application
 {
+    /// <summary>
+    /// Battle 정보 세팅을 위한 Model과 Domain을 연결
+    /// @Auth Choi
+    /// </summary>
     public class BattleInfoContext : IBattleInfoContext
     {
         private IStageInfoImporterDomain _battleInfoImporterDomain;

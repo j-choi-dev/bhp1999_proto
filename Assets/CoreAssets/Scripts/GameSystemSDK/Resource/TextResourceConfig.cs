@@ -6,6 +6,11 @@ using GameSystemSDK.Resource.Domain;
 
 namespace GameSystemSDK.Resource.Infrastructure
 {
+    /// <summary>
+    /// 게임 진행에 필요한 테이블 데이터 캐싱을 위한 Scriptable Object
+    /// @Auth Choi
+    /// </summary>
+    /// <remarks>// TODO 알파로 넘어갈 경우, 반드시 폐기 대상! @Choi</remarks>
     [CreateAssetMenu( fileName = "NewTextResourceConfig", menuName = "GameSystemSDK/Resource/TextResourceConfig" )]
     public class TextResourceConfig : ScriptableObject, ITextResourceConfig
     {

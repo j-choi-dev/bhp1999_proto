@@ -8,7 +8,11 @@ using UnityEngine;
 
 namespace GameSystemSDK.Server.Infrastructure
 {
-
+    /// <summary>
+    /// PlayerPrefs와 유저 정보용 Binary파일에 Play 정보를 저장
+    /// @Auth Choi
+    /// </summary>
+    /// <remarks>프로토타입용</remarks>
     public class ExternalConnector : IExternalConnectDomain
     {
         private readonly string Path = UnityEngine.Application.persistentDataPath;

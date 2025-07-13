@@ -6,8 +6,8 @@ using UnityEngine;
 namespace CoreAssetUI.Presenter
 {
     /// <summary>
-    /// @Auth Choi
     /// 게임 진행 정보에 관련된 View
+    /// @Auth Choi
     /// </summary>
     public interface IBattleInfoView
     {

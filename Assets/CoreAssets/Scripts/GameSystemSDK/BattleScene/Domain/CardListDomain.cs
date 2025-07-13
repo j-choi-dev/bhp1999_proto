@@ -3,10 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UniRx;
-using UnityEngine;
 
 namespace GameSystemSDK.BattleScene.Domain
 {
+    /// <summary>
+    /// Card List 관련 Domain 구현체
+    /// @Auth Choi
+    /// </summary>
     public class CardListDomain : ICardListDomain
     {
         private List<IBattleCard> _list = new List<IBattleCard>();

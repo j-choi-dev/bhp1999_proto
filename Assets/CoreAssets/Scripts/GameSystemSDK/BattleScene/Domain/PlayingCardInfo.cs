@@ -4,8 +4,8 @@ namespace GameSystemSDK.BattleScene.Domain
 {
     /// <summary>
     ///  플레잉 카드 데이터
+    ///  @Auth Samdong
     /// </summary>
-    /// <remarks>김상호 작성</remarks>
     public interface IPlayingCardInfo
     {
         int ID { get; }

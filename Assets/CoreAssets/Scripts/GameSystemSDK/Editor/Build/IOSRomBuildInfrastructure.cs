@@ -9,6 +9,10 @@ using GameSystemSDK.Editor.Build.Domain;
 
 namespace GameSystemSDK.Editor.Build.Infrastructure
 {
+    /// <summary>
+    /// iOS 빌드 실행 클래스
+    /// @Auth Choi
+    /// </summary>
     public class IOSRomBuildInfrastructure : IRomBuildDomain
     {
         private string _folderName = string.Empty;

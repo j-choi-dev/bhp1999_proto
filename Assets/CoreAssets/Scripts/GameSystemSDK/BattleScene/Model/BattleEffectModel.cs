@@ -1,16 +1,12 @@
-using Cysharp.Threading.Tasks;
 using GameSystemSDK.BattleScene.Application;
-using GameSystemSDK.BattleScene.Domain;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace GameSystemSDK.BattleScene.Model
 {
     /// <summary>
-    /// Battle Effect 이벤트 모델
+    /// Battle Effect 이벤트 Model 구현 클래스
+    /// @Auth Choi
     /// </summary>
     public class BattleEffectModel : IBattleEffectModel
     {

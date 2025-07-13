@@ -1,11 +1,10 @@
-using Cysharp.Threading.Tasks;
-using GameSystemSDK.BattleScene.Domain;
 using System;
 
 namespace GameSystemSDK.BattleScene.Model
 {
     /// <summary>
-    /// Battle Effect 이벤트 모델
+    /// Battle Effect 이벤트 Model
+    /// @Auth Choi
     /// </summary>
     public interface IBattleEffectModel
     {

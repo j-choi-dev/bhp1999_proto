@@ -1,11 +1,9 @@
-using CoreAssetUI.View;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace GameSystemSDK.BattleScene.Domain
 {
+    /// <summary>
+    /// Battle에 사용되는 카드 데이터 클래스
+    /// @Auth Choi
+    /// </summary>
     public class BattleCard : IBattleCard
     {
         public string ID { get; private set; } = string.Empty;

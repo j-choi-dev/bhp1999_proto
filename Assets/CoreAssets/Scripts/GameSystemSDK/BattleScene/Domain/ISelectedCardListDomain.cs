@@ -4,6 +4,10 @@ using UniRx;
 
 namespace GameSystemSDK.BattleScene.Domain
 {
+    /// <summary>
+    /// 선택중인 카드 리스트에 대한 Domain
+    /// @Auth Choi
+    /// </summary>
     public interface ISelectedCardListDomain
     {
         IReadOnlyList<IBattleCard> List { get; }

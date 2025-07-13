@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 namespace GameSystemSDK.Common.Application
 {
+    /// <summary>
+    /// Stage 정보를 Stage 정보 데이터 리스트로 변환하기 위해 Model과 Domain 연결
+    /// @Auth Choi
+    /// </summary>
     public class DataConvertContext : IDataConvertContext
     {
         private IDataConvertDomain _dataConvertDomain;

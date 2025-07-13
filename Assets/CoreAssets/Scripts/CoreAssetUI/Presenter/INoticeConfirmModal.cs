@@ -1,9 +1,12 @@
 using System;
 using UniRx;
-using UnityEngine;
 
 namespace CoreAssetUI.Presenter
 {
+    /// <summary>
+    /// 주의/경고 표시 Modal UI의 IF
+    /// @Auth Choi
+    /// </summary>
     public interface INoticeConfirmModal
     {
         IObservable<Unit> OnConfirmClick { get; }

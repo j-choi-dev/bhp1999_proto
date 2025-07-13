@@ -3,8 +3,8 @@ using System.Collections.Generic;
 namespace GameSystemSDK.BattleScene.Domain
 {
     /// <summary>
-    /// @Auth Samdong
     /// 플레잉 카드에 관련된 데이터를 저장하고 관리
+    /// @Auth Samdong
     /// </summary>
     public interface IPlayingCardListStorageDomain
     {
