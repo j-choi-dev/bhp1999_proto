@@ -1,3 +1,4 @@
+using CommonSystem.Util;
 using Cysharp.Threading.Tasks;
 using GameSystemSDK.BattleScene.Domain;
 using GameSystemSDK.Common.Domain;
@@ -5,22 +6,96 @@ using System.Collections.Generic;
 
 namespace GameSystemSDK.BattleScene.Application
 {
-    public class BattleInfoImporterContext : IBattleInfoImporterContext
+    /// <summary>
+    /// Battle 정보 세팅을 위한 Model과 Domain을 연결
+    /// @Auth Choi
+    /// </summary>
+    public class BattleInfoContext : IBattleInfoContext
     {
-        private IBattleInfoImporterDomain _battleInfoImporterDomain;
+        private IStageInfoImporterDomain _battleInfoImporterDomain;
 
-        public BattleInfoImporterContext( IBattleInfoImporterDomain battleInfoImporterDomain)
+        private IHandDataListStorageDomain _handDataListStorageDomain;
+
+        private IPlayingCardListStorageDomain _playingCardListStorageDomain;
+
+        private ICardUpgradeListStorageDomain _cardUpgradeListStorageDomain;
+
+        public IReadOnlyList<IHandInfoData> HandInfoDataList
+                => _handDataListStorageDomain.HandInfoDataList;
+        public IReadOnlyDictionary<int, IHandConditionData> HandConditionDictionary
+                => _handDataListStorageDomain.HandConditionDictionary;
+
+        public IReadOnlyList<IPlayingCardInfo> PlayingCardInfoList
+                => _playingCardListStorageDomain.PlayingCardDeckList;
+
+        public IReadOnlyList<ICardUpgradeInfo> CardUpgradeList
+                => _cardUpgradeListStorageDomain.CardUpgradeList;
+
+        public IReadOnlyDictionary<int, ICardEffectInfo> CardEffectDictionary
+                => _cardUpgradeListStorageDomain.CardEffectDictionary;
+
+        public BattleInfoContext( IStageInfoImporterDomain battleInfoImporterDomain,
+            IHandDataListStorageDomain handDataListStorageDomain,
+            IPlayingCardListStorageDomain playingCardListStorageDomain,
+            ICardUpgradeListStorageDomain cardUpgradeListStorageDomain)
         {
             _battleInfoImporterDomain = battleInfoImporterDomain;
+            _handDataListStorageDomain = handDataListStorageDomain;
+            _playingCardListStorageDomain = playingCardListStorageDomain;
+            _cardUpgradeListStorageDomain = cardUpgradeListStorageDomain;
         }
 
-        public IReadOnlyList<IBattleInfoData> List => _battleInfoImporterDomain.List;
+        public IReadOnlyList<IStageInfoData> StageInfoList => _battleInfoImporterDomain.List;
 
-        public IBattleInfoData GetBattleInfo( int index ) 
+        public IStageInfoData GetStageInfo( int index )
             => _battleInfoImporterDomain.GetBattleInfo( index );
-        public IBattleInfoData GetBattleInfo( string id ) 
+        public IStageInfoData GetStageInfo( string id )
             => _battleInfoImporterDomain.GetBattleInfo( id );
-        public UniTask<IResult<IReadOnlyList<IBattleInfoData>>> LoadBattleInfo()
-            => _battleInfoImporterDomain.LoadBattleInfo();
+        public UniTask<IResult<IReadOnlyList<IStageInfoData>>> LoadStageInfo(string rawData)
+            => _battleInfoImporterDomain.LoadBattleInfo( rawData );
+
+        public void InitHandDataList( string rawData )
+        {
+            var csvData = CSVDataConverter.ConvertProcess(rawData);
+            _handDataListStorageDomain.InitHandDataList( csvData );
+        }
+
+        public void InitHandConditionDataList( string rawData )
+        {
+            var csvData = CSVDataConverter.ConvertProcess(rawData);
+            _handDataListStorageDomain.InitHandConditionDataList( csvData );
+        }
+
+        public void InitPlayingCardListStorageDomain( string rawData )
+        {
+            var csvData = CSVDataConverter.ConvertProcess(rawData);
+            _playingCardListStorageDomain.InitPlayingCardList(csvData);
+        }
+
+        public void InitCardUpgradeStorageDomain(string rawData)
+        {
+            var csvData = CSVDataConverter.ConvertProcess(rawData);
+            _cardUpgradeListStorageDomain.InitCardUpgradeList(csvData);
+        }
+
+        public void InitCardEffectStorageDomain(string rawData)
+        {
+            var csvData = CSVDataConverter.ConvertProcess(rawData);
+            _cardUpgradeListStorageDomain.InitCardEffectUpgradeList(csvData);
+        }
+
+        public IReadOnlyList<IPlayingCardInfo> GetPlayingCardDeck(int DeckGroup)
+        {
+            List<IPlayingCardInfo> retVal = new List<IPlayingCardInfo>();
+            foreach ( var playingcard in PlayingCardInfoList )
+            {
+                if( playingcard.DeckGroup == DeckGroup )
+                {
+                    retVal.Add( playingcard );
+                }
+            }
+
+            return retVal;
+        }
     }
 }

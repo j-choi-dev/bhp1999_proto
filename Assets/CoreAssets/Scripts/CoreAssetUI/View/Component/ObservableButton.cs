@@ -10,5 +10,6 @@ namespace CoreAssetUI.View
 		public abstract Sprite Sprite { get; set; }
 		public abstract IObservable<Unit> OnClick { get; }
 		public abstract bool Interactable { get; set; }
+		public abstract bool Enable { get; set; }
 	}
 }

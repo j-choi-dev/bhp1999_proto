@@ -5,16 +5,24 @@ using UnityEngine;
 
 namespace CoreAssetUI.Presenter
 {
+    /// <summary>
+    /// Cell을 가지는 List View에 대한 IF
+    /// @Auth Choi
+    /// </summary>
     public interface IListView
     {
-        IReadOnlyList<CellBase> Cells { get; }
-        IReadOnlyList<string> SelectedCells { get; }
-        IReadOnlyList<int> SelectedIndices { get; }
-        IReadOnlyList<string> HoveredCells { get; }
-        IReadOnlyList<int> HoveredIndices { get; }
-        IObservable<CellStateArg> OnSelectionChanged { get; }
-        IObservable<CellStateArg> OnHoveredChanged { get; }
-        IObservable<CellStateArg> OnPressed { get; }
+        IReadOnlyList<ICellBase> Cells { get; }
+        string CurrentSelectedID { get; }
+
+        IObservable<int> OnListCountChanged { get; }
+        IObservable<(string id, bool isSelected)> OnSelectionIDChanged { get; }
+        IObservable<(int index, bool isSelected)> OnSelectionIndexChanged { get; }
+        IObservable<(string id, bool isSelected)> OnCurrentSelectionIDChanged { get; }
+        IObservable<(int index, bool isSelected)> OnCurrentSelectionIndexChanged { get; }
+        IObservable<List<string>> OnCurrentSelectedIDListChanged { get; }
+        IObservable<List<int>> OnCurrentSelectedIndexListChanged { get; }
+        void SetItemsInteractable(bool isInteractable);
+
         void Add( string id, string title, Sprite sprite, bool isInActive );
         void Remove( string id );
         void Clear();

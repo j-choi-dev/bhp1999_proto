@@ -1,11 +1,9 @@
-using CoreAssetUI.View;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace GameSystemSDK.BattleScene.Domain
 {
+    /// <summary>
+    /// Battle에 사용되는 카드 데이터 클래스
+    /// @Auth Choi
+    /// </summary>
     public class BattleCard : IBattleCard
     {
         public string ID { get; private set; } = string.Empty;
@@ -16,6 +14,8 @@ namespace GameSystemSDK.BattleScene.Domain
 
         public int Value { get; private set; } = 0;
 
+        public int Chip { get; private set; } = 0;
+
         public string IllustResourceID { get; private set; } = string.Empty;
 
         public string IconResourceID { get; private set; } = string.Empty;
@@ -23,6 +23,8 @@ namespace GameSystemSDK.BattleScene.Domain
         public bool IsDrawn { get; private set; } = false;
 
         public bool IsInHand { get; private set; } = false;
+
+        public bool IsSelected { get; private set; } = false;
 
         public void SetID( string value )
             => ID = value;
@@ -39,6 +41,9 @@ namespace GameSystemSDK.BattleScene.Domain
         public void SetValue( int value )
             => Value = value;
 
+        public void SetChip(int value)
+            => Value = value;
+
         public void SetDrawn( bool isValue )
             => IsDrawn = isValue;
 
@@ -47,5 +52,8 @@ namespace GameSystemSDK.BattleScene.Domain
 
         public void SetInHand( bool isValue )
             => IsInHand = isValue;
+
+        public void SetIsSelected( bool isValue )
+            => IsSelected = isValue;
     }
 }

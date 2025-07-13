@@ -9,12 +9,12 @@ namespace CoreAssetUI.View
     {
         [SerializeField] private ObservableButton _onClickLogIn = null;
         [SerializeField] private ObservableLabel _versionInfo = null;
+        [SerializeField] private ObservableLabel _guidInfo = null;
 
         public IObservable<Unit> OnClickLogIn => _onClickLogIn.OnClick;
 
         private void Awake()
         {
-            _versionInfo.SetValueWithoutNotify( $"ver : proto_0.0.1" ); // TODO マジックナンバーなのでどこかで直す @Choi 24.04.06
             _onClickLogIn.OnClick
                 .Subscribe( _ => _onClickLogIn.Interactable = false )
                 .AddTo( this );
@@ -22,7 +22,12 @@ namespace CoreAssetUI.View
 
         public void SetVersionInfo( string value )
         {
-            _versionInfo.SetValueWithoutNotify( value );
+            _versionInfo.SetValueWithoutNotify( $"ver : {value}" );
+        }
+
+        public void SetGUIDInfo( string value )
+        {
+            _guidInfo.SetValueWithoutNotify( $"User ID : {value}" );
         }
     }
 }

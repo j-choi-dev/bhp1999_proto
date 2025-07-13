@@ -1,5 +1,4 @@
 using GameSystemSDK.Common.Domain;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,12 +6,18 @@ using GameSystemSDK.Resource.Domain;
 
 namespace GameSystemSDK.Resource.Infrastructure
 {
+    /// <summary>
+    /// 배틀에 필요한 리소스를 캐싱하기 위한 Scriptable Object 
+    /// @Auth Choi
+    /// </summary>
+    /// <remarks>// TODO 알파로 넘어갈 경우, 반드시 폐기 대상! @Choi</remarks>
     [CreateAssetMenu( fileName = "NewBattleResourceConfig", menuName = "GameSystemSDK/Resource/BattleResourceConfig" )]
     public class BattleResourceConfig : ScriptableObject, IBattleResourceConfig
     {
         [SerializeField] private List<Sprite> _cardIllustList = null;
         [SerializeField] private List<Sprite> _cardIconList = null;
         [SerializeField] private List<TextAsset> _tableList = null;
+        [SerializeField] private List<AudioClip> _soundEffect = null;
 
         public IReadOnlyList<Sprite> CardIllustList => _cardIllustList;
 
@@ -39,16 +44,24 @@ namespace GameSystemSDK.Resource.Infrastructure
             return Result.Success(sprite);
         }
 
-        public IResult<string> GetTable( string id )
+        public IResult<string> GetTableRawData( string id )
         {
             var data = _tableList.First(spr => spr.name.Equals(id));
             if( data == null )
             {
-                UnityEngine.Debug.LogError( $"BattleResourceConfig.GetTable : {id} Not Exist" );
                 return Result.Fail<string>( $"BattleResourceConfig.GetTable : {id} Not Exist" );
             }
-            Debug.Log( data.text );
             return Result.Success<string>( data.text );
+        }
+
+        public IResult<AudioClip> GetSoundEffectData( string id)
+        {
+            var data = _soundEffect.First(spr => spr.name.Equals(id));
+            if( data == null )
+            {
+                return Result.Fail<AudioClip>( $"BattleResourceConfig.GetTable : {id} Not Exist" );
+            }
+            return Result.Success<AudioClip>( data );
         }
     }
 }

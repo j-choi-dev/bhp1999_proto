@@ -1,40 +1,39 @@
 using Cysharp.Threading.Tasks;
 using GameSystemSDK.BattleScene.Domain;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 namespace GameSystemSDK.BattleScene.Infrastructure
 {
-    public class CardDeckListImporter : ICardDeckListImportDomain
+    public class CardDeckListGenerator : ICardDeckListGenerateDomain
     {
-        public async UniTask<IReadOnlyList<IBattleCard>> GenerateShuffle()
+        public async UniTask<IReadOnlyList<IBattleCard>> GenerateShuffledList(IReadOnlyList<IPlayingCardInfo> cardList)
         {
-            return GetShuffledCardList();
+            return GetShuffledCardList( cardList );
         }
 
-        private static IReadOnlyList<IBattleCard> GetShuffledCardList()
+        // Todo
+        // 일단 현재 리소스 이름에 맞춰서 -1 한 상태
+        // 리소스에 맞춰 이름이든 데이터든 변경 필요함
+        // Chip도 계산에 현재 빠져 있음
+        private static IReadOnlyList<IBattleCard> GetShuffledCardList( IReadOnlyList<IPlayingCardInfo> cardList )
         {
             var rand = new System.Random();
-            var normalCaount = 13;
-            var typeCaount = 4;
-            var specialCaount = 2;
 
             var list = new List<IBattleCard>();
-            for( int i = 0; i<typeCaount; i++ )
+
+            foreach (var val in cardList)
             {
-                for( int j = 1; j<=normalCaount; j++ )
-                {
-                    var card = new BattleCard();
-                    card.SetID( $"{i}_{j}" );
-                    card.SetType( i );
-                    card.SetValue( j );
-                    card.SetIllustResourceID( $"card-type-{i}" );
-                    card.SetIconResourceID( $"icon-type-{i}" );
-                    list.Add( card );
-                }
+                var card = new BattleCard();
+                card.SetID(val.ID.ToString());
+                card.SetType(val.Suite);
+                card.SetValue(val.Rank);
+                card.SetChip(val.Chip);
+                card.SetIllustResourceID($"card-type-{val.Suite-1}");   
+                card.SetIconResourceID($"icon-type-{val.Suite-1}");
+                list.Add(card);
             }
+
             var shuffled = list.OrderBy(_ => rand.Next()).ToList();
             for( int i = 0; i< shuffled.Count; i++ )
             {

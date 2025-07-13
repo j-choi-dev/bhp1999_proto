@@ -4,9 +4,32 @@ using GameSystemSDK.Common.Domain;
 
 namespace GameSystemSDK.Common
 {
+    /// <summary>
+    /// Scene 전환을 수행하는 Controller
+    /// @Auth Choi
+    /// </summary>
     public interface ISceneController
     {
+        /// <summary>
+        /// Async Scene Load
+        /// </summary>
+        /// <param name="sceneName">Scene 이름</param>
+        /// <returns>UniTask 이벤트</returns>
         UniTask LoadSceneAsync( string sceneName );
+
+        /// <summary>
+        /// 단순 Scene Load
+        /// </summary>
+        /// <param name="sceneName"></param>
+        /// <param name="isAddittive"></param>
+        void LoadScene( string sceneName, bool isAddittive );
+
+        /// <summary>
+        /// Async Scene Unload
+        /// </summary>
+        /// <param name="sceneName">Unload할 Scene 이름</param>
+        /// <returns>UniTask 이벤트</returns>
+        UniTask UnloadSceneAsync( string sceneName );
     }
 
     public class SceneController : ISceneController
@@ -35,6 +58,7 @@ namespace GameSystemSDK.Common
                 await SceneManager.UnloadSceneAsync( _prevSceneName );
             }
             await SceneManager.UnloadSceneAsync( _sceneDomain.EmptySceneName );
+            System.GC.Collect();
         }
 
         public void LoadScene( string sceneName, bool isAddittive )
@@ -48,6 +72,7 @@ namespace GameSystemSDK.Common
         public async UniTask UnloadSceneAsync( string sceneName )
         {
             await SceneManager.UnloadSceneAsync( sceneName );
+            System.GC.Collect();
         }
     }
 }
